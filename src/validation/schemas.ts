@@ -11,7 +11,7 @@ export const formSchema = z
     path: ['passwordConfirm'],
   });
 
-export function validateWithZodSchema<T>(schema: ZodSchema, data: unknown) {
+export function validateWithZodSchema(schema: ZodSchema, data: unknown) {
   const result = schema.safeParse(data);
 
   if (!result.success) {

@@ -2,9 +2,11 @@
 import { formSchema } from '@/validation/schemas';
 import { validateWithZodSchema } from '@/validation/schemas';
 import { z } from 'zod';
+import db from '../db/drizzle';
+import { users } from '../db/schema/userSchema';
+import { hash } from 'bcryptjs';
 
 const renderError = (error: unknown): { message: string } => {
-  console.log(error);
   return {
     message: error instanceof Error ? error.message : 'An error occurred',
   };
@@ -13,7 +15,13 @@ const renderError = (error: unknown): { message: string } => {
 export const registerUser = async (data: z.infer<typeof formSchema>) => {
   try {
     const validatedData = validateWithZodSchema(formSchema, data);
-    console.log('Validated Data:', validatedData);
+
+    const hashedPassword = await hash(validatedData.password, 10);
+
+    await db.insert(users).values({
+      email: validatedData.email,
+      password: hashedPassword,
+    });
 
     return {
       message: 'User registered successfully!',

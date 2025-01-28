@@ -24,7 +24,6 @@ import { Button } from '@/components/ui/button';
 import { registerUser } from '@/action/authActions';
 import { formSchema } from '@/validation/schemas';
 import { useToast } from '@/hooks/use-toast';
-import { ToastAction } from '@/components/ui/toast';
 
 const RegisterPage = () => {
   const { toast } = useToast();
