@@ -11,6 +11,11 @@ export const formSchema = z
     path: ['passwordConfirm'],
   });
 
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
+});
+
 export function validateWithZodSchema(schema: ZodSchema, data: unknown) {
   const result = schema.safeParse(data);
 

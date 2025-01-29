@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: 'create-next-app with NextAuth v5',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
