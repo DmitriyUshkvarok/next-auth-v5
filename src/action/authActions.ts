@@ -35,6 +35,8 @@ export const registerUser = async (data: z.infer<typeof formSchema>) => {
     await db.insert(users).values({
       email: validatedData.email,
       password: hashedPassword,
+      provider: 'credentials',
+      role: 'user',
     });
 
     return {
@@ -58,7 +60,6 @@ export const loginWithCredentials = async (
       .limit(1)
       .execute();
 
-    console.log(user);
     if (user.length === 0) {
       return { message: 'Incorrect email or password', success: false };
     }
@@ -68,7 +69,6 @@ export const loginWithCredentials = async (
       user[0].password!
     );
 
-    // Если пароль неверный
     if (!isPasswordValid) {
       return { message: 'Incorrect email or password', success: false };
     }
