@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 
 export default async function MyAccount() {
   const session = await auth();
-  console.log(session);
+
 
   //   const [user] = await db
   //     .select({

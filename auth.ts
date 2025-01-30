@@ -10,12 +10,14 @@ declare module 'next-auth' {
     id?: string;
     role?: string;
     provider?: string;
+    twoFactorActivated?: boolean;
   }
   interface Session extends DefaultSession {
     user?: {
       id: string;
       role?: string;
       provider?: string;
+      twoFactorActivated?: boolean;
     } & DefaultSession['user'];
   }
 }
@@ -25,6 +27,7 @@ declare module 'next-auth/jwt' {
     id: string;
     role?: string;
     provider?: string;
+    twoFactorActivated?: boolean;
   }
 }
 
@@ -35,6 +38,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id as string;
         token.role = user.role;
         token.provider = user.provider;
+        token.twoFactorActivated = user.twoFactorActivated;
       }
 
       return token;
@@ -43,6 +47,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.id = token.id as string;
       session.user.role = token.role;
       session.user.provider = token.provider;
+      session.user.twoFactorActivated = token.twoFactorActivated as boolean;
 
       return session;
     },
@@ -66,6 +71,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           email: user.email,
           role: user.role,
           provider: user.provider,
+          twoFactorActivated: user.twoFactorActivated ?? undefined,
         };
       },
     }),
