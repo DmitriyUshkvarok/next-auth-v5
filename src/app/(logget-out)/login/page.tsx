@@ -35,7 +35,7 @@ import { SubmitButton } from '@/components/forms/buttons';
 
 export default function Login() {
   const { toast } = useToast();
-  const [step, /*setStep*/] = useState(1);
+  const [step /*setStep*/] = useState(1);
   //   const [otp, setOtp] = useState('');
   const router = useRouter();
 
@@ -53,15 +53,15 @@ export default function Login() {
       password: data.password,
     });
 
-    if (response?.message) {
+    if (response?.success) {
       toast({
         description: `${response.message}`,
       });
+      router.push('/my-account');
       form.reset();
     }
-    if (response.success) {
-      router.push('/my-account');
-    } else {
+
+    if (!response.success) {
       form.setError('root', {
         message: response.message,
       });
@@ -130,7 +130,7 @@ export default function Login() {
               </Link>
             </div>
             <div className="text-muted-foreground text-sm">
-              Forgot password?{' '}
+              Forgot password?
               <Link
                 href={`/password-reset${
                   email ? `?email=${encodeURIComponent(email)}` : ''

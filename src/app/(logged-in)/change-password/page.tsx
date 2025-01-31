@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-// import ChangePasswordForm from './change-password-form';
+import ChangePasswordForm from '@/components/forms/change-password-form';
 
 export default function ChangePassword() {
   return (
@@ -7,7 +7,9 @@ export default function ChangePassword() {
       <CardHeader>
         <CardTitle>Change Password</CardTitle>
       </CardHeader>
-      <CardContent>{/* <ChangePasswordForm /> */}</CardContent>
+      <CardContent>
+        <ChangePasswordForm />
+      </CardContent>
     </Card>
   );
 }

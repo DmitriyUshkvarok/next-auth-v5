@@ -45,11 +45,17 @@ const RegisterPage = () => {
       passwordConfirm: data.passwordConfirm,
     });
 
-    if (response.message) {
+    if (response?.success) {
       toast({
         description: `${response.message}`,
       });
       form.reset();
+    }
+
+    if (!response.success) {
+      form.setError('root', {
+        message: response.message,
+      });
     }
   };
   return (
@@ -117,6 +123,13 @@ const RegisterPage = () => {
                       </FormItem>
                     )}
                   />
+                  {!!form.formState.errors.root?.message && (
+                    <FormItem>
+                      <FormMessage>
+                        {form.formState.errors.root?.message}
+                      </FormMessage>
+                    </FormItem>
+                  )}
                   <SubmitButton
                     text="Register"
                     isLoading={form.formState.isSubmitting}
