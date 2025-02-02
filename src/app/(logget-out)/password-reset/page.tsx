@@ -21,7 +21,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-// import { passwordReset } from './actions';
+import { passwordReset } from '@/action/authActions';
 import { passwordResetSchema } from '@/validation/schemas';
 import { SubmitButton } from '@/components/forms/buttons';
 
@@ -35,8 +35,7 @@ export default function PasswordReset() {
   });
 
   const handleSubmit = async (data: z.infer<typeof passwordResetSchema>) => {
-    console.log(data);
-    // await passwordReset(data.email);
+    await passwordReset({ email: data.email });
   };
 
   return (

@@ -33,6 +33,17 @@ export const passwordResetSchema = z.object({
   email: z.string().email(),
 });
 
+export const updatePasswordSchema = z
+  .object({
+    token: z.string().optional(),
+    password: z.string().min(6, 'Password must be at least 6 characters long'),
+    passwordConfirm: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: 'Passwords must match',
+    path: ['passwordConfirm'],
+  });
+
 export function validateWithZodSchema(schema: ZodSchema, data: unknown) {
   const result = schema.safeParse(data);
 

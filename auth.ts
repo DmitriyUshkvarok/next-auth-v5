@@ -10,6 +10,7 @@ declare module 'next-auth' {
     id?: string;
     role?: string;
     provider?: string;
+    device?: string;
     twoFactorActivated?: boolean;
   }
   interface Session extends DefaultSession {
@@ -38,6 +39,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id as string;
         token.role = user.role;
         token.provider = user.provider;
+        token.device = user.device;
         token.twoFactorActivated = user.twoFactorActivated;
       }
 
@@ -47,6 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.id = token.id as string;
       session.user.role = token.role;
       session.user.provider = token.provider;
+      session.user.device = token.device;
       session.user.twoFactorActivated = token.twoFactorActivated as boolean;
 
       return session;
@@ -58,7 +61,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       credentials: {
         email: {},
         password: {},
-        token: {},
       },
       async authorize(credentials) {
         const [user] = await db
@@ -71,6 +73,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           email: user.email,
           role: user.role,
           provider: user.provider,
+          device: user.device ?? undefined,
           twoFactorActivated: user.twoFactorActivated ?? undefined,
         };
       },

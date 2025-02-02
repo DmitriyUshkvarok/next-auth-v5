@@ -3,6 +3,7 @@ import {
   changePasswordSchema,
   formSchema,
   loginSchema,
+  updatePasswordSchema,
 } from '@/validation/schemas';
 import { validateWithZodSchema } from '@/validation/schemas';
 import { z } from 'zod';
@@ -11,8 +12,17 @@ import { users } from '../db/schema/userSchema';
 import { compare, hash } from 'bcryptjs';
 import { eq } from 'drizzle-orm';
 import { auth, signIn, signOut } from '../../auth';
+import { headers } from 'next/headers';
+import { randomBytes } from 'crypto';
+import { passwordResetTokens } from '@/db/schema/passwordResetTokensSchema';
+import { passwordResetSchema } from '@/validation/schemas';
+import { mailer } from '@/lib/email';
 
-type ResponseStatus = { success?: false; message: string };
+type ResponseStatus = {
+  success?: false;
+  message: string;
+  tokenInvalid?: false;
+};
 
 const renderError = (error: unknown): ResponseStatus => {
   return {
@@ -22,6 +32,8 @@ const renderError = (error: unknown): ResponseStatus => {
 };
 
 export const registerUser = async (data: z.infer<typeof formSchema>) => {
+  const headersFromDevice = await headers();
+  const userDevice = headersFromDevice.get('user-agent');
   try {
     const validatedData = validateWithZodSchema(formSchema, data);
 
@@ -44,6 +56,7 @@ export const registerUser = async (data: z.infer<typeof formSchema>) => {
       password: hashedPassword,
       provider: 'credentials',
       role: 'user',
+      device: userDevice,
     });
 
     return {
@@ -109,54 +122,188 @@ export const changePassword = async (
     };
   }
 
-  const changePasswordValidation = validateWithZodSchema(
-    changePasswordSchema,
-    data
-  );
+  try {
+    const changePasswordValidation = validateWithZodSchema(
+      changePasswordSchema,
+      data
+    );
 
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, parseInt(session.user.id)));
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, parseInt(session.user.id)));
 
-  if (!user) {
+    if (!user) {
+      return {
+        success: false,
+        message: 'User not found',
+      };
+    }
+
+    const passwordMatch = await compare(
+      changePasswordValidation.currentPassword,
+      user.password!
+    );
+
+    if (!passwordMatch) {
+      return {
+        success: false,
+        message: 'Current password is incorrect',
+      };
+    }
+
+    const isSamePassword = await compare(
+      changePasswordValidation.password,
+      user.password!
+    );
+    if (isSamePassword) {
+      return {
+        success: false,
+        message: 'New password cannot be the same as the current password.',
+      };
+    }
+
+    const hashedPassword = await hash(changePasswordValidation.password, 10);
+
+    await db
+      .update(users)
+      .set({
+        password: hashedPassword,
+      })
+      .where(eq(users.id, parseInt(session.user.id)));
+
+    return { success: true, message: 'Your password has been updated.' };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const passwordReset = async (
+  emailAddress: z.infer<typeof passwordResetSchema>
+) => {
+  const session = await auth();
+
+  if (!!session?.user?.id) {
     return {
       success: false,
-      message: 'User not found',
+      message: 'You are already logged in',
+    };
+  }
+  const resetPasswordValidation = validateWithZodSchema(
+    passwordResetSchema,
+    emailAddress
+  );
+  try {
+    const [user] = await db
+      .select({
+        id: users.id,
+      })
+      .from(users)
+      .where(eq(users.email, resetPasswordValidation.email));
+
+    if (!user) {
+      return {
+        success: false,
+        message: 'If this email exists, we have sent a password reset link.',
+      };
+    }
+
+    const passwordResetToken = randomBytes(32).toString('hex');
+    const tokenExpiry = new Date(Date.now() + 3600000);
+
+    await db
+      .insert(passwordResetTokens)
+      .values({
+        userId: user.id,
+        token: passwordResetToken,
+        tokenExpiry,
+      })
+      .onConflictDoUpdate({
+        target: passwordResetTokens.userId,
+        set: {
+          token: passwordResetToken,
+          tokenExpiry,
+        },
+      });
+
+    const resetLink = `${process.env.SITE_BASE_URL}/update-password?token=${passwordResetToken}`;
+
+    await mailer.sendMail({
+      from: 'test@resend.dev',
+      subject: 'Your password reset request',
+      to: resetPasswordValidation.email,
+      html: `Hey, ${resetPasswordValidation.email}! You requested to reset your password.
+  Here's your password reset link. This link will expire in 1 hour:
+  <a href="${resetLink}">${resetLink}</a>`,
+    });
+
+    return {
+      success: true,
+      message: 'If this email exists, we have sent a password reset link.',
+    };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const updatePassword = async (
+  data: z.infer<typeof updatePasswordSchema>
+) => {
+  const session = await auth();
+
+  if (session?.user?.id) {
+    return {
+      success: false,
+      message: 'Already logged in. Please log out to reset your password.',
     };
   }
 
-  const passwordMatch = await compare(
-    changePasswordValidation.currentPassword,
-    user.password!
-  );
+  try {
+    const passwordValidation = validateWithZodSchema(
+      updatePasswordSchema,
+      data
+    );
 
-  if (!passwordMatch) {
-    return {
-      success: false,
-      message: 'Current password is incorrect',
-    };
+    let tokenIsValid = false;
+
+    if (passwordValidation.token) {
+      const [passwordResetToken] = await db
+        .select()
+        .from(passwordResetTokens)
+        .where(eq(passwordResetTokens.token, passwordValidation.token));
+
+      const now = Date.now();
+
+      if (
+        !!passwordResetToken?.tokenExpiry &&
+        now < passwordResetToken.tokenExpiry.getTime()
+      ) {
+        tokenIsValid = true;
+      }
+
+      if (!tokenIsValid) {
+        return {
+          success: false,
+          message: 'Your token is invalid or has expired',
+          tokenInvalid: true,
+        };
+      }
+
+      const hashedPassword = await hash(passwordValidation.password, 10);
+      await db
+        .update(users)
+        .set({
+          password: hashedPassword,
+        })
+        .where(eq(users.id, passwordResetToken.userId!));
+
+      await db
+        .delete(passwordResetTokens)
+        .where(eq(passwordResetTokens.id, passwordResetToken.id));
+    }
+
+    return { success: true, message: 'Your password has been updated' };
+  } catch (error) {
+    return renderError(error);
   }
-
-  const isSamePassword = await compare(
-    changePasswordValidation.password,
-    user.password!
-  );
-  if (isSamePassword) {
-    return {
-      success: false,
-      message: 'New password cannot be the same as the current password.',
-    };
-  }
-
-  const hashedPassword = await hash(changePasswordValidation.password, 10);
-
-  await db
-    .update(users)
-    .set({
-      password: hashedPassword,
-    })
-    .where(eq(users.id, parseInt(session.user.id)));
-
-  return { success: true, message: 'Your password has been updated.' };
 };

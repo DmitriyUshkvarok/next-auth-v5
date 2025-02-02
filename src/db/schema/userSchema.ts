@@ -5,6 +5,7 @@ export const users = pgTable('users', {
   email: text('email').unique(),
   password: text('password'),
   role: text('role').default('user').notNull(),
+  device: text('device'),
   provider: text('provider').default('credentials').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   twoFactorSecret: text('2fa_secret'),
