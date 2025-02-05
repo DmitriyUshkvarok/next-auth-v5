@@ -17,6 +17,8 @@ import { randomBytes } from 'crypto';
 import { passwordResetTokens } from '@/db/schema/passwordResetTokensSchema';
 import { passwordResetSchema } from '@/validation/schemas';
 import { mailer } from '@/lib/email';
+import { authenticator } from 'otplib';
+import speakeasy from 'speakeasy';
 
 type ResponseStatus = {
   success?: false;
@@ -306,4 +308,58 @@ export const updatePassword = async (
   } catch (error) {
     return renderError(error);
   }
+};
+
+export const get2faSecret = async () => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return {
+      error: true,
+      message: 'Unauthorized',
+    };
+  }
+
+  const [user] = await db
+    .select({
+      twoFactorSecret: users.twoFactorSecret,
+    })
+    .from(users)
+    .where(eq(users.id, parseInt(session.user.id)));
+
+  if (!user) {
+    return {
+      success: false,
+      message: 'User not found',
+    };
+  }
+
+  let twoFactorSecret = user.twoFactorSecret;
+
+  const token1Test = authenticator.generateSecret();
+  // if authenticator.generateSecret doesn't work, try this line instead:
+  // note you'll need to `npm i speakeasy && npm i -D @types/speakeasy`
+  const generatedSecret = speakeasy.generateSecret({ length: 10 });
+  const token2Test = generatedSecret.base32;
+
+  console.log({ token1Test });
+  console.log({ token2Test });
+
+  if (!twoFactorSecret) {
+    twoFactorSecret = authenticator.generateSecret();
+    await db
+      .update(users)
+      .set({
+        twoFactorSecret,
+      })
+      .where(eq(users.id, parseInt(session.user.id)));
+  }
+
+  return {
+    twoFactorSecret: authenticator.keyuri(
+      session.user.email ?? '',
+      'Next-Auth-V-5',
+      twoFactorSecret
+    ),
+  };
 };

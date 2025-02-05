@@ -14,7 +14,7 @@ declare module 'next-auth' {
     twoFactorActivated?: boolean;
   }
   interface Session extends DefaultSession {
-    user?: {
+    user: {
       id: string;
       role?: string;
       provider?: string;
