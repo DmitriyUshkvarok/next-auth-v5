@@ -9,6 +9,7 @@ type SubmitButtonProps = {
   text?: string;
   size?: btnSize;
   isLoading?: boolean;
+  isDisabled?: boolean;
 };
 
 export function SubmitButton({
@@ -16,11 +17,12 @@ export function SubmitButton({
   text = 'submit',
   size = 'lg',
   isLoading = false,
+  isDisabled = false,
 }: SubmitButtonProps) {
   return (
     <Button
       type="submit"
-      disabled={isLoading}
+      disabled={isLoading || isDisabled}
       className={`capitalize ${className} `}
       size={size}
     >

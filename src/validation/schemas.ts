@@ -12,6 +12,7 @@ export const formSchema = z
   });
 
 export const loginSchema = z.object({
+  token: z.string().optional(),
   email: z.string().email(),
   password: z.string().min(6, 'Password must be at least 6 characters long'),
 });

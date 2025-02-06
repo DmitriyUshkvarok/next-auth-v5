@@ -108,6 +108,36 @@ export const loginWithCredentials = async (
   }
 };
 
+export const preLoginCheck = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const [user] = await db.select().from(users).where(eq(users.email, email));
+
+  if (!user) {
+    return {
+      success: false,
+      message: 'Incorrect credentials',
+    };
+  } else {
+    const passwordCorrect = await compare(password, user.password!);
+    if (!passwordCorrect) {
+      return {
+        success: false,
+        message: 'Incorrect credentials',
+      };
+    }
+  }
+
+  return {
+    twoFactorActivated: user.twoFactorActivated,
+    success: true,
+  };
+};
+
 export const logout = async () => {
   await signOut();
 };
@@ -315,7 +345,7 @@ export const get2faSecret = async () => {
 
   if (!session?.user?.id) {
     return {
-      error: true,
+      success: false,
       message: 'Unauthorized',
     };
   }
@@ -361,5 +391,71 @@ export const get2faSecret = async () => {
       'Next-Auth-V-5',
       twoFactorSecret
     ),
+    success: true,
   };
+};
+
+export const activate2fa = async (token: string) => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return {
+      success: false,
+      message: 'Unauthorized',
+    };
+  }
+
+  const [user] = await db
+    .select({
+      twoFactorSecret: users.twoFactorSecret,
+    })
+    .from(users)
+    .where(eq(users.id, parseInt(session.user.id)));
+
+  if (!user) {
+    return {
+      success: false,
+      message: 'User not found',
+    };
+  }
+
+  if (user.twoFactorSecret) {
+    const tokenValid = authenticator.check(token, user.twoFactorSecret);
+
+    if (!tokenValid) {
+      return {
+        success: false,
+        message: 'Invalid OTP',
+      };
+    }
+
+    await db
+      .update(users)
+      .set({
+        twoFactorActivated: true,
+      })
+      .where(eq(users.id, parseInt(session.user.id)));
+  }
+  return {
+    success: true,
+    message: 'successful two factor activated',
+  };
+};
+
+export const disable2fa = async () => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return {
+      success: false,
+      message: 'Unauthorized',
+    };
+  }
+
+  await db
+    .update(users)
+    .set({
+      twoFactorActivated: false,
+    })
+    .where(eq(users.id, parseInt(session.user.id)));
 };

@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import { get2faSecret } from '@/action/authActions';
+import { activate2fa, disable2fa, get2faSecret } from '@/action/authActions';
 import { useToast } from '@/hooks/use-toast';
 import { QRCodeSVG } from 'qrcode.react';
 import {
@@ -26,7 +26,7 @@ export default function TwoFactorAuthForm({ twoFactorActivated }: Props) {
   const handleEnableClick = async () => {
     const response = await get2faSecret();
 
-    if (!response.success) {
+    if (!response?.success) {
       toast({
         variant: 'destructive',
         title: response.message,
@@ -40,15 +40,15 @@ export default function TwoFactorAuthForm({ twoFactorActivated }: Props) {
 
   const handleOTPSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const response = await activate2fa(otp);
+    const response = await activate2fa(otp);
 
-    // if (response?.error) {
-    //   toast({
-    //     variant: 'destructive',
-    //     title: response.message,
-    //   });
-    //   return;
-    // }
+    if (!response?.success) {
+      toast({
+        variant: 'destructive',
+        title: response?.message,
+      });
+      return;
+    }
 
     toast({
       className: 'bg-green-500 text-white',
@@ -59,7 +59,7 @@ export default function TwoFactorAuthForm({ twoFactorActivated }: Props) {
   };
 
   const handleDisable2faClick = async () => {
-    // await disable2fa();
+    await disable2fa();
     toast({
       className: 'bg-green-500 text-white',
       title: 'Two-Factor Authentication has been disabled',
