@@ -1,11 +1,20 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Poppins } from 'next/font/google';
+import { Aboreto, Poppins } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 
 const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+  variable: '--font-poppins',
+  weight: ['400', '700'],
+});
+
+const aboreto = Aboreto({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-aboreto',
+  weight: ['400'],
 });
 
 export const metadata: Metadata = {
@@ -20,7 +29,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`${poppins.className}`}>
+      <body className={`${poppins.variable} ${aboreto.variable}`}>
         <main>{children}</main>
         <Toaster />
       </body>
