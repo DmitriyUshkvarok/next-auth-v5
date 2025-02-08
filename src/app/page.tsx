@@ -1,3 +1,9 @@
+import SignInProviderButton from '@/components/forms/buttons';
+
 export default async function Home() {
-  return <div>home page</div>;
+  return (
+    <div>
+      <SignInProviderButton />
+    </div>
+  );
 }

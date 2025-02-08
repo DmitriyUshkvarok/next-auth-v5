@@ -8,13 +8,14 @@ import { eq } from 'drizzle-orm';
 
 export default async function MyAccount() {
   const session = await auth();
+  const provider = session?.user?.provider !== 'google';
 
   const [user] = await db
     .select({
       twoFactorActivated: users.twoFactorActivated,
     })
     .from(users)
-    .where(eq(users.id, parseInt(session?.user?.id ?? '0')));
+    .where(eq(users.id, session?.user?.id ?? '0'));
 
   return (
     <Card className="w-[350px]">
@@ -24,9 +25,11 @@ export default async function MyAccount() {
       <CardContent>
         <Label>Email Address</Label>
         <div className="text-muted-foreground">{session?.user?.email}</div>
-        <TwoFactorAuthForm
-          twoFactorActivated={user.twoFactorActivated ?? false}
-        />
+        {provider && (
+          <TwoFactorAuthForm
+            twoFactorActivated={user?.twoFactorActivated ?? false}
+          />
+        )}
       </CardContent>
     </Card>
   );

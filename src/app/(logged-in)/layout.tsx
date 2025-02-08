@@ -2,6 +2,7 @@ import Link from 'next/link';
 import LogoutButton from '@/components/forms/logout-button';
 import { auth } from '../../../auth';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 export default async function LoggedInLayout({
   children,
@@ -21,9 +22,9 @@ export default async function LoggedInLayout({
           <li>
             <Link href="/my-account">My Account</Link>
           </li>
-          <li>
-            <Link href="/change-password">Change Password</Link>
-          </li>
+          <Suspense fallback={null}>
+            <ProviderCheck />
+          </Suspense>
         </ul>
         <div>
           <LogoutButton />
@@ -31,5 +32,20 @@ export default async function LoggedInLayout({
       </nav>
       <div className="flex-1 flex justify-center items-center">{children}</div>
     </div>
+  );
+}
+
+async function ProviderCheck() {
+  const session = await auth();
+  const provider = session?.user?.provider !== 'google';
+
+  return (
+    <>
+      {provider && (
+        <li>
+          <Link href="/change-password">Change Password</Link>
+        </li>
+      )}
+    </>
   );
 }

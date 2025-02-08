@@ -10,7 +10,7 @@ import { z } from 'zod';
 import db from '../db/drizzle';
 import { users } from '../db/schema/userSchema';
 import { compare, hash } from 'bcryptjs';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { auth, signIn, signOut } from '../../auth';
 import { headers } from 'next/headers';
 import { randomBytes } from 'crypto';
@@ -19,6 +19,8 @@ import { passwordResetSchema } from '@/validation/schemas';
 import { mailer } from '@/lib/email';
 import { authenticator } from 'otplib';
 import speakeasy from 'speakeasy';
+import { Account, Profile, User } from 'next-auth';
+import { accounts } from '@/db/schema/accountSchema';
 
 type ResponseStatus = {
   success?: false;
@@ -26,12 +28,92 @@ type ResponseStatus = {
   tokenInvalid?: false;
 };
 
+export interface OAuthSignInArgs {
+  account: Account;
+  user: User;
+  profile?: Profile;
+}
+
 const renderError = (error: unknown): ResponseStatus => {
   return {
     message: error instanceof Error ? error.message : 'An error occurred',
     success: false,
   };
 };
+
+export async function googleAuthenticate({ user, account }: OAuthSignInArgs) {
+  try {
+    // Проверяем, существует ли пользователь с таким email
+    const [existingUser] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, user.email as string))
+      .limit(1)
+      .execute();
+
+    if (existingUser) {
+      // Если пользователь уже существует, обновляем его данные
+      await db
+        .update(users)
+        .set({
+          provider: 'google',
+          image: user.image,
+        })
+        .where(eq(users.id, existingUser.id))
+        .execute();
+
+      // Проверяем, есть ли уже аккаунт Google в таблице accounts
+      const [existingAccount] = await db
+        .select()
+        .from(accounts)
+        .where(
+          and(
+            eq(accounts.provider, 'google'),
+            eq(accounts.providerAccountId, account.providerAccountId)
+          )
+        )
+        .limit(1)
+        .execute();
+
+      if (!existingAccount) {
+        // Привязываем аккаунт Google к существующему пользователю только если его нет
+        await db.insert(accounts).values({
+          userId: existingUser.id.toString(),
+          provider: 'google',
+          providerAccountId: account.providerAccountId,
+          type: 'oauth',
+        });
+      }
+    } else {
+      // Если пользователя нет, создаем нового
+      const [newUser] = await db
+        .insert(users)
+        .values({
+          id: randomBytes(16).toString('hex'),
+          email: user.email,
+          provider: 'google',
+          role: 'user',
+          image: user.image,
+        })
+        .returning();
+
+      if (newUser?.id) {
+        // Привязываем аккаунт Google к новому пользователю
+        await db.insert(accounts).values({
+          userId: newUser.id.toString(),
+          provider: 'google',
+          providerAccountId: account.providerAccountId,
+          type: 'oauth',
+        });
+      }
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Google authentication error:', error);
+    throw new Error('Google authentication failed');
+  }
+}
 
 export const registerUser = async (data: z.infer<typeof formSchema>) => {
   const headersFromDevice = await headers();
@@ -54,11 +136,13 @@ export const registerUser = async (data: z.infer<typeof formSchema>) => {
     const hashedPassword = await hash(validatedData.password, 10);
 
     await db.insert(users).values({
+      id: randomBytes(16).toString('hex'),
       email: validatedData.email,
       password: hashedPassword,
       provider: 'credentials',
       role: 'user',
       device: userDevice,
+      name: 'user',
     });
 
     return {
@@ -100,6 +184,7 @@ export const loginWithCredentials = async (
       email: loginValidation.email,
       password: loginValidation.password,
       token: loginValidation.token,
+      provider: 'credentials',
       redirect: false,
     });
     return { message: 'User ligin successfully!', success: true };
@@ -122,14 +207,22 @@ export const preLoginCheck = async ({
       success: false,
       message: 'Incorrect credentials',
     };
-  } else {
-    const passwordCorrect = await compare(password, user.password!);
-    if (!passwordCorrect) {
-      return {
-        success: false,
-        message: 'Incorrect credentials',
-      };
-    }
+  }
+
+  if (!user.password) {
+    return {
+      success: false,
+      message:
+        'This account was registered with Google. Please log in using Google authentication.',
+    };
+  }
+
+  const passwordCorrect = await compare(password, user.password!);
+  if (!passwordCorrect) {
+    return {
+      success: false,
+      message: 'Incorrect credentials',
+    };
   }
 
   return {
@@ -137,6 +230,36 @@ export const preLoginCheck = async ({
     success: true,
   };
 };
+
+// export const preLoginCheck = async ({
+//   email,
+//   password,
+// }: {
+//   email: string;
+//   password: string;
+// }) => {
+//   const [user] = await db.select().from(users).where(eq(users.email, email));
+
+//   if (!user) {
+//     return {
+//       success: false,
+//       message: 'Incorrect credentials',
+//     };
+//   } else {
+//     const passwordCorrect = await compare(password, user.password!);
+//     if (!passwordCorrect) {
+//       return {
+//         success: false,
+//         message: 'Incorrect credentials',
+//       };
+//     }
+//   }
+
+//   return {
+//     twoFactorActivated: user.twoFactorActivated,
+//     success: true,
+//   };
+// };
 
 export const logout = async () => {
   await signOut();
@@ -163,7 +286,7 @@ export const changePassword = async (
     const [user] = await db
       .select()
       .from(users)
-      .where(eq(users.id, parseInt(session.user.id)));
+      .where(eq(users.id, session.user.id));
 
     if (!user) {
       return {
@@ -202,7 +325,7 @@ export const changePassword = async (
       .set({
         password: hashedPassword,
       })
-      .where(eq(users.id, parseInt(session.user.id)));
+      .where(eq(users.id, session.user.id));
 
     return { success: true, message: 'Your password has been updated.' };
   } catch (error) {
@@ -246,7 +369,8 @@ export const passwordReset = async (
     await db
       .insert(passwordResetTokens)
       .values({
-        userId: user.id,
+        id: randomBytes(16).toString('hex'),
+        userId: user.id.toString(),
         token: passwordResetToken,
         tokenExpiry,
       })
@@ -261,7 +385,7 @@ export const passwordReset = async (
     const resetLink = `${process.env.SITE_BASE_URL}/update-password?token=${passwordResetToken}`;
 
     await mailer.sendMail({
-      from: 'test@resend.dev',
+      from: process.env.NEXT_PUBLIC_UKR_NET_EMAIL_USER,
       subject: 'Your password reset request',
       to: resetPasswordValidation.email,
       html: `Hey, ${resetPasswordValidation.email}! You requested to reset your password.
@@ -327,7 +451,7 @@ export const updatePassword = async (
         .set({
           password: hashedPassword,
         })
-        .where(eq(users.id, passwordResetToken.userId!));
+        .where(eq(users.id, passwordResetToken.userId!.toString()));
 
       await db
         .delete(passwordResetTokens)
@@ -355,7 +479,7 @@ export const get2faSecret = async () => {
       twoFactorSecret: users.twoFactorSecret,
     })
     .from(users)
-    .where(eq(users.id, parseInt(session.user.id)));
+    .where(eq(users.id, session.user.id));
 
   if (!user) {
     return {
@@ -382,7 +506,7 @@ export const get2faSecret = async () => {
       .set({
         twoFactorSecret,
       })
-      .where(eq(users.id, parseInt(session.user.id)));
+      .where(eq(users.id, session.user.id));
   }
 
   return {
@@ -410,7 +534,7 @@ export const activate2fa = async (token: string) => {
       twoFactorSecret: users.twoFactorSecret,
     })
     .from(users)
-    .where(eq(users.id, parseInt(session.user.id)));
+    .where(eq(users.id, session.user.id));
 
   if (!user) {
     return {
@@ -434,7 +558,7 @@ export const activate2fa = async (token: string) => {
       .set({
         twoFactorActivated: true,
       })
-      .where(eq(users.id, parseInt(session.user.id)));
+      .where(eq(users.id, session.user.id));
   }
   return {
     success: true,
@@ -457,5 +581,5 @@ export const disable2fa = async () => {
     .set({
       twoFactorActivated: false,
     })
-    .where(eq(users.id, parseInt(session.user.id)));
+    .where(eq(users.id, session.user.id));
 };

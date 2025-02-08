@@ -23,7 +23,7 @@ import Link from 'next/link';
 import { registerUser } from '@/action/authActions';
 import { formSchema } from '@/validation/schemas';
 import { useToast } from '@/hooks/use-toast';
-import { SubmitButton } from '@/components/forms/buttons';
+import SignInProviderButton, { SubmitButton } from '@/components/forms/buttons';
 import { Button } from '@/components/ui/button';
 
 const RegisterPage = () => {
@@ -137,6 +137,7 @@ const RegisterPage = () => {
                 </fieldset>
               </form>
             </Form>
+            <SignInProviderButton />
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <div className="text-muted-foreground text-sm">

@@ -1,13 +1,16 @@
-import { boolean, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, pgTable,  text, timestamp } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
+  id: text('id').primaryKey(),
   email: text('email').unique(),
   password: text('password'),
   role: text('role').default('user').notNull(),
+  image: text('image'),
   device: text('device'),
   provider: text('provider').default('credentials').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   twoFactorSecret: text('2fa_secret'),
   twoFactorActivated: boolean('2fa_activated').default(false),
+  name: text('name'),
+  emailVerified: timestamp('emailVerified'),
 });

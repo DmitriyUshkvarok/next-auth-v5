@@ -1,6 +1,8 @@
 'use client';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { Button } from '../ui/button';
+import { FcGoogle } from 'react-icons/fc';
+import { signIn } from 'next-auth/react';
 
 type btnSize = 'default' | 'lg' | 'sm';
 
@@ -23,7 +25,7 @@ export function SubmitButton({
     <Button
       type="submit"
       disabled={isLoading || isDisabled}
-      className={`capitalize ${className} `}
+      className={`capitalize ${className}`}
       size={size}
     >
       {isLoading ? (
@@ -35,5 +37,26 @@ export function SubmitButton({
         text
       )}
     </Button>
+  );
+}
+
+export default function SignInProviderButton({
+  className = '',
+}: SubmitButtonProps) {
+  return (
+    <form
+      action={() => {
+        signIn('google');
+      }}
+    >
+      <Button
+        type="submit"
+        size="lg"
+        className={`capitalize mt-2 w-full ${className}`}
+      >
+        <FcGoogle size={20} />
+        <span> to continue with google</span>
+      </Button>
+    </form>
   );
 }

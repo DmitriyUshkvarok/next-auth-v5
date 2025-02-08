@@ -1,10 +1,11 @@
 import nodemailer from 'nodemailer';
 
 export const mailer = nodemailer.createTransport({
-  host: 'smtp.resend.com',
-  port: 587,
+  host: 'smtp.ukr.net',
+  port: 465,
+  secure: true,
   auth: {
-    user: 'resend',
-    pass: process.env.RESEND_API_KEY,
+    user: process.env.NEXT_PUBLIC_UKR_NET_EMAIL_USER,
+    pass: process.env.UKR_NET_EMAIL_PASSWORD,
   },
 });

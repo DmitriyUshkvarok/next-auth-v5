@@ -25,7 +25,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { loginSchema } from '@/validation/schemas';
-import { SubmitButton } from '@/components/forms/buttons';
+import SignInProviderButton, { SubmitButton } from '@/components/forms/buttons';
 import {
   InputOTP,
   InputOTPGroup,
@@ -153,6 +153,7 @@ export default function Login() {
                 </fieldset>
               </form>
             </Form>
+            <SignInProviderButton />
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <div className="text-muted-foreground text-sm">
