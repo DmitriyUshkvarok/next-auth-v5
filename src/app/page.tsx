@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 export default async function Home() {
   const currentYear = new Date().getFullYear();
   return (
-    <div className="flex justify-center items-center relative bg-[url('/banner-next-auth.png')] bg-no-repeat bg-center bg-cover min-h-screen">
+    <div className="flex justify-center items-center relative bg-[url('/banner-next-auth.png')] bg-slate-800 bg-no-repeat bg-center bg-cover min-h-screen">
       <Card className="relative w-full max-w-[700px] bg-transparent">
         <div className="absolute inset-0 bg-white/10 backdrop-blur-[7px] rounded-lg"></div>
         <CardHeader className="relative z-10">
