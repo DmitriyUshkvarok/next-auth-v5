@@ -58,6 +58,7 @@ export async function googleAuthenticate({ user, account }: OAuthSignInArgs) {
         .set({
           provider: 'google',
           image: user.image,
+          name: user.name,
         })
         .where(eq(users.id, existingUser.id))
         .execute();
@@ -94,6 +95,7 @@ export async function googleAuthenticate({ user, account }: OAuthSignInArgs) {
           provider: 'google',
           role: 'user',
           image: user.image,
+          name: user.name,
         })
         .returning();
 

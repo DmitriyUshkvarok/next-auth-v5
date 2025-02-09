@@ -30,7 +30,7 @@ export function SubmitButton({
     >
       {isLoading ? (
         <>
-          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+          <ReloadIcon className="mr-2 h-4 w-4 animate-animate-spin" />
           Pleas wait...
         </>
       ) : (
