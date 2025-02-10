@@ -15,9 +15,9 @@ export default async function Home() {
       <Card className="relative w-full max-w-[700px] bg-transparent">
         <div className="absolute inset-0 bg-white/10 backdrop-blur-[7px] rounded-lg"></div>
         <CardHeader className="relative z-10">
-          <h2 className="no-copy font-heading text-pink-700 text-3xl font-bold text-center">
+          <h1 className="no-copy font-heading text-pink-700 text-3xl font-bold text-center">
             User Authentication and Security
-          </h2>
+          </h1>
         </CardHeader>
         <CardDescription className="h-60 overflow-auto p-4 text-neutral-300 text-[18px] leading-relaxed relative z-10 no-scrollbar">
           <p>

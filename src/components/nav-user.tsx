@@ -5,7 +5,6 @@ import {
   Bell,
   ChevronsUpDown,
   CreditCard,
-  LogOut,
   Sparkles,
 } from 'lucide-react';
 
@@ -26,6 +25,8 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import Image from 'next/image';
+import Link from 'next/link';
+import LogoutButton from './forms/logout-button';
 
 export function NavUser({
   user,
@@ -116,8 +117,10 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+                <Link href="/my-account" className="flex items-center gap-2">
+                  <BadgeCheck />
+                  <span>Account</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />
@@ -130,8 +133,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <LogOut />
-              Log out
+              <LogoutButton />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
