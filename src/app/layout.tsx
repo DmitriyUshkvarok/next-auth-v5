@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Aboreto, Poppins } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -30,7 +31,14 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body className={`${poppins.variable} ${aboreto.variable}`}>
-        <main>{children}</main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main>{children}</main>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

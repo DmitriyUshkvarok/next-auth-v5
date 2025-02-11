@@ -5,6 +5,7 @@ import TwoFactorAuthForm from '@/components/forms/two-factor-auth-form';
 import db from '@/db/drizzle';
 import { users } from '@/db/schema/userSchema';
 import { eq } from 'drizzle-orm';
+import UpdateUserForm from '@/components/forms/updateUserForm';
 
 export default async function MyAccount() {
   const session = await auth();
@@ -18,13 +19,16 @@ export default async function MyAccount() {
     .where(eq(users.id, session?.user?.id ?? '0'));
 
   return (
-    <Card className="w-[350px]">
+    <Card className="w-full max-w-[500px]">
       <CardHeader>
-        <CardTitle>My Account</CardTitle>
+        <CardTitle>
+          My Account: <span>{session?.user.name || 'User'}</span>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Label>Email Address</Label>
         <div className="text-muted-foreground">{session?.user?.email}</div>
+        <UpdateUserForm name={session?.user.name ?? 'User Name'} />
         {provider && (
           <TwoFactorAuthForm
             twoFactorActivated={user?.twoFactorActivated ?? false}

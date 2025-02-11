@@ -105,12 +105,12 @@ export default function ProjectsCompletedTrends() {
             }
           }}
         />
-        <Bar dataKey="completed" stackId={1} fill="#10b981" />
+        <Bar dataKey="completed" stackId={1} fill="hsl(var(--chart-1))" />
         <Bar
           dataKey="inProgress"
           stackId={1}
-          fill="#facc15"
-          radius={[4, 4, 0, 0]}
+          fill="hsl(var(--chart-2))"
+          radius={4}
         />
       </BarChart>
     </ResponsiveContainer>

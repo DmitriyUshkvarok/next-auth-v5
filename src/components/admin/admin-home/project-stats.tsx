@@ -72,7 +72,10 @@ export default function ProjectsStats() {
             )}
           </CardFooter>
         </Card>
-        <Card className="border-pink-500 flex flex-col">
+        <Card
+          className=" flex flex-col"
+          style={{ borderColor: 'hsl(var(--chart-1))' }}
+        >
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Projects of the month</CardTitle>
           </CardHeader>

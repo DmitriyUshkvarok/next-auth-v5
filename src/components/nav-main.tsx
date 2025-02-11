@@ -1,6 +1,13 @@
 'use client';
-
-import { ChevronRight, type LucideIcon } from 'lucide-react';
+import {
+  ChevronRight,
+  type LucideIcon,
+  Palette,
+  Globe,
+  Sun,
+  Moon,
+  Monitor,
+} from 'lucide-react';
 
 import {
   Collapsible,
@@ -17,6 +24,15 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
+import { useState } from 'react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
+import { Button } from './ui/button';
+import { useTheme } from 'next-themes';
 
 export function NavMain({
   items,
@@ -29,9 +45,13 @@ export function NavMain({
     items?: {
       title: string;
       url: string;
+      icon?: LucideIcon;
     }[];
   }[];
 }) {
+  const [openGeneral, setOpenGeneral] = useState(false);
+  const { setTheme } = useTheme();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -55,11 +75,70 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </a>
-                      </SidebarMenuSubButton>
+                      {subItem.title === 'General' ? (
+                        <>
+                          <SidebarMenuSubButton
+                            asChild
+                            onClick={() => setOpenGeneral(!openGeneral)}
+                          >
+                            <div className="flex items-center justify-between cursor-pointer">
+                              <span>{subItem.title}</span>
+                              <ChevronRight
+                                className={`ml-auto transition-transform duration-200 ${openGeneral ? 'rotate-90' : ''}`}
+                              />
+                            </div>
+                          </SidebarMenuSubButton>
+                          {openGeneral && (
+                            <SidebarMenuSub className="ml-4">
+                              <SidebarMenuSubItem>
+                                <SidebarMenuSubButton asChild>
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button
+                                        variant="outline"
+                                        // size="icon"
+                                        className="bg-transparent hover:bg-transparent border-none px-[0.5rem]"
+                                      >
+                                        <Palette className="mr-2" /> Theme
+                                      </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                      <DropdownMenuItem
+                                        onClick={() => setTheme('light')}
+                                      >
+                                        <Sun className="mr-2" /> Light
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem
+                                        onClick={() => setTheme('dark')}
+                                      >
+                                        <Moon className="mr-2" /> Dark
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem
+                                        onClick={() => setTheme('system')}
+                                      >
+                                        <Monitor className="mr-2" /> System
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                              <SidebarMenuSubItem>
+                                <SidebarMenuSubButton asChild>
+                                  <a href="#">
+                                    <Globe className="mr-2" /> Localization
+                                  </a>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            </SidebarMenuSub>
+                          )}
+                        </>
+                      ) : (
+                        <SidebarMenuSubButton asChild>
+                          <a href={subItem.url}>
+                            <span>{subItem.title}</span>
+                          </a>
+                        </SidebarMenuSubButton>
+                      )}
                     </SidebarMenuSubItem>
                   ))}
                 </SidebarMenuSub>
