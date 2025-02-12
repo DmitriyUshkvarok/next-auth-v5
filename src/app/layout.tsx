@@ -3,6 +3,7 @@ import './globals.css';
 import { Aboreto, Poppins } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/providers/theme-provider';
+import NextAuthProvider from '@/providers/nextAuthProvider';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -37,7 +38,9 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main>{children}</main>
+          <NextAuthProvider>
+            <main>{children}</main>
+          </NextAuthProvider>
         </ThemeProvider>
         <Toaster />
       </body>

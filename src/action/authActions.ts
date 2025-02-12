@@ -34,7 +34,7 @@ export interface OAuthSignInArgs {
   profile?: Profile;
 }
 
-const renderError = (error: unknown): ResponseStatus => {
+export const renderError = async (error: unknown): Promise<ResponseStatus> => {
   return {
     message: error instanceof Error ? error.message : 'An error occurred',
     success: false,
@@ -232,36 +232,6 @@ export const preLoginCheck = async ({
     success: true,
   };
 };
-
-// export const preLoginCheck = async ({
-//   email,
-//   password,
-// }: {
-//   email: string;
-//   password: string;
-// }) => {
-//   const [user] = await db.select().from(users).where(eq(users.email, email));
-
-//   if (!user) {
-//     return {
-//       success: false,
-//       message: 'Incorrect credentials',
-//     };
-//   } else {
-//     const passwordCorrect = await compare(password, user.password!);
-//     if (!passwordCorrect) {
-//       return {
-//         success: false,
-//         message: 'Incorrect credentials',
-//       };
-//     }
-//   }
-
-//   return {
-//     twoFactorActivated: user.twoFactorActivated,
-//     success: true,
-//   };
-// };
 
 export const logout = async () => {
   await signOut();

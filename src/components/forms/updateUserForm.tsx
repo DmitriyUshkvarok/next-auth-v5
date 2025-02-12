@@ -13,8 +13,16 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { SubmitButton } from '@/components/forms/buttons';
 import { updateUserSchema } from '@/validation/schemas';
+import { updateUserAction } from '@/action/userProfileActions';
+import { useToast } from '@/hooks/use-toast';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const UpdateUserForm = ({ name }: { name: string }) => {
+  const { update } = useSession();
+
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof updateUserSchema>>({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
@@ -22,8 +30,20 @@ const UpdateUserForm = ({ name }: { name: string }) => {
     },
   });
 
-  const handleSubmit = (data: z.infer<typeof updateUserSchema>) => {
-    console.log(data);
+  const handleSubmit = async (data: z.infer<typeof updateUserSchema>) => {
+    const result = await updateUserAction(data);
+
+    if (result?.success) {
+      await update({ name: data.name });
+      router.replace('/my-account');
+      toast({
+        description: `${result?.message}`,
+      });
+    } else {
+      form.setError('root', {
+        message: result?.message || 'Something went wrong. Please try again.',
+      });
+    }
   };
   return (
     <>

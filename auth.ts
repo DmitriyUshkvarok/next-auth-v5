@@ -23,6 +23,7 @@ declare module 'next-auth' {
       id: string;
       role?: string;
       provider?: string;
+      name?: string;
     } & DefaultSession['user'];
   }
 }
@@ -51,7 +52,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
+      if (trigger === 'update' && session?.name) {
+        token.name = session.name;
+      }
+
       if (user) {
         token.id = user.id as string;
         token.role = user.role;
@@ -70,7 +75,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.provider = token.provider;
         session.user.device = token.device;
         session.user.image = token.image;
-        session.user.name = token.name;
+        session.user.name = token.name ?? 'User';
       }
 
       return session;

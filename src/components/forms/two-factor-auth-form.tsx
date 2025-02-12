@@ -68,7 +68,7 @@ export default function TwoFactorAuthForm({ twoFactorActivated }: Props) {
   };
 
   return (
-    <div>
+    <div className="flex justify-center mt-2">
       {!!isActivated && (
         <Button variant="destructive" onClick={handleDisable2faClick}>
           Disable Two-Factor Authentication
