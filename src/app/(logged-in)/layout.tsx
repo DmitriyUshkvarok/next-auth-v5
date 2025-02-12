@@ -3,6 +3,7 @@ import LogoutButton from '@/components/forms/logout-button';
 import { auth } from '../../../auth';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+import ProfileAvatar from '@/components/account-header/ProfileAvatar';
 
 export default async function LoggedInLayout({
   children,
@@ -10,6 +11,7 @@ export default async function LoggedInLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
+  const role = session?.user?.role === 'admin';
 
   if (!session?.user?.id) {
     redirect('/login');
@@ -22,10 +24,18 @@ export default async function LoggedInLayout({
           <li>
             <Link href="/my-account">My Account</Link>
           </li>
+          {role && (
+            <li>
+              <Link href="/admin">Admin Panel</Link>
+            </li>
+          )}
           <Suspense fallback={null}>
             <ProviderCheck />
           </Suspense>
         </ul>
+        <div className="ml-auto mr-8">
+          <ProfileAvatar user={session?.user} />
+        </div>
         <div>
           <LogoutButton />
         </div>
