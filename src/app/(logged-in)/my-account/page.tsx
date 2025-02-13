@@ -6,10 +6,12 @@ import db from '@/db/drizzle';
 import { users } from '@/db/schema/userSchema';
 import { eq } from 'drizzle-orm';
 import UpdateUserForm from '@/components/forms/updateUserForm';
+import ImageAvatarInputContainer from '@/components/forms/ImageAvatarInputContainer';
 
 export default async function MyAccount() {
   const session = await auth();
   const provider = session?.user?.provider !== 'google';
+  console.log(session);
 
   const [user] = await db
     .select({
@@ -28,6 +30,11 @@ export default async function MyAccount() {
       <CardContent>
         <Label>Email Address</Label>
         <div className="text-muted-foreground">{session?.user?.email}</div>
+        <ImageAvatarInputContainer
+          image={session?.user.image ?? null}
+          name={session?.user.name ?? 'User Name'}
+          text={'Update Profile Image'}
+        />
         <UpdateUserForm name={session?.user.name ?? 'User Name'} />
         {provider && (
           <TwoFactorAuthForm

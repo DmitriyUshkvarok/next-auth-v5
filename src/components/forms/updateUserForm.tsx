@@ -19,7 +19,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 const UpdateUserForm = ({ name }: { name: string }) => {
-  const { update } = useSession();
+  const { data: session, update } = useSession();
 
   const router = useRouter();
   const { toast } = useToast();
@@ -34,7 +34,11 @@ const UpdateUserForm = ({ name }: { name: string }) => {
     const result = await updateUserAction(data);
 
     if (result?.success) {
-      await update({ name: data.name });
+      await update({
+        ...session,
+        name: data.name,
+        image: session?.user.image,
+      });
       router.replace('/my-account');
       toast({
         description: `${result?.message}`,

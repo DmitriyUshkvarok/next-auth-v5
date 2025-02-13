@@ -52,6 +52,25 @@ export const updateUserSchema = z.object({
     .max(50, 'Name must be at most 50 characters long'),
 });
 
+export const imageSchema = () => {
+  const maxUploadSize = 1024 * 1024; // 1 MB
+  const acceptedFileTypes = ['image/'];
+
+  return z.object({
+    image: z
+      .instanceof(File)
+      .refine(
+        (file) => !file || file.size <= maxUploadSize,
+        'File size must be less than 1 MB'
+      )
+      .refine(
+        (file) =>
+          !file || acceptedFileTypes.some((type) => file.type.startsWith(type)),
+        'File must be an image'
+      ),
+  });
+};
+
 export function validateWithZodSchema(schema: ZodSchema, data: unknown) {
   const result = schema.safeParse(data);
 

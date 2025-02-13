@@ -17,6 +17,8 @@ declare module 'next-auth' {
     role?: string;
     provider?: string;
     device?: string;
+    name?: string | null;
+    image?: string | null;
   }
   interface Session extends DefaultSession {
     user: {
@@ -24,6 +26,7 @@ declare module 'next-auth' {
       role?: string;
       provider?: string;
       name?: string;
+      image?: string;
     } & DefaultSession['user'];
   }
 }
@@ -33,6 +36,7 @@ declare module 'next-auth/jwt' {
     id: string;
     role?: string;
     provider?: string;
+    image?: string;
   }
 }
 
@@ -53,8 +57,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true;
     },
     jwt({ token, user, trigger, session }) {
-      if (trigger === 'update' && session?.name) {
+      if (trigger === 'update') {
         token.name = session.name;
+        token.image = session.image;
       }
 
       if (user) {
@@ -62,7 +67,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.role = user.role;
         token.provider = user.provider;
         token.device = user.device;
-        token.image = user.image;
+        token.image = user.image ?? undefined;
         token.name = user.name;
       }
 
