@@ -6,13 +6,13 @@ import {
   BookOpen,
   Bot,
   Command,
-  Frame,
   GalleryVerticalEnd,
   Map,
   PieChart,
   Settings2,
   SquareTerminal,
   LayoutDashboardIcon,
+  HammerIcon,
 } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
@@ -153,9 +153,9 @@ const data = {
   ],
   projects: [
     {
-      name: 'Design Engineering',
+      name: 'Project Actions ',
       url: '#',
-      icon: Frame,
+      icon: HammerIcon,
     },
     {
       name: 'Sales & Marketing',

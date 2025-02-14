@@ -19,7 +19,7 @@ export default async function LoggedInLayout({
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="bg-[hsl(40,35%,77%)] flex justify-between p-4 items-center">
+      <nav className="bg-[hsl(40,35%,77%)] dark:bg-[hsl(240,0%,13%)] flex justify-between p-4 items-center">
         <ul className="flex gap-4">
           <li>
             <Link href="/my-account">My Account</Link>

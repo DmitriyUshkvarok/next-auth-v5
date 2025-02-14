@@ -83,6 +83,18 @@ export const portfolioSchema = z.object({
   websiteUrl: z.string().url('Invalid URL format').optional(),
   githubUrl: z.string().url('Invalid URL format').optional(),
   order: z.number().int('Order must be an integer').optional().default(0),
+  technologies: z
+    .array(
+      z.object({
+        name: z
+          .string()
+          .min(2, 'Technology name must be at least 2 characters'),
+        icon: z.string().url('Invalid icon URL format'),
+      })
+    )
+    .optional()
+    .default([]),
+  image: imageSchema().shape.image.optional(),
 });
 
 export function validateWithZodSchema(schema: ZodSchema, data: unknown) {

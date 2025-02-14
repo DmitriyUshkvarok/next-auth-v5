@@ -43,6 +43,8 @@ export const renderError = async (error: unknown): Promise<ResponseStatus> => {
 
 export async function googleAuthenticate({ user, account }: OAuthSignInArgs) {
   try {
+    const headersFromDevice = await headers();
+    const userDevice = headersFromDevice.get('user-agent');
     // Проверяем, существует ли пользователь с таким email
     const [existingUser] = await db
       .select()
@@ -96,6 +98,7 @@ export async function googleAuthenticate({ user, account }: OAuthSignInArgs) {
           role: 'user',
           image: user.image,
           name: user.name,
+          device: userDevice,
         })
         .returning();
 

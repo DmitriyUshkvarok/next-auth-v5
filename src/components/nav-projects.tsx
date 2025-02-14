@@ -5,6 +5,8 @@ import {
   Forward,
   MoreHorizontal,
   Trash2,
+  FolderPlus,
+  FileEdit,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -24,6 +26,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import Link from 'next/link';
 
 export function NavProjects({
   projects,
@@ -62,13 +65,21 @@ export function NavProjects({
               >
                 <DropdownMenuItem>
                   <Folder className="text-muted-foreground" />
-                  <span>View Project</span>
+                  <Link href="/admin/all-project">View Project</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Forward className="text-muted-foreground" />
                   <span>Share Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <FolderPlus className="text-muted-foreground" />
+                  <Link href="/admin/create-project">Create Project</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <FileEdit className="text-muted-foreground" />
+                  <Link href="/admin/edit-project">Edit Project</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Trash2 className="text-muted-foreground" />
                   <span>Delete Project</span>
