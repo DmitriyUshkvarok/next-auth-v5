@@ -12,6 +12,7 @@ const ProfileAvatar = ({
     <Avatar>
       {avatarSrc ? (
         <Image
+          className="object-cover"
           src={avatarSrc}
           alt={`${user.name}'s avatar`}
           width={50}

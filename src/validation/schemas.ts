@@ -71,6 +71,20 @@ export const imageSchema = () => {
   });
 };
 
+export const portfolioSchema = z.object({
+  title: z
+    .string()
+    .min(3, 'Title must be at least 3 characters long')
+    .max(100, 'Title must be at most 100 characters long'),
+  description: z
+    .string()
+    .max(500, 'Description must be at most 500 characters long')
+    .optional(),
+  websiteUrl: z.string().url('Invalid URL format').optional(),
+  githubUrl: z.string().url('Invalid URL format').optional(),
+  order: z.number().int('Order must be an integer').optional().default(0),
+});
+
 export function validateWithZodSchema(schema: ZodSchema, data: unknown) {
   const result = schema.safeParse(data);
 

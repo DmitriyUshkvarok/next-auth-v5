@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Image from 'next/image';
 import ImageInput from './ImageInput';
 import { SubmitButton } from './buttons';
@@ -19,7 +19,7 @@ type ImageInputContainerProps = {
 const ImageAvatarInputContainer = (props: ImageInputContainerProps) => {
   const { image, name, text } = props;
   const [isUpdateFormVisible, setUpdateFormVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const { data: session, update } = useSession();
   const { toast } = useToast();
   const router = useRouter();
@@ -29,26 +29,26 @@ const ImageAvatarInputContainer = (props: ImageInputContainerProps) => {
   );
 
   const handleSubmit = async (formData: FormData) => {
-    setIsLoading(true);
-    const result = await updateProfileImageAction(formData);
+    startTransition(async () => {
+      const result = await updateProfileImageAction(formData);
 
-    if (result.success) {
-      await update({
-        ...session,
-        name: session?.user.name,
-        image: result.url,
-      });
-      router.refresh();
-      toast({
-        description: `${result?.message}`,
-      });
-    } else {
-      toast({
-        variant: 'destructive',
-        description: `Error: ${result.message}`,
-      });
-    }
-    setIsLoading(false);
+      if (result.success) {
+        await update({
+          ...session,
+          name: session?.user.name,
+          image: result.url,
+        });
+        router.refresh();
+        toast({
+          description: `${result?.message}`,
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          description: `Error: ${result.message}`,
+        });
+      }
+    });
   };
   return (
     <div className="my-2 flex flex-wrap gap-2 items-center">
@@ -75,12 +75,10 @@ const ImageAvatarInputContainer = (props: ImageInputContainerProps) => {
         <div className="max-w-lg mt-4">
           <form
             className="flex flex-col"
-            action={
-              (formData: FormData) => void handleSubmit(formData) // Оборачиваем в void для соответствия типам
-            }
+            action={(formData: FormData) => void handleSubmit(formData)}
           >
             <ImageInput />
-            <SubmitButton size="sm" isLoading={isLoading} />
+            <SubmitButton size="sm" isLoading={isPending} />
           </form>
         </div>
       )}

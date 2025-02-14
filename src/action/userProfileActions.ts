@@ -1,5 +1,5 @@
 'use server';
-import { imageSchema, updateUserSchema } from '@/validation/schemas';
+import { updateUserSchema } from '@/validation/schemas';
 import { validateWithZodSchema } from '@/validation/schemas';
 import { z } from 'zod';
 import db from '@/db/drizzle';
@@ -7,7 +7,8 @@ import { users } from '@/db/schema/userSchema';
 import { auth } from '../../auth';
 import { renderError } from './authActions';
 import { eq } from 'drizzle-orm';
-import { put, del } from '@vercel/blob';
+import { del } from '@vercel/blob';
+import { uploadImageToBlob } from '@/utils/uploadImage';
 
 export const getAuthUser = async () => {
   const session = await auth();
@@ -37,17 +38,10 @@ export const updateUserAction = async (
   }
 };
 
-export const updateProfileImageAction = async (
-  // prevState: unknown,
-  formData: FormData
-) => {
+export const updateProfileImageAction = async (formData: FormData) => {
   try {
     const getUser = await getAuthUser();
     const image = formData.get('image') as File;
-
-    const validatedFieldsImage = await validateWithZodSchema(imageSchema(), {
-      image,
-    });
 
     // Получаем старый аватар
     const [user] = await db
@@ -59,28 +53,27 @@ export const updateProfileImageAction = async (
     const oldAvatarUrl = user?.image;
 
     // Удаляем старый аватар, если он был
-    if (oldAvatarUrl) {
+    if (oldAvatarUrl && oldAvatarUrl.includes('vercel-storage.com')) {
       await del(oldAvatarUrl);
     }
 
-    // Загружаем новый аватар в папку avatars/
-    const fileExtension = image.name.split('.').pop();
-    const blob = await put(
-      `avatars/${getUser.id}-${Date.now()}.${fileExtension}`,
-      validatedFieldsImage.image,
-      {
-        access: 'public',
-        token: process.env.BLOB_READ_WRITE_TOKEN,
-      }
+    // Загружаем новое изображение
+    const newAvatarUrl = await uploadImageToBlob(
+      image,
+      `avatars/${getUser.id}`
     );
 
     // Обновляем ссылку в базе
     await db
       .update(users)
-      .set({ image: blob.url })
+      .set({ image: newAvatarUrl })
       .where(eq(users.id, getUser.id));
 
-    return { message: 'Image update success', success: true, url: blob.url };
+    return {
+      message: 'Image update success',
+      success: true,
+      url: newAvatarUrl,
+    };
   } catch (error) {
     return renderError(error);
   }

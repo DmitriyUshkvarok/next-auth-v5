@@ -11,7 +11,6 @@ import ImageAvatarInputContainer from '@/components/forms/ImageAvatarInputContai
 export default async function MyAccount() {
   const session = await auth();
   const provider = session?.user?.provider !== 'google';
-  console.log(session);
 
   const [user] = await db
     .select({
@@ -24,7 +23,14 @@ export default async function MyAccount() {
     <Card className="w-full max-w-[500px]">
       <CardHeader>
         <CardTitle>
-          My Account: <span>{session?.user.name || 'User'}</span>
+          My Account:{' '}
+          <span className="inline-block align-middle">
+            {session?.user.name
+              ? session.user.name.length > 20
+                ? session.user.name.slice(0, 20) + '...'
+                : session.user.name
+              : 'User'}
+          </span>
         </CardTitle>
       </CardHeader>
       <CardContent>

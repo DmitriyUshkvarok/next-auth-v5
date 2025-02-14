@@ -4,7 +4,7 @@ import { users } from './userSchema';
 export const accounts = pgTable(
   'accounts',
   {
-    userId: text('userId')
+    userId: text('user_id')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
 

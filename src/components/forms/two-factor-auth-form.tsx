@@ -70,14 +70,18 @@ export default function TwoFactorAuthForm({ twoFactorActivated }: Props) {
   return (
     <div className="flex justify-center mt-2">
       {!!isActivated && (
-        <Button variant="destructive" onClick={handleDisable2faClick}>
+        <Button
+          variant="destructive"
+          onClick={handleDisable2faClick}
+          className="w-full"
+        >
           Disable Two-Factor Authentication
         </Button>
       )}
       {!isActivated && (
-        <div>
+        <div className="w-full">
           {step === 1 && (
-            <Button onClick={handleEnableClick}>
+            <Button onClick={handleEnableClick} className="w-full">
               Enable Two-Factor Authentication
             </Button>
           )}
