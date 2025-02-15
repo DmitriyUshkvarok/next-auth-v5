@@ -2,7 +2,7 @@ import { pgTable, text, timestamp, integer, json } from 'drizzle-orm/pg-core';
 import { users } from './userSchema';
 
 // Схема для портфолио
-export const portfolio = pgTable('portfolio', {
+export const portfolios = pgTable('portfolio', {
   id: text('id').primaryKey(),
   userId: text('user_id')
     .notNull()

@@ -154,7 +154,7 @@ const data = {
   projects: [
     {
       name: 'Project Actions ',
-      url: '#',
+      url: '/admin/all-project',
       icon: HammerIcon,
     },
     {

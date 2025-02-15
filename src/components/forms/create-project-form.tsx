@@ -22,8 +22,8 @@ import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { z } from 'zod';
-// import { useRouter } from 'next/navigation';
-// import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 import { portfolioSchema } from '@/validation/schemas';
 import { SubmitButton } from '@/components/forms/buttons';
 import {
@@ -34,11 +34,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-// import ImageInput from './ImageInput';
+import { createPortfolioProject } from '@/action/portfolioAction';
 
 const CreateProjectForm = () => {
-  //   const { toast } = useToast();
-  //   const router = useRouter();
+  const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof portfolioSchema>>({
     resolver: zodResolver(portfolioSchema),
@@ -58,13 +58,24 @@ const CreateProjectForm = () => {
   });
 
   const handleSubmit = async (data: z.infer<typeof portfolioSchema>) => {
-    console.log(data);
     const formData = new FormData();
-    // Добавляем изображение
+    formData.append('title', data.title);
+
     if (data.image) {
       formData.append('image', data.image);
     }
-    // Здесь логика отправки данных
+    const response = await createPortfolioProject(data, formData);
+
+    if (response.success) {
+      toast({
+        description: `${response.message}`,
+      });
+      router.push('/admin/all-project');
+    } else {
+      form.setError('root', {
+        message: response.message,
+      });
+    }
   };
 
   return (
@@ -87,16 +98,24 @@ const CreateProjectForm = () => {
               disabled={form.formState.isSubmitting}
               className="flex flex-col gap-2"
             >
-              <div>
-                <FormLabel className="inline-flex mb-3">
-                  Project Image
-                </FormLabel>
-                <Input
-                  type="file"
-                  {...form.register('image')}
-                  className="file-input"
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field: { onChange, ref } }) => (
+                  <FormItem>
+                    <FormLabel>Upload Image</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        ref={ref}
+                        onChange={(e) => onChange(e.target.files?.[0])}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="title"
@@ -192,9 +211,12 @@ const CreateProjectForm = () => {
                 </Button>
               </div>
 
-              {/* Кнопка отправки */}
               {!!form.formState.errors.root?.message && (
-                <FormMessage>{form.formState.errors.root.message}</FormMessage>
+                <FormItem>
+                  <FormMessage>
+                    {form.formState.errors.root.message}
+                  </FormMessage>
+                </FormItem>
               )}
               <SubmitButton
                 text="Create Project"
