@@ -16,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { FolderPlus } from 'lucide-react';
+import { CalendarIcon, FolderPlus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -35,6 +35,13 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { createPortfolioProject } from '@/action/portfolioAction';
+import { Calendar } from '../ui/calendar';
+import { format } from 'date-fns';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 const CreateProjectForm = () => {
   const { toast } = useToast();
@@ -47,8 +54,10 @@ const CreateProjectForm = () => {
       description: '',
       websiteUrl: '',
       githubUrl: '',
+      budget: 0,
       technologies: [],
       image: undefined,
+      realizedAt: new Date(),
     },
   });
 
@@ -58,6 +67,7 @@ const CreateProjectForm = () => {
   });
 
   const handleSubmit = async (data: z.infer<typeof portfolioSchema>) => {
+    console.log(data);
     const formData = new FormData();
     formData.append('title', data.title);
 
@@ -164,6 +174,55 @@ const CreateProjectForm = () => {
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="budget"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Budget</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="realizedAt"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Realized Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <div className="relative">
+                            <Input
+                              readOnly
+                              value={
+                                field.value
+                                  ? format(field.value, 'dd.MM.yyyy')
+                                  : ''
+                              }
+                              placeholder="Select a date"
+                              className="pr-10 cursor-pointer"
+                            />
+                            <CalendarIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-500" />
+                          </div>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                        />
+                      </PopoverContent>
+                    </Popover>
                     <FormMessage />
                   </FormItem>
                 )}

@@ -83,6 +83,10 @@ export const portfolioSchema = z
       .optional(),
     websiteUrl: z.string().url('Invalid URL format').optional(),
     githubUrl: z.string().url('Invalid URL format').optional(),
+    budget: z.coerce
+      .number()
+      .min(0, 'Budget cannot be negative')
+      .max(1_000_000, 'Budget cannot exceed 1,000,000'),
     order: z.number().int('Order must be an integer').optional().default(0),
     technologies: z
       .array(
@@ -95,6 +99,9 @@ export const portfolioSchema = z
       )
       .optional()
       .default([]),
+    realizedAt: z.date().refine((date) => date <= new Date(), {
+      message: 'Release date cannot be in the future',
+    }),
   })
   .merge(imageSchema());
 
