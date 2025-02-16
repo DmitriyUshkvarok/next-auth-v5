@@ -4,21 +4,11 @@ import { validateWithZodSchema } from '@/validation/schemas';
 import { z } from 'zod';
 import db from '@/db/drizzle';
 import { users } from '@/db/schema/userSchema';
-import { auth } from '../../auth';
-import { renderError } from './authActions';
+import { renderError } from '@/lib/authHelpers';
 import { eq } from 'drizzle-orm';
 import { del } from '@vercel/blob';
 import { uploadImageToBlob } from '@/utils/uploadImage';
-
-export const getAuthUser = async () => {
-  const session = await auth();
-
-  if (!session || !session.user) {
-    throw new Error('You must be logged in to access this route');
-  }
-
-  return session.user;
-};
+import { getAuthUser } from '@/lib/authHelpers';
 
 export const updateUserAction = async (
   data: z.infer<typeof updateUserSchema>

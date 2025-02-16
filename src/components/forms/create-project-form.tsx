@@ -67,7 +67,6 @@ const CreateProjectForm = () => {
   });
 
   const handleSubmit = async (data: z.infer<typeof portfolioSchema>) => {
-    console.log(data);
     const formData = new FormData();
     formData.append('title', data.title);
 

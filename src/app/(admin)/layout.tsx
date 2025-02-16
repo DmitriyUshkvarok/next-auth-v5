@@ -23,6 +23,7 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   if (!isAdmin) {
     return redirect('/my-account');
   }
+
   return (
     <SidebarProvider>
       <AppSidebar user={session?.user} />

@@ -21,25 +21,12 @@ import { authenticator } from 'otplib';
 import speakeasy from 'speakeasy';
 import { Account, Profile, User } from 'next-auth';
 import { accounts } from '@/db/schema/accountSchema';
-
-type ResponseStatus = {
-  success?: false;
-  message: string;
-  tokenInvalid?: false;
-};
-
+import { renderError } from '@/lib/authHelpers';
 export interface OAuthSignInArgs {
   account: Account;
   user: User;
   profile?: Profile;
 }
-
-export const renderError = async (error: unknown): Promise<ResponseStatus> => {
-  return {
-    message: error instanceof Error ? error.message : 'An error occurred',
-    success: false,
-  };
-};
 
 export async function googleAuthenticate({ user, account }: OAuthSignInArgs) {
   try {

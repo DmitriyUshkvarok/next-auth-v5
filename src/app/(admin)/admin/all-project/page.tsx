@@ -1,5 +1,10 @@
+import PortfolioProjectsContainer from '@/components/portfolioProjectsContainer/portfolioProjectsContainer';
 const AllProjectPage = () => {
-  return <div>AllProjectPage</div>;
+  return (
+    <main>
+      <PortfolioProjectsContainer />
+    </main>
+  );
 };
 
 export default AllProjectPage;
