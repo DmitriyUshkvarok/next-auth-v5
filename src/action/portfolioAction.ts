@@ -9,7 +9,8 @@ import { getAuthUser } from '@/lib/authHelpers';
 import { uploadImageToBlob } from '@/utils/uploadImage';
 import { randomBytes } from 'crypto';
 import { getAdminUser } from '@/lib/authHelpers';
-import { and, ilike, sql } from 'drizzle-orm';
+import { and, ilike, or, sql } from 'drizzle-orm';
+import { PortfolioSearchParams } from '@/utils/types';
 
 export const createPortfolioProject = async (
   data: z.infer<typeof portfolioSchema>,
@@ -40,52 +41,76 @@ export const createPortfolioProject = async (
   }
 };
 
-export const getFilteredPortfolioProjects = async (
-  search?: string,
-  month?: number,
-  year?: number,
-  technologies?: string[],
-  page: number = 1,
-  pageSize: number = 10
-) => {
-  try {
-    const monthYearFilter =
-      month && year
-        ? sql`
+export const getFilteredPortfolioProjects = async ({
+  search,
+  month,
+  year,
+  technology,
+  currentPage = 1,
+  pageSize = 6,
+}: PortfolioSearchParams) => {
+  const monthYearFilter =
+    month && year
+      ? sql`
           EXTRACT(MONTH FROM ${portfolios.realizedAt}) = ${month}
           AND EXTRACT(YEAR FROM ${portfolios.realizedAt}) = ${year}
         `
-        : sql`TRUE`;
+      : sql`TRUE`;
 
-    const technologiesFilter =
-      technologies && technologies.length
-        ? sql`
-          EXISTS (
-            SELECT 1
-            FROM jsonb_array_elements(${portfolios.technologies}) AS tech
-            WHERE tech->>'name' IN (${sql.join(technologies, ',')})
-          )
-        `
-        : sql`TRUE`;
+  const searchFilter = search
+    ? or(
+        ilike(portfolios.title, `%${search}%`),
+        ilike(portfolios.description, `%${search}%`)
+      )
+    : sql`TRUE`;
 
-    const searchFilter = search
-      ? and(
-          ilike(portfolios.title, `%${search}%`),
-          ilike(portfolios.description, `%${search}%`)
-        )
-      : sql`TRUE`; // Если не задан поиск, фильтрация по строкам не будет
+  const technologyFilter = technology
+    ? sql`
+    EXISTS (
+      SELECT 1
+      FROM jsonb_array_elements(${portfolios.technologies}::jsonb) AS tech
+      WHERE tech->>'name' = ${technology}
+    )
+  `
+    : sql`TRUE`;
 
-    const whereClause = and(searchFilter, monthYearFilter, technologiesFilter);
+  const whereClause = and(searchFilter, monthYearFilter, technologyFilter);
 
-    const projects = await db
-      .select()
-      .from(portfolios)
-      .where(whereClause)
-      .limit(pageSize)
-      .offset((page - 1) * pageSize); // Пагинация
+  // Получаем общее количество проектов
+  const totalProjects = await db
+    .select({ count: sql<number>`COUNT(*)` })
+    .from(portfolios)
+    .where(whereClause)
+    .execute();
 
-    return projects;
-  } catch (error) {
-    renderError(error);
-  }
+  const totalPages = Math.ceil((totalProjects[0]?.count ?? 0) / pageSize);
+
+  const projects = await db
+    .select()
+    .from(portfolios)
+    .where(whereClause)
+    .limit(pageSize)
+    .offset((currentPage - 1) * pageSize);
+
+  return {
+    projects: projects || [],
+    totalPages,
+  };
+};
+
+export const getTechnologies = async (): Promise<
+  { name: string; icon: string }[]
+> => {
+  const technologies = await db.execute(sql`
+      SELECT DISTINCT jsonb_array_elements(${portfolios.technologies}::jsonb)->>'name' AS name,
+                      jsonb_array_elements(${portfolios.technologies}::jsonb)->>'icon' AS icon
+      FROM ${portfolios};
+    `);
+
+  return (
+    technologies.rows.map((tech: Record<string, unknown>) => ({
+      name: tech.name as string,
+      icon: tech.icon as string,
+    })) || []
+  );
 };

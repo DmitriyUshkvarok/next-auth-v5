@@ -12,6 +12,18 @@ const nextConfig: NextConfig = {
         hostname: 'yqozgvcainkn7pxk.public.blob.vercel-storage.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'encrypted-tbn0.gstatic.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn3d.iconscout.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
     ],
   },
   experimental: {

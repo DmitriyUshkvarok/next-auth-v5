@@ -3,8 +3,8 @@ import {
   text,
   timestamp,
   integer,
-  json,
   decimal,
+  jsonb,
 } from 'drizzle-orm/pg-core';
 import { users } from './userSchema';
 
@@ -20,7 +20,7 @@ export const portfolios = pgTable('portfolio', {
   githubUrl: text('github_url'),
   order: integer('order').default(0),
   budget: decimal('budget').default('0'),
-  technologies: json('technologies')
+  technologies: jsonb('technologies')
     .$type<{ name: string; icon: string }[]>()
     .default([]),
   realizedAt: timestamp('realized_at', { mode: 'date' }).notNull(),

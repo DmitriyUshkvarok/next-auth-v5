@@ -65,7 +65,7 @@ export function NavProjects({
               >
                 <DropdownMenuItem>
                   <Folder className="text-muted-foreground" />
-                  <Link href="/admin/all-project">View Project</Link>
+                  <Link href="/admin/all-projects">View Project</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Forward className="text-muted-foreground" />
@@ -78,7 +78,7 @@ export function NavProjects({
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <FileEdit className="text-muted-foreground" />
-                  <Link href="/admin/all-project">Edit Project</Link>
+                  <Link href="/admin/all-projects">Edit Project</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Trash2 className="text-muted-foreground" />

@@ -5,20 +5,24 @@ export type actionFunction = (
 
 export type PortfolioProject = {
   id: string;
+  userId: string;
   title: string | null;
   description: string | null;
-  realizedAt: Date;
-  technologies: string[] | null;
-  image: string;
-  githubUrl: string;
-  websiteUrl: string;
-  order?: number;
-  budget?: string;
-  createdAt?: Date;
+  realizedAt: Date | null;
+  technologies: { name: string; icon: string }[] | null;
+  image: string | null;
+  githubUrl: string | null;
+  websiteUrl: string | null;
+  order: number | null;
+  budget: string | null;
+  createdAt: Date | null;
 };
 
-export type PortfolioProjectResponse = {
-  success: boolean;
-  message: string;
-  projects: PortfolioProject[];
-};
+export interface PortfolioSearchParams {
+  search?: string;
+  month?: number;
+  year?: number;
+  technology?: string;
+  currentPage?: number;
+  pageSize?: number;
+}

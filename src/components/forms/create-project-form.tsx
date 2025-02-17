@@ -79,7 +79,7 @@ const CreateProjectForm = () => {
       toast({
         description: `${response.message}`,
       });
-      router.push('/admin/all-project');
+      router.push('/admin/all-projects');
     } else {
       form.setError('root', {
         message: response.message,
