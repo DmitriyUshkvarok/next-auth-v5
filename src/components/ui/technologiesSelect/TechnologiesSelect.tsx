@@ -41,6 +41,7 @@ const TechnologiesSelect = ({ allTechnologies }: TechnologiesSelectProps) => {
         params.set('technology', selectedTech);
       }
 
+      params.set('page', '1');
       replace(`/admin/all-projects?${params.toString()}`);
     },
     [replace, searchParams]

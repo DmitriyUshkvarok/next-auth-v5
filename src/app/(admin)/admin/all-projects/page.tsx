@@ -25,7 +25,6 @@ const AllProjectPage = async ({
     currentPage,
   });
   if (!projects) return [];
-  console.log(totalPages);
 
   return (
     <main className="px-4 flex flex-col min-h-screen">
