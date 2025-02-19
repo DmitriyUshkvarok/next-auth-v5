@@ -52,10 +52,14 @@ export const getFilteredPortfolioProjects = async ({
   const monthYearFilter =
     month && year
       ? sql`
-          EXTRACT(MONTH FROM ${portfolios.realizedAt}) = ${month}
-          AND EXTRACT(YEAR FROM ${portfolios.realizedAt}) = ${year}
-        `
-      : sql`TRUE`;
+        EXTRACT(MONTH FROM ${portfolios.realizedAt}) = ${month}
+        AND EXTRACT(YEAR FROM ${portfolios.realizedAt}) = ${year}
+      `
+      : month
+        ? sql`EXTRACT(MONTH FROM ${portfolios.realizedAt}) = ${month}`
+        : year
+          ? sql`EXTRACT(YEAR FROM ${portfolios.realizedAt}) = ${year}`
+          : sql`TRUE`;
 
   const searchFilter = search
     ? or(
@@ -113,4 +117,21 @@ export const getTechnologies = async (): Promise<
       icon: tech.icon as string,
     })) || []
   );
+};
+
+export const getAvailableYearsAndMonths = async (): Promise<
+  { year: number; months: number[] }[]
+> => {
+  const result = await db.execute(sql`
+    SELECT DISTINCT EXTRACT(YEAR FROM realized_at) AS year,
+           ARRAY_AGG(DISTINCT EXTRACT(MONTH FROM realized_at)) AS months
+    FROM ${portfolios}
+    GROUP BY year
+    ORDER BY year DESC;
+  `);
+
+  return result.rows.map((row: Record<string, unknown>) => ({
+    year: row.year as number,
+    months: row.months as number[],
+  }));
 };

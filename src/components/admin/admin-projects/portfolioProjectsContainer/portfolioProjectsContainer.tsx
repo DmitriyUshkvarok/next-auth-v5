@@ -7,12 +7,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Globe } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { LuGithub } from 'react-icons/lu';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PortfolioProject } from '@/utils/types';
-import NoDataFound from '../ui/noDataFound/NoDataFound';
+import NoDataFound from '@/components/ui/noDataFound/NoDataFound';
 
 const PortfolioProjectsContainer = async ({
   projects,
@@ -71,7 +71,7 @@ const PortfolioProjectsContainer = async ({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Globe className="w-4 h-4 mr-2" /> Сайт
+                <Globe className="w-4 h-4 mr-2" /> Site
               </a>
             </Button>
           </CardFooter>

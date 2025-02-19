@@ -18,7 +18,7 @@ interface Technology {
   icon: string;
 }
 
-interface TechnologiesSelectProps {
+export interface TechnologiesSelectProps {
   allTechnologies: Technology[];
 }
 
@@ -28,7 +28,9 @@ const TechnologiesSelect = ({ allTechnologies }: TechnologiesSelectProps) => {
   const placeholder = '/placeholder.png';
 
   const uniqueTechnologies = Array.from(
-    new Map(allTechnologies.map((tech) => [tech.name, tech])).values()
+    new Map(
+      allTechnologies.map((tech) => [tech.name.toLowerCase(), tech])
+    ).values()
   );
 
   const handleSelectChange = useCallback(
