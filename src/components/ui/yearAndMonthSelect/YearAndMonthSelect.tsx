@@ -47,7 +47,6 @@ const YearAndMonthSelect = ({
 }: YearAndMonthSelectProps) => {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
-  console.log(yearsAndMonthsData);
 
   const handleYearChange = useCallback(
     (year: string) => {

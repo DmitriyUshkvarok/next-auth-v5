@@ -25,12 +25,10 @@ const DynamicPagination = ({
 
   // Обработчик изменения страницы
   const handlePageChange = (page: number) => {
-    console.log('Page to navigate:', page); // Отладочное сообщение
     if (page < 1 || page > totalPages) return;
 
     const params = new URLSearchParams(searchParams?.toString() || '');
     params.set('page', page.toString());
-    console.log('New URL:', `?${params.toString()}`); // Отладочное сообщение
     replace(`?${params.toString()}`);
   };
 

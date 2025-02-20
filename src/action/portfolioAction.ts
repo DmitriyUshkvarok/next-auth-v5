@@ -9,8 +9,9 @@ import { getAuthUser } from '@/lib/authHelpers';
 import { uploadImageToBlob } from '@/utils/uploadImage';
 import { randomBytes } from 'crypto';
 import { getAdminUser } from '@/lib/authHelpers';
-import { and, ilike, or, sql } from 'drizzle-orm';
+import { and, eq, ilike, or, sql } from 'drizzle-orm';
 import { PortfolioSearchParams } from '@/utils/types';
+import { del } from '@vercel/blob';
 
 export const createPortfolioProject = async (
   data: z.infer<typeof portfolioSchema>,
@@ -36,6 +37,43 @@ export const createPortfolioProject = async (
       createdAt: new Date(),
     });
     return { message: 'Portfolio project created successfully', success: true };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const updatePortfolioProject = async (
+  { data, id }: { data: z.infer<typeof portfolioSchema>; id: string },
+  formData: FormData
+) => {
+  try {
+    await getAdminUser();
+    const user = await getAuthUser();
+    const image = formData.get('image') as File;
+    const validatedPortfolioData = validateWithZodSchema(portfolioSchema, data);
+    const { ...rest } = validatedPortfolioData;
+
+    // Получаем старый проект
+    const [portfolio] = await db
+      .select()
+      .from(portfolios)
+      .where(eq(portfolios.id, id))
+      .limit(1);
+
+    const oldImageUrl = portfolio.image;
+
+    if (oldImageUrl && oldImageUrl.includes('vercel-storage.com')) {
+      await del(oldImageUrl);
+    }
+
+    const newImageUrl = await uploadImageToBlob(image, `portfolio/${user.id}`);
+
+    await db
+      .update(portfolios)
+      .set({ ...rest, image: newImageUrl })
+      .where(eq(portfolios.id, id));
+
+    return { message: 'Portfolio project updated successfully', success: true };
   } catch (error) {
     return renderError(error);
   }
@@ -100,6 +138,16 @@ export const getFilteredPortfolioProjects = async ({
     projects: projects || [],
     totalPages,
   };
+};
+
+export const getPortfolioProjectById = async (id: string) => {
+  const [project] = await db
+    .select()
+    .from(portfolios)
+    .where(eq(portfolios.id, id))
+    .limit(1);
+
+  return project;
 };
 
 export const getTechnologies = async (): Promise<

@@ -82,7 +82,7 @@ export function NavProjects({
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Trash2 className="text-muted-foreground" />
-                  <span>Delete Project</span>
+                  <Link href="/admin/all-projects">Delete Project</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

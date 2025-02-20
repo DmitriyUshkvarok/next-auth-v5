@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Globe } from 'lucide-react';
+import { Globe, Pencil, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LuGithub } from 'react-icons/lu';
 import Image from 'next/image';
@@ -28,17 +28,19 @@ const PortfolioProjectsContainer = async ({
       {projects?.map((project) => (
         <Card
           key={project.id}
-          className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+          className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow relative"
         >
-          <Link href={`/admin/all-projects/${project.id}`}>
+          <Link href={`/admin/all-projects/${project.id}/edit`}>
             <CardHeader>
-              <Image
-                src={project.image || '/placeholder.png'}
-                alt={project.title || 'project img'}
-                width={200}
-                height={100}
-                className="w-full h-48 object-cover"
-              />
+              <div className="relative w-full h-48 overflow-hidden group">
+                <Image
+                  src={project.image || '/placeholder.png'}
+                  alt={project.title || 'project img'}
+                  width={200}
+                  height={100}
+                  className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
               <CardTitle className="text-xl font-semibold">
                 {project.title}
               </CardTitle>
@@ -55,25 +57,46 @@ const PortfolioProjectsContainer = async ({
               </p>
             </CardContent>
           </Link>
-          <CardFooter className="flex justify-between">
-            <Button variant="outline" size="sm" asChild>
-              <a
-                href={project.githubUrl ?? '#'}
-                target="_blank"
-                rel="noopener noreferrer"
+          <CardFooter className="flex justify-between items-center">
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" asChild>
+                <a
+                  href={project.githubUrl ?? '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <LuGithub className="w-4 h-4 mr-2" /> GitHub
+                </a>
+              </Button>
+              <Button variant="default" size="sm" asChild>
+                <a
+                  href={project.websiteUrl ?? '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Globe className="w-4 h-4 mr-2" /> Site
+                </a>
+              </Button>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                asChild
+                variant="ghost"
+                size="icon"
+                className="text-gray-500 hover:text-blue-500"
               >
-                <LuGithub className="w-4 h-4 mr-2" /> GitHub
-              </a>
-            </Button>
-            <Button variant="default" size="sm" asChild>
-              <a
-                href={project.websiteUrl ?? '#'}
-                target="_blank"
-                rel="noopener noreferrer"
+                <Link href={`/admin/all-projects/${project.id}/edit`}>
+                  <Pencil className="w-5 h-5" />
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-gray-500 hover:text-red-500"
               >
-                <Globe className="w-4 h-4 mr-2" /> Site
-              </a>
-            </Button>
+                <Trash className="w-5 h-5" />
+              </Button>
+            </div>
           </CardFooter>
         </Card>
       ))}

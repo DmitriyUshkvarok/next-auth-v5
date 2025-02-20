@@ -120,7 +120,7 @@ const TechnologyDenamicGrapic = ({
                     dataKey="role"
                     position="insideLeft"
                     offset={8}
-                    className="fill-[#ffffff19] capitalize"
+                    className="fill-[#ffffffdc] capitalize"
                     fontSize={12}
                   />
                 ))}

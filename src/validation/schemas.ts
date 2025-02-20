@@ -73,6 +73,7 @@ export const imageSchema = () => {
 
 export const portfolioSchema = z
   .object({
+    id: z.string().optional(),
     title: z
       .string()
       .min(3, 'Title must be at least 3 characters long')

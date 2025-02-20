@@ -34,7 +34,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { createPortfolioProject } from '@/action/portfolioAction';
+import { updatePortfolioProject } from '@/action/portfolioAction';
 import { Calendar } from '../ui/calendar';
 import { format } from 'date-fns';
 import {
@@ -42,22 +42,34 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { PortfolioProject } from '@/utils/types';
+import Image from 'next/image';
 
-const CreateProjectForm = () => {
+const UpdateProjectForm = ({
+  id,
+  project,
+}: {
+  id: string;
+  project: PortfolioProject;
+}) => {
   const { toast } = useToast();
   const router = useRouter();
-
   const form = useForm<z.infer<typeof portfolioSchema>>({
     resolver: zodResolver(portfolioSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      websiteUrl: '',
-      githubUrl: '',
-      budget: 0,
-      technologies: [],
+      title: project.title || '',
+      description: project.description || '',
+      websiteUrl: project.websiteUrl || '',
+      githubUrl: project.githubUrl || '',
+      budget:
+        typeof project.budget === 'string'
+          ? parseFloat(project.budget)
+          : project.budget ?? 0,
+      technologies: project.technologies || [],
       image: undefined,
-      realizedAt: new Date(),
+      realizedAt: project.realizedAt
+        ? new Date(project.realizedAt)
+        : new Date(),
     },
   });
 
@@ -72,7 +84,10 @@ const CreateProjectForm = () => {
     if (data.image) {
       formData.append('image', data.image);
     }
-    const response = await createPortfolioProject(data, formData);
+    const response = await updatePortfolioProject(
+      { data: { ...data }, id },
+      formData
+    );
 
     if (response.success) {
       toast({
@@ -91,8 +106,10 @@ const CreateProjectForm = () => {
       <CardHeader>
         <div className="flex justify-between">
           <div className="flex flex-col gap-2">
-            <CardTitle>Create Project</CardTitle>
-            <CardDescription>Add details about your project.</CardDescription>
+            <CardTitle>Update Project</CardTitle>
+            <CardDescription>
+              Update details about your project.
+            </CardDescription>
           </div>
           <div>
             <FolderPlus className="w-[100px] h-[80px]" />
@@ -106,12 +123,27 @@ const CreateProjectForm = () => {
               disabled={form.formState.isSubmitting}
               className="flex flex-col gap-2"
             >
+              <Card>
+                <CardHeader>
+                  <CardTitle>Current Image</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Image
+                    src={project.image ?? '/placeholder.png'}
+                    alt={project.title ?? 'project image'}
+                    width={300}
+                    height={150}
+                    className="w-full h-full object-cover"
+                  />
+                </CardContent>
+              </Card>
+
               <FormField
                 control={form.control}
                 name="image"
                 render={({ field: { onChange, ref } }) => (
                   <FormItem>
-                    <FormLabel>Upload Image</FormLabel>
+                    <FormLabel>Update Image</FormLabel>
                     <FormControl>
                       <Input
                         type="file"
@@ -276,7 +308,7 @@ const CreateProjectForm = () => {
                 </FormItem>
               )}
               <SubmitButton
-                text="Create Project"
+                text="Update Project"
                 isLoading={form.formState.isSubmitting}
               />
             </fieldset>
@@ -297,7 +329,7 @@ const CreateProjectForm = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Create Project</BreadcrumbPage>
+              <BreadcrumbPage>Update Project</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -306,4 +338,4 @@ const CreateProjectForm = () => {
   );
 };
 
-export default CreateProjectForm;
+export default UpdateProjectForm;

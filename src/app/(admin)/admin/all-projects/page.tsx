@@ -25,8 +25,6 @@ const AllProjectPage = async ({
   const currentPage = Number(page);
   const currentYear = year ? Number(year) : undefined;
   const currentMonth = month ? Number(month) : undefined;
-  console.log('year', year);
-  console.log('month', month);
 
   const allTechnologies = await getTechnologies();
   const yearsAndMonthsData = await getAvailableYearsAndMonths();
@@ -41,9 +39,9 @@ const AllProjectPage = async ({
 
   return (
     <main className="px-4 flex flex-col min-h-screen">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-4 w-full">
         <NavSearch />
-        <div className="flex items-center gap-4">
+        <div className="flex justify-between sm:justify-end sm:gap-4">
           <YearAndMonthSelect yearsAndMonthsData={yearsAndMonthsData} />
           <TechnologiesSelect allTechnologies={allTechnologies} />
         </div>
