@@ -12,6 +12,7 @@ import { getAdminUser } from '@/lib/authHelpers';
 import { and, eq, ilike, or, sql } from 'drizzle-orm';
 import { PortfolioSearchParams } from '@/utils/types';
 import { del } from '@vercel/blob';
+import { revalidatePath } from 'next/cache';
 
 export const createPortfolioProject = async (
   data: z.infer<typeof portfolioSchema>,
@@ -150,21 +151,65 @@ export const getPortfolioProjectById = async (id: string) => {
   return project;
 };
 
+export const deleteProject = async (id: string) => {
+  try {
+    await getAdminUser();
+    const [project] = await db
+      .select()
+      .from(portfolios)
+      .where(eq(portfolios.id, id))
+      .limit(1);
+
+    if (!project) {
+      return { message: 'Project not found', success: false };
+    }
+
+    if (project.image && project.image.includes('vercel-storage.com')) {
+      await del(project.image);
+    }
+
+    await db.delete(portfolios).where(eq(portfolios.id, id));
+
+    revalidatePath('/admin/all-projects');
+    return { message: 'Project deleted successfully', success: true };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+// export const getTechnologies = async (): Promise<
+//   { name: string; icon: string }[]
+// > => {
+//   const technologies = await db.execute(sql`
+//       SELECT DISTINCT jsonb_array_elements(${portfolios.technologies}::jsonb)->>'name' AS name,
+//                       jsonb_array_elements(${portfolios.technologies}::jsonb)->>'icon' AS icon
+//       FROM ${portfolios};
+//     `);
+
+//   return (
+//     technologies.rows.map((tech: Record<string, unknown>) => ({
+//       name: tech.name as string,
+//       icon: tech.icon as string,
+//     })) || []
+//   );
+// };
 export const getTechnologies = async (): Promise<
-  { name: string; icon: string }[]
+  { name: string; icon: string; count: number }[]
 > => {
   const technologies = await db.execute(sql`
-      SELECT DISTINCT jsonb_array_elements(${portfolios.technologies}::jsonb)->>'name' AS name,
-                      jsonb_array_elements(${portfolios.technologies}::jsonb)->>'icon' AS icon
-      FROM ${portfolios};
+      SELECT jsonb_array_elements(${portfolios.technologies}::jsonb)->>'name' AS name,
+             jsonb_array_elements(${portfolios.technologies}::jsonb)->>'icon' AS icon,
+             COUNT(*) AS count
+      FROM ${portfolios}
+      GROUP BY name, icon
+      ORDER BY count DESC;
     `);
 
-  return (
-    technologies.rows.map((tech: Record<string, unknown>) => ({
-      name: tech.name as string,
-      icon: tech.icon as string,
-    })) || []
-  );
+  return technologies.rows.map((tech: Record<string, unknown>) => ({
+    name: tech.name as string,
+    icon: tech.icon as string,
+    count: Number(tech.count),
+  }));
 };
 
 export const getAvailableYearsAndMonths = async (): Promise<

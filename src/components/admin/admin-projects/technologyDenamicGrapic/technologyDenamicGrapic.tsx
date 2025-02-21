@@ -38,11 +38,10 @@ const predefinedColors = [
 const TechnologyDenamicGrapic = ({
   allTechnologies,
 }: TechnologiesSelectProps) => {
-  // Подсчет количества проектов для каждой технологии
   const technologyCounts = allTechnologies.reduce<Record<string, number>>(
     (acc, tech) => {
-      const normalizedTech = tech.name.toLowerCase(); // Нормализуем регистр
-      acc[normalizedTech] = (acc[normalizedTech] || 0) + 1;
+      const normalizedTech = tech.name.trim().toLowerCase(); // Убираем лишние пробелы и нормализуем регистр
+      acc[normalizedTech] = (acc[normalizedTech] || 0) + tech.count; // Складываем count вместо простого увеличения
       return acc;
     },
     {}

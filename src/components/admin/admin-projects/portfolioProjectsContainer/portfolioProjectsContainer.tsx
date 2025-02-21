@@ -1,3 +1,4 @@
+'use client';
 import {
   Card,
   CardContent,
@@ -13,15 +14,34 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PortfolioProject } from '@/utils/types';
 import NoDataFound from '@/components/ui/noDataFound/NoDataFound';
+import { deleteProject } from '@/action/portfolioAction';
+import { useToast } from '@/hooks/use-toast';
+import { ReloadIcon } from '@radix-ui/react-icons';
+import { useState } from 'react';
 
-const PortfolioProjectsContainer = async ({
+const PortfolioProjectsContainer = ({
   projects,
 }: {
   projects: PortfolioProject[];
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
   if (projects.length === 0) {
     return <NoDataFound message="No projects found in your portfolio" />;
   }
+
+  const handleDeleteProject = async (id: string) => {
+    setIsLoading(true);
+    const { success, message } = await deleteProject(id);
+    setIsLoading(false);
+
+    if (success) {
+      toast({ description: message });
+    } else {
+      toast({ description: message });
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -93,8 +113,14 @@ const PortfolioProjectsContainer = async ({
                 variant="ghost"
                 size="icon"
                 className="text-gray-500 hover:text-red-500"
+                disabled={isLoading}
+                onClick={() => handleDeleteProject(project.id)}
               >
-                <Trash className="w-5 h-5" />
+                {isLoading ? (
+                  <ReloadIcon className="w-5 h-5 animate-animate-spin" />
+                ) : (
+                  <Trash className="w-5 h-5" />
+                )}
               </Button>
             </div>
           </CardFooter>

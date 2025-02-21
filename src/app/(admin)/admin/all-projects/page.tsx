@@ -36,7 +36,7 @@ const AllProjectPage = async ({
     month: currentMonth,
   });
   if (!projects) return [];
-
+  console.log(allTechnologies);
   return (
     <main className="px-4 flex flex-col min-h-screen">
       <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-4 w-full">

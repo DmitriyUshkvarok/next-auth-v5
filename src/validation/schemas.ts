@@ -1,4 +1,5 @@
 import { z, ZodSchema } from 'zod';
+import { allowedTechnologies } from '@/utils/technologies';
 
 export const formSchema = z
   .object({
@@ -94,7 +95,10 @@ export const portfolioSchema = z
         z.object({
           name: z
             .string()
-            .min(2, 'Technology name must be at least 2 characters'),
+            .min(2, 'Technology name must be at least 2 characters')
+            .refine((val) => allowedTechnologies.includes(val), {
+              message: 'Invalid technology name',
+            }),
           icon: z.string().url('Invalid icon URL format'),
         })
       )

@@ -16,6 +16,7 @@ import {
 interface Technology {
   name: string;
   icon: string;
+  count: number;
 }
 
 export interface TechnologiesSelectProps {
@@ -27,11 +28,27 @@ const TechnologiesSelect = ({ allTechnologies }: TechnologiesSelectProps) => {
   const searchParams = useSearchParams();
   const placeholder = '/placeholder.png';
 
-  const uniqueTechnologies = Array.from(
-    new Map(
-      allTechnologies.map((tech) => [tech.name.toLowerCase(), tech])
-    ).values()
-  );
+  const normalizedTechnologies = allTechnologies.reduce<
+    Record<string, Technology>
+  >((acc, tech) => {
+    const normalizedName = tech.name.trim().toLowerCase(); // Приводим к единому ключу
+
+    if (!acc[normalizedName]) {
+      acc[normalizedName] = { ...tech }; // Сохраняем первый вариант названия и иконку
+    } else {
+      acc[normalizedName].count += tech.count; // Суммируем count, если название повторяется
+    }
+
+    return acc;
+  }, {});
+
+  const uniqueTechnologies = Object.values(normalizedTechnologies);
+
+  // const uniqueTechnologies = Array.from(
+  //   new Map(
+  //     allTechnologies.map((tech) => [tech.name.toLowerCase(), tech])
+  //   ).values()
+  // );
 
   const handleSelectChange = useCallback(
     (selectedTech: string) => {
