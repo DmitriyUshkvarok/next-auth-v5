@@ -177,22 +177,6 @@ export const deleteProject = async (id: string) => {
   }
 };
 
-// export const getTechnologies = async (): Promise<
-//   { name: string; icon: string }[]
-// > => {
-//   const technologies = await db.execute(sql`
-//       SELECT DISTINCT jsonb_array_elements(${portfolios.technologies}::jsonb)->>'name' AS name,
-//                       jsonb_array_elements(${portfolios.technologies}::jsonb)->>'icon' AS icon
-//       FROM ${portfolios};
-//     `);
-
-//   return (
-//     technologies.rows.map((tech: Record<string, unknown>) => ({
-//       name: tech.name as string,
-//       icon: tech.icon as string,
-//     })) || []
-//   );
-// };
 export const getTechnologies = async (): Promise<
   { name: string; icon: string; count: number }[]
 > => {

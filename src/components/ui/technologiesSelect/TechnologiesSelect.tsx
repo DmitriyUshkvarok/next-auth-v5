@@ -44,12 +44,6 @@ const TechnologiesSelect = ({ allTechnologies }: TechnologiesSelectProps) => {
 
   const uniqueTechnologies = Object.values(normalizedTechnologies);
 
-  // const uniqueTechnologies = Array.from(
-  //   new Map(
-  //     allTechnologies.map((tech) => [tech.name.toLowerCase(), tech])
-  //   ).values()
-  // );
-
   const handleSelectChange = useCallback(
     (selectedTech: string) => {
       const params = new URLSearchParams(searchParams.toString());
