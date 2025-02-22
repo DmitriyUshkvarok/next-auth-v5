@@ -1,6 +1,6 @@
 import { z, ZodSchema } from 'zod';
 import { allowedTechnologies } from '@/utils/technologies';
-import { websiteTypes } from '@/utils/websiteTypes';
+import { WebsiteType, websiteTypes } from '@/utils/websiteTypes';
 
 export const formSchema = z
   .object({
@@ -110,9 +110,11 @@ export const portfolioSchema = z
       )
       .optional()
       .default([]),
-    websiteType: z.enum(websiteTypes, {
-      message: `Invalid website type. Allowed types: ${websiteTypes.join(', ')}`,
-    }),
+    websiteType: z
+      .string()
+      .refine((val) => websiteTypes.includes(val as WebsiteType), {
+        message: `Invalid website type. Allowed types: ${websiteTypes.join(', ')}`,
+      }),
     isCommercial: z.boolean(),
     realizedAt: z.date().refine((date) => date <= new Date(), {
       message: 'Release date cannot be in the future',

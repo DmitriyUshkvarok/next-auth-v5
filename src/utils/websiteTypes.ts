@@ -1,5 +1,4 @@
 export type WebsiteType =
-  | ''
   | 'directory'
   | 'ecommerce'
   | 'landing'
@@ -16,8 +15,7 @@ export type WebsiteType =
   | 'saas'
   | 'personal';
 
-export const websiteTypes = [
-  '',
+export const websiteTypes: WebsiteType[] = [
   'ecommerce',
   'landing',
   'corporate',
@@ -33,4 +31,4 @@ export const websiteTypes = [
   'marketplace',
   'saas',
   'personal',
-] as const;
+];

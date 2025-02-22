@@ -1,5 +1,3 @@
-import { WebsiteType } from './websiteTypes';
-
 export type actionFunction = (
   prevState: unknown,
   formData: FormData
@@ -17,7 +15,7 @@ export type PortfolioProject = {
   websiteUrl: string | null;
   videoReviewUrlDesktop: string | null;
   videoReviewUrlMobile: string | null;
-  websiteType: WebsiteType | null;
+  websiteType: string | null;
   isCommercial: boolean | null;
   order: number | null;
   budget: string | null;

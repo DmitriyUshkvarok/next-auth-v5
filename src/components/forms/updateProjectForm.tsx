@@ -45,7 +45,6 @@ import {
 import { PortfolioProject } from '@/utils/types';
 import Image from 'next/image';
 import { Checkbox } from '@/components/ui/checkbox';
-import { WebsiteType, websiteTypes } from '@/utils/websiteTypes';
 
 const UpdateProjectForm = ({
   id,
@@ -65,9 +64,7 @@ const UpdateProjectForm = ({
       githubUrl: project.githubUrl || '',
       videoReviewUrlDesktop: project.videoReviewUrlDesktop || '',
       videoReviewUrlMobile: project.videoReviewUrlMobile || '',
-      websiteType: websiteTypes.includes(project.websiteType as WebsiteType)
-        ? (project.websiteType as WebsiteType)
-        : undefined,
+      websiteType: project.websiteType || '',
       isCommercial: project.isCommercial || false,
       budget:
         typeof project.budget === 'string'
