@@ -1,5 +1,6 @@
 import { z, ZodSchema } from 'zod';
 import { allowedTechnologies } from '@/utils/technologies';
+import { websiteTypes } from '@/utils/websiteTypes';
 
 export const formSchema = z
   .object({
@@ -85,6 +86,11 @@ export const portfolioSchema = z
       .optional(),
     websiteUrl: z.string().url('Invalid URL format').optional(),
     githubUrl: z.string().url('Invalid URL format').optional(),
+    videoReviewUrlDesktop: z
+      .string()
+      .url('Invalid video URL format')
+      .optional(),
+    videoReviewUrlMobile: z.string().url('Invalid video URL format').optional(),
     budget: z.coerce
       .number()
       .min(0, 'Budget cannot be negative')
@@ -97,13 +103,17 @@ export const portfolioSchema = z
             .string()
             .min(2, 'Technology name must be at least 2 characters')
             .refine((val) => allowedTechnologies.includes(val), {
-              message: 'Invalid technology name',
+              message: `Invalid technology name ${allowedTechnologies.join(', ')}`,
             }),
           icon: z.string().url('Invalid icon URL format'),
         })
       )
       .optional()
       .default([]),
+    websiteType: z.enum(websiteTypes, {
+      message: `Invalid website type. Allowed types: ${websiteTypes.join(', ')}`,
+    }),
+    isCommercial: z.boolean(),
     realizedAt: z.date().refine((date) => date <= new Date(), {
       message: 'Release date cannot be in the future',
     }),

@@ -44,6 +44,8 @@ import {
 } from '@/components/ui/popover';
 import { PortfolioProject } from '@/utils/types';
 import Image from 'next/image';
+import { Checkbox } from '@/components/ui/checkbox';
+import { WebsiteType, websiteTypes } from '@/utils/websiteTypes';
 
 const UpdateProjectForm = ({
   id,
@@ -61,6 +63,12 @@ const UpdateProjectForm = ({
       description: project.description || '',
       websiteUrl: project.websiteUrl || '',
       githubUrl: project.githubUrl || '',
+      videoReviewUrlDesktop: project.videoReviewUrlDesktop || '',
+      videoReviewUrlMobile: project.videoReviewUrlMobile || '',
+      websiteType: websiteTypes.includes(project.websiteType as WebsiteType)
+        ? (project.websiteType as WebsiteType)
+        : undefined,
+      isCommercial: project.isCommercial || false,
       budget:
         typeof project.budget === 'string'
           ? parseFloat(project.budget)
@@ -210,6 +218,45 @@ const UpdateProjectForm = ({
               />
               <FormField
                 control={form.control}
+                name="videoReviewUrlDesktop"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Video Review Desktop</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="videoReviewUrlMobile"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Video Review Mobile</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="websiteType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Website Type</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="budget"
                 render={({ field }) => (
                   <FormItem>
@@ -253,6 +300,24 @@ const UpdateProjectForm = ({
                         />
                       </PopoverContent>
                     </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isCommercial"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2 mb-4">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="cursor-pointer !mt-0">
+                      Commercial Project
+                    </FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}

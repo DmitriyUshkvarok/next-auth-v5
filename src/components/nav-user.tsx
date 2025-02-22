@@ -55,7 +55,7 @@ export function NavUser({
                     alt={user.name ?? 'User'}
                     width={32}
                     height={32}
-                    className="w-full h-full"
+                    className="object-cover"
                   />
                 ) : (
                   <AvatarFallback className="rounded-lg">
@@ -89,7 +89,7 @@ export function NavUser({
                       alt={user.name ?? 'User'}
                       width={32}
                       height={32}
-                      className="w-full h-full"
+                      className="object-cover"
                     />
                   ) : (
                     <AvatarFallback className="rounded-lg">

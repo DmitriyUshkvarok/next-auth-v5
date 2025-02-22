@@ -42,6 +42,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const CreateProjectForm = () => {
   const { toast } = useToast();
@@ -54,6 +55,10 @@ const CreateProjectForm = () => {
       description: '',
       websiteUrl: '',
       githubUrl: '',
+      videoReviewUrlDesktop: '',
+      videoReviewUrlMobile: '',
+      websiteType: '',
+      isCommercial: false,
       budget: 0,
       technologies: [],
       image: undefined,
@@ -178,6 +183,45 @@ const CreateProjectForm = () => {
               />
               <FormField
                 control={form.control}
+                name="videoReviewUrlDesktop"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Video Review Desktop</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="videoReviewUrlMobile"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Video Review Mobile</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="websiteType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Website Type</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="budget"
                 render={({ field }) => (
                   <FormItem>
@@ -221,6 +265,24 @@ const CreateProjectForm = () => {
                         />
                       </PopoverContent>
                     </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isCommercial"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2 mb-4">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="cursor-pointer !mt-0">
+                      Commercial Project
+                    </FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}
