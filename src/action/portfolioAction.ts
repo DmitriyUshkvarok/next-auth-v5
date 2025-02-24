@@ -212,3 +212,59 @@ export const getAvailableYearsAndMonths = async (): Promise<
     months: row.months as number[],
   }));
 };
+
+export const getPortfolioAnalytics = async ({
+  month,
+  year,
+}: {
+  month?: number;
+  year?: number;
+}) => {
+  const filters = [];
+
+  if (month) {
+    filters.push(eq(sql`EXTRACT(MONTH FROM ${portfolios.realizedAt})`, month));
+  }
+  if (year) {
+    filters.push(eq(sql`EXTRACT(YEAR FROM ${portfolios.realizedAt})`, year));
+  }
+
+  const whereClause = filters.length > 0 ? and(...filters) : undefined;
+
+  const [stats] = await db
+    .select({
+      totalProjects: sql<number>`COUNT(*)`,
+      totalBudget: sql<number>`COALESCE(SUM(${portfolios.budget}), 0)`,
+      commercialProjects: sql<number>`COUNT(*) FILTER (WHERE ${portfolios.isCommercial} = TRUE)`,
+      commercialBudget: sql<number>`COALESCE(SUM(${portfolios.budget}) FILTER (WHERE ${portfolios.isCommercial} = TRUE), 0)`,
+      nonCommercialProjects: sql<number>`COUNT(*) FILTER (WHERE ${portfolios.isCommercial} = FALSE)`,
+      nonCommercialBudget: sql<number>`COALESCE(SUM(${portfolios.budget}) FILTER (WHERE ${portfolios.isCommercial} = FALSE), 0)`,
+    })
+    .from(portfolios)
+    .where(whereClause)
+    .execute();
+
+  const websiteTypes = await db
+    .select({
+      type: portfolios.websiteType,
+      count: sql<number>`COUNT(*)`,
+    })
+    .from(portfolios)
+    .where(whereClause)
+    .groupBy(portfolios.websiteType)
+    .execute();
+
+  return {
+    totalProjects: stats.totalProjects,
+    totalBudget: stats.totalBudget,
+    commercial: {
+      projects: stats.commercialProjects,
+      budget: stats.commercialBudget,
+    },
+    nonCommercial: {
+      projects: stats.nonCommercialProjects,
+      budget: stats.nonCommercialBudget,
+    },
+    websiteTypes,
+  };
+};

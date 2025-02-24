@@ -38,7 +38,7 @@ interface YearAndMonth {
   months: number[];
 }
 
-interface YearAndMonthSelectProps {
+export interface YearAndMonthSelectProps {
   yearsAndMonthsData: YearAndMonth[];
 }
 

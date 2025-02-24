@@ -30,3 +30,20 @@ export interface PortfolioSearchParams {
   currentPage?: number;
   pageSize?: number;
 }
+
+export interface ProjectStatsProps {
+  totalProjects: number;
+  totalBudget: number;
+  commercial: {
+    projects: number;
+    budget: number;
+  };
+  nonCommercial: {
+    projects: number;
+    budget: number;
+  };
+  websiteTypes: {
+    count: number;
+    type: string;
+  }[];
+}

@@ -1,18 +1,24 @@
-import ProjectsStats from '@/components/admin/admin-home/project-stats';
+import { getPortfolioAnalytics } from '@/action/portfolioAction';
+import ProjectsStats from '@/components/admin/admin-home/projects/project-stats';
+import ProjectsTypes from '@/components/admin/admin-home/projectsTypes/projects-types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const AdminPage = () => {
+const AdminPage = async () => {
+  const portfolioAnalytics = await getPortfolioAnalytics({});
+
   return (
     <>
       <Tabs defaultValue="projects" className="px-4">
         <TabsList className="mb-4">
           <TabsTrigger value="projects">Projects</TabsTrigger>
-          <TabsTrigger value="skills">Skills</TabsTrigger>
+          <TabsTrigger value="types">Types</TabsTrigger>
         </TabsList>
         <TabsContent value="projects">
-          <ProjectsStats />
+          <ProjectsStats stats={portfolioAnalytics} />
         </TabsContent>
-        <TabsContent value="skills">{/* <TeamsStats /> */}</TabsContent>
+        <TabsContent value="types">
+          <ProjectsTypes stats={portfolioAnalytics} />
+        </TabsContent>
       </Tabs>
     </>
   );
