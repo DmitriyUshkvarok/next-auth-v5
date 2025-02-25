@@ -28,11 +28,11 @@ export default function ProjectsStats({ stats }: { stats: ProjectStatsProps }) {
             <CardTitle className="text-base">Total Projects</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <FolderArchive />
               <div className="text-5xl font-bold">{stats.totalProjects}</div>
             </div>
-            <Button size="lg" asChild>
+            <Button size="sm" asChild>
               <Link href="/admin/all-projects">View all</Link>
             </Button>
           </CardContent>
@@ -55,7 +55,7 @@ export default function ProjectsStats({ stats }: { stats: ProjectStatsProps }) {
             <CardTitle className="text-base">Commercial Projects</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <Briefcase />
               <div className="text-5xl font-bold">
                 {stats.commercial.projects}
@@ -77,7 +77,7 @@ export default function ProjectsStats({ stats }: { stats: ProjectStatsProps }) {
             <CardTitle className="text-base">Non-Commercial Projects</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <Handshake />
               <div className="text-5xl font-bold">
                 {stats.nonCommercial.projects}

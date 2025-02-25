@@ -50,7 +50,7 @@ export const updatePortfolioProject = async (
   try {
     await getAdminUser();
     const user = await getAuthUser();
-    const image = formData.get('image') as File;
+    const image = formData.get('image') as File | null;
     const validatedPortfolioData = validateWithZodSchema(portfolioSchema, data);
     const { ...rest } = validatedPortfolioData;
 
@@ -63,13 +63,13 @@ export const updatePortfolioProject = async (
 
     const oldImageUrl = portfolio.image;
 
-    if (oldImageUrl && oldImageUrl.includes('vercel-storage.com')) {
-      await del(oldImageUrl);
-    }
+    let newImageUrl = oldImageUrl;
 
-    // Если изображение передано, загружаем его
-    let newImageUrl = oldImageUrl; // Сохраняем старое изображение, если новое не передано
     if (image) {
+      // Удаляем старое изображение только если загружаем новое
+      if (oldImageUrl && oldImageUrl.includes('vercel-storage.com')) {
+        await del(oldImageUrl);
+      }
       newImageUrl = await uploadImageToBlob(image, `portfolio/${user.id}`);
     }
 
