@@ -34,6 +34,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { updatePortfolioProject } from '@/action/portfolioAction';
 import { Calendar } from '../ui/calendar';
 import { format } from 'date-fns';
@@ -45,6 +54,8 @@ import {
 import { PortfolioProject } from '@/utils/types';
 import Image from 'next/image';
 import { Checkbox } from '@/components/ui/checkbox';
+import { websiteTypes } from '@/utils/websiteTypes';
+import { allowedTechnologies } from '@/utils/technologies';
 
 const UpdateProjectForm = ({
   id,
@@ -66,6 +77,8 @@ const UpdateProjectForm = ({
       videoReviewUrlMobile: project.videoReviewUrlMobile || '',
       websiteType: project.websiteType || '',
       isCommercial: project.isCommercial || false,
+      isPublic: project.isPublic || false,
+      complexity: (project.complexity as 'low' | 'medium' | 'high') || 'medium',
       budget:
         typeof project.budget === 'string'
           ? parseFloat(project.budget)
@@ -246,7 +259,24 @@ const UpdateProjectForm = ({
                   <FormItem>
                     <FormLabel>Website Type</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select website type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Choose Type</SelectLabel>
+                            {websiteTypes.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                {type.charAt(0).toUpperCase() + type.slice(1)}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -303,6 +333,34 @@ const UpdateProjectForm = ({
               />
               <FormField
                 control={form.control}
+                name="complexity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Complexity</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select complexity" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Complexity Levels</SelectLabel>
+                            <SelectItem value="low">Low</SelectItem>
+                            <SelectItem value="medium">Medium</SelectItem>
+                            <SelectItem value="high">High</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="isCommercial"
                 render={({ field }) => (
                   <FormItem className="flex items-center gap-2 mb-4">
@@ -314,6 +372,24 @@ const UpdateProjectForm = ({
                     </FormControl>
                     <FormLabel className="cursor-pointer !mt-0">
                       Commercial Project
+                    </FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isPublic"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2 mb-4">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="cursor-pointer !mt-0">
+                      Public Project
                     </FormLabel>
                     <FormMessage />
                   </FormItem>
@@ -331,7 +407,26 @@ const UpdateProjectForm = ({
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input {...field} placeholder="Tech name" />
+                            <Select
+                              value={field.value}
+                              onValueChange={field.onChange}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select technology" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>
+                                    Available Technologies
+                                  </SelectLabel>
+                                  {allowedTechnologies.map((tech, i) => (
+                                    <SelectItem key={i} value={tech}>
+                                      {tech}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
                           </FormControl>
                           <FormMessage />
                         </FormItem>

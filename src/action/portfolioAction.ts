@@ -67,7 +67,11 @@ export const updatePortfolioProject = async (
       await del(oldImageUrl);
     }
 
-    const newImageUrl = await uploadImageToBlob(image, `portfolio/${user.id}`);
+    // Если изображение передано, загружаем его
+    let newImageUrl = oldImageUrl; // Сохраняем старое изображение, если новое не передано
+    if (image) {
+      newImageUrl = await uploadImageToBlob(image, `portfolio/${user.id}`);
+    }
 
     await db
       .update(portfolios)
@@ -88,6 +92,8 @@ export const getFilteredPortfolioProjects = async ({
   currentPage = 1,
   pageSize = 6,
 }: PortfolioSearchParams) => {
+  await getAdminUser();
+
   const monthYearFilter =
     month && year
       ? sql`
@@ -142,6 +148,8 @@ export const getFilteredPortfolioProjects = async ({
 };
 
 export const getPortfolioProjectById = async (id: string) => {
+  await getAdminUser();
+
   const [project] = await db
     .select()
     .from(portfolios)
@@ -180,6 +188,8 @@ export const deleteProject = async (id: string) => {
 export const getTechnologies = async (): Promise<
   { name: string; icon: string; count: number }[]
 > => {
+  await getAdminUser();
+
   const technologies = await db.execute(sql`
       SELECT jsonb_array_elements(${portfolios.technologies}::jsonb)->>'name' AS name,
              jsonb_array_elements(${portfolios.technologies}::jsonb)->>'icon' AS icon,
@@ -199,6 +209,8 @@ export const getTechnologies = async (): Promise<
 export const getAvailableYearsAndMonths = async (): Promise<
   { year: number; months: number[] }[]
 > => {
+  await getAdminUser();
+
   const result = await db.execute(sql`
     SELECT DISTINCT EXTRACT(YEAR FROM realized_at) AS year,
            ARRAY_AGG(DISTINCT EXTRACT(MONTH FROM realized_at)) AS months
@@ -220,6 +232,8 @@ export const getPortfolioAnalytics = async ({
   month?: number;
   year?: number;
 }) => {
+  await getAdminUser();
+
   const filters = [];
 
   if (month) {

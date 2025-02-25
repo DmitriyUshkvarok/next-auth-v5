@@ -57,6 +57,7 @@ const YearAndMonthSelect = ({
       } else {
         params.set('year', year);
       }
+      params.set('page', '1');
       replace(`/admin/all-projects?${params.toString()}`);
     },
     [replace, searchParams]
@@ -70,6 +71,7 @@ const YearAndMonthSelect = ({
       } else {
         params.set('month', month);
       }
+      params.set('page', '1');
       replace(`/admin/all-projects?${params.toString()}`);
     },
     [replace, searchParams]

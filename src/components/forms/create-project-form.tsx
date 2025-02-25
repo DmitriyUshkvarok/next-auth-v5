@@ -16,6 +16,15 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { CalendarIcon, FolderPlus } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -43,6 +52,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
+import { websiteTypes } from '@/utils/websiteTypes';
+import { allowedTechnologies } from '@/utils/technologies';
 
 const CreateProjectForm = () => {
   const { toast } = useToast();
@@ -59,6 +70,8 @@ const CreateProjectForm = () => {
       videoReviewUrlMobile: '',
       websiteType: '',
       isCommercial: false,
+      isPublic: false,
+      complexity: 'medium',
       budget: 0,
       technologies: [],
       image: undefined,
@@ -214,7 +227,24 @@ const CreateProjectForm = () => {
                   <FormItem>
                     <FormLabel>Website Type</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select website type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Choose Type</SelectLabel>
+                            {websiteTypes.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                {type.charAt(0).toUpperCase() + type.slice(1)}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -271,6 +301,34 @@ const CreateProjectForm = () => {
               />
               <FormField
                 control={form.control}
+                name="complexity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Complexity</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select complexity" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Complexity Levels</SelectLabel>
+                            <SelectItem value="low">Low</SelectItem>
+                            <SelectItem value="medium">Medium</SelectItem>
+                            <SelectItem value="high">High</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="isCommercial"
                 render={({ field }) => (
                   <FormItem className="flex items-center gap-2 mb-4">
@@ -282,6 +340,24 @@ const CreateProjectForm = () => {
                     </FormControl>
                     <FormLabel className="cursor-pointer !mt-0">
                       Commercial Project
+                    </FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isPublic"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2 mb-4">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="cursor-pointer !mt-0">
+                      Public Project
                     </FormLabel>
                     <FormMessage />
                   </FormItem>
@@ -299,12 +375,32 @@ const CreateProjectForm = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
-                            <Input {...field} placeholder="Tech name" />
+                            <Select
+                              value={field.value}
+                              onValueChange={field.onChange}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select technology" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectLabel>
+                                    Available Technologies
+                                  </SelectLabel>
+                                  {allowedTechnologies.map((tech, i) => (
+                                    <SelectItem key={i} value={tech}>
+                                      {tech}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
+
                     <FormField
                       control={form.control}
                       name={`technologies.${index}.icon`}

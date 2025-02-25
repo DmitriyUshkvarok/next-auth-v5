@@ -61,6 +61,7 @@ export const imageSchema = () => {
   return z.object({
     image: z
       .instanceof(File)
+      .optional()
       .refine(
         (file) => !file || file.size <= maxUploadSize,
         'File size must be less than 1 MB'
@@ -116,6 +117,8 @@ export const portfolioSchema = z
         message: `Invalid website type. Allowed types: ${websiteTypes.join(', ')}`,
       }),
     isCommercial: z.boolean(),
+    isPublic: z.boolean(),
+    complexity: z.enum(['low', 'medium', 'high']),
     realizedAt: z.date().refine((date) => date <= new Date(), {
       message: 'Release date cannot be in the future',
     }),

@@ -6,8 +6,11 @@ import {
   decimal,
   jsonb,
   boolean,
+  pgEnum,
 } from 'drizzle-orm/pg-core';
 import { users } from './userSchema';
+
+export const complexityEnum = pgEnum('complexity', ['low', 'medium', 'high']);
 
 export const portfolios = pgTable('portfolio', {
   id: text('id').primaryKey(),
@@ -23,6 +26,8 @@ export const portfolios = pgTable('portfolio', {
   videoReviewUrlMobile: text('video_review_url_mobile'),
   websiteType: text('website_type').notNull().default('personal'),
   isCommercial: boolean('is_commercial').default(false).notNull(),
+  isPublic: boolean('is_public').default(false).notNull(),
+  complexity: complexityEnum('complexity').notNull().default('medium'),
   order: integer('order').default(0),
   budget: decimal('budget').default('0'),
   technologies: jsonb('technologies')

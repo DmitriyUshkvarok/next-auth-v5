@@ -17,6 +17,8 @@ export type PortfolioProject = {
   videoReviewUrlMobile: string | null;
   websiteType: string | null;
   isCommercial: boolean | null;
+  isPublic: boolean | null;
+  complexity: string | null;
   order: number | null;
   budget: string | null;
   createdAt: Date | null;

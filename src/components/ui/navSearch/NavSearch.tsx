@@ -20,6 +20,7 @@ const NavSearch = () => {
     } else {
       params.delete('search');
     }
+    params.set('page', '1');
     replace(`/admin/all-projects?${params.toString()}`);
   }, 300);
 
