@@ -38,6 +38,17 @@
   /* Для Chrome, Safari, Edge */
 }
 
+.recharts-default-legend {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+.recharts-legend-item {
+  display: flex !important;
+  align-items: center;
+  gap: 5px;
+}
 
 @layer base {
   :root {
@@ -138,6 +149,7 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

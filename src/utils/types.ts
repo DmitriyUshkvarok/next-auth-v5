@@ -33,6 +33,10 @@ export interface PortfolioSearchParams {
   pageSize?: number;
 }
 
+interface PublicComplexityStats {
+  complexity: { complexity: string; count: number }[];
+  isPublic: { isPublic: boolean; count: number }[];
+}
 export interface ProjectStatsProps {
   totalProjects: number;
   totalBudget: number;
@@ -48,4 +52,5 @@ export interface ProjectStatsProps {
     count: number;
     type: string;
   }[];
+  publicComplexityStats: PublicComplexityStats;
 }

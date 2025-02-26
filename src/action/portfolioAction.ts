@@ -268,6 +268,26 @@ export const getPortfolioAnalytics = async ({
     .groupBy(portfolios.websiteType)
     .execute();
 
+  const complexityStats = await db
+    .select({
+      complexity: portfolios.complexity,
+      count: sql<number>`COUNT(*)`,
+    })
+    .from(portfolios)
+    .where(whereClause)
+    .groupBy(portfolios.complexity)
+    .execute();
+
+  const isPublicStats = await db
+    .select({
+      isPublic: portfolios.isPublic,
+      count: sql<number>`COUNT(*)`,
+    })
+    .from(portfolios)
+    .where(whereClause)
+    .groupBy(portfolios.isPublic)
+    .execute();
+
   return {
     totalProjects: stats.totalProjects,
     totalBudget: stats.totalBudget,
@@ -280,5 +300,15 @@ export const getPortfolioAnalytics = async ({
       budget: stats.nonCommercialBudget,
     },
     websiteTypes,
+    publicComplexityStats: {
+      isPublic: isPublicStats.map((stat) => ({
+        isPublic: stat.isPublic as boolean,
+        count: Number(stat.count),
+      })),
+      complexity: complexityStats.map((stat) => ({
+        complexity: stat.complexity as string,
+        count: Number(stat.count),
+      })),
+    },
   };
 };
