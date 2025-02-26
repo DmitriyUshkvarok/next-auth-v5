@@ -34,7 +34,7 @@ export default function ComplexityDistributionChart({
           verticalAlign="middle"
           align="left"
           formatter={(value, entry, index) => (
-            <span className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-2">
               <span className="text-sm font-medium capitalize">{value}</span>
               <span className="text-sm text-gray-500">
                 ({data[index].value})

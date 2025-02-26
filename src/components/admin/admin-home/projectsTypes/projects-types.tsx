@@ -11,9 +11,9 @@ import {
 import ComplexityDistributionChart from './complexity-chart';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { IsPublicChart } from './isPublicChart';
 
 const ProjectsTypes = ({ stats }: { stats: ProjectStatsProps }) => {
-  console.log(stats);
   const totalPublic =
     stats.publicComplexityStats.isPublic.find((item) => item.isPublic)?.count ||
     0;
@@ -28,7 +28,7 @@ const ProjectsTypes = ({ stats }: { stats: ProjectStatsProps }) => {
             <CardTitle className="text-base">Projects Visibility</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex justify-between">
+            <div className="flex justify-between flex-wrap">
               <div className="flex items-center gap-2">
                 <EyeIcon className="text-green-500" />
                 <span className="text-lg">Public:</span>
@@ -50,11 +50,16 @@ const ProjectsTypes = ({ stats }: { stats: ProjectStatsProps }) => {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex justify-between items-center">
-              <span>Team leaders</span>
+              <span>Projects Visibility Distribution</span>
               <StarIcon className="text-yellow-500" />
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-wrap gap-2"></CardContent>
+          <CardContent>
+            <IsPublicChart
+              totalPublic={totalPublic}
+              totalPrivate={totalPrivate}
+            />
+          </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
