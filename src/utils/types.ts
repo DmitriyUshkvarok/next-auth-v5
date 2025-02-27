@@ -19,6 +19,7 @@ export type PortfolioProject = {
   isCommercial: boolean | null;
   isPublic: boolean | null;
   complexity: string | null;
+  developmentType: string | null;
   order: number | null;
   budget: string | null;
   createdAt: Date | null;
@@ -32,6 +33,13 @@ export interface PortfolioSearchParams {
   currentPage?: number;
   pageSize?: number;
 }
+
+export type DevelopmentStats = {
+  name: string; // Название месяца
+  frontend: number;
+  backend: number;
+  fullstack: number;
+};
 
 interface PublicComplexityStats {
   complexity: { complexity: string; count: number }[];
@@ -53,4 +61,8 @@ export interface ProjectStatsProps {
     type: string;
   }[];
   publicComplexityStats: PublicComplexityStats;
+  developmentTypes: {
+    developmentType: string;
+    count: number;
+  }[];
 }

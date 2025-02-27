@@ -7,7 +7,11 @@ import {
   RadialBar,
   RadialBarChart,
 } from 'recharts';
-import { ChartConfig, ChartContainer } from '@/components/ui/chart';
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+} from '@/components/ui/chart';
 
 export function IsPublicChart({
   totalPublic,
@@ -20,14 +24,32 @@ export function IsPublicChart({
 
   // Данные для графика
   const chartData = [
-    { name: 'Public', value: totalPublic, fill: 'hsl(var(--chart-1))' },
-    { name: 'Private', value: totalPrivate, fill: 'hsl(var(--chart-2))' },
+    { name: 'Public', value: totalPublic, fill: 'hsl(141, 53%, 50%)' },
+    { name: 'Private', value: totalPrivate, fill: 'hsl(0, 87%, 50%)' },
   ];
 
   const chartConfig = {
-    public: { label: 'Public', color: 'hsl(var(--chart-1))' },
-    private: { label: 'Private', color: 'hsl(var(--chart-2))' },
+    public: { label: 'Public', color: 'hsl(141, 53%, 60%)' },
+    private: { label: 'Private', color: 'hsl(0, 87%, 60%)' },
   } satisfies ChartConfig;
+
+  const CustomTooltipContent = ({
+    active,
+    payload,
+  }: {
+    active?: boolean;
+    payload?: { payload: { name: string; value: number } }[];
+  }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="bg-background p-2 rounded-lg border">
+          <p className="text-sm">{`${data.name}: ${data.value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <ChartContainer
@@ -74,6 +96,7 @@ export function IsPublicChart({
             }}
           />
         </PolarRadiusAxis>
+        <ChartTooltip cursor={false} content={<CustomTooltipContent />} />
       </RadialBarChart>
     </ChartContainer>
   );

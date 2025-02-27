@@ -11,6 +11,11 @@ import {
 import { users } from './userSchema';
 
 export const complexityEnum = pgEnum('complexity', ['low', 'medium', 'high']);
+export const developmentTypeEnum = pgEnum('development_type', [
+  'frontend',
+  'backend',
+  'fullstack',
+]);
 
 export const portfolios = pgTable('portfolio', {
   id: text('id').primaryKey(),
@@ -28,6 +33,9 @@ export const portfolios = pgTable('portfolio', {
   isCommercial: boolean('is_commercial').default(false).notNull(),
   isPublic: boolean('is_public').default(false).notNull(),
   complexity: complexityEnum('complexity').notNull().default('medium'),
+  developmentType: developmentTypeEnum('development_type')
+    .notNull()
+    .default('fullstack'),
   order: integer('order').default(0),
   budget: decimal('budget').default('0'),
   technologies: jsonb('technologies')

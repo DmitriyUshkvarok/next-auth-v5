@@ -288,6 +288,17 @@ export const getPortfolioAnalytics = async ({
     .groupBy(portfolios.isPublic)
     .execute();
 
+  // запрос для типов разработки
+  const developmentTypeStats = await db
+    .select({
+      developmentType: portfolios.developmentType,
+      count: sql<number>`COUNT(*)`,
+    })
+    .from(portfolios)
+    .where(whereClause)
+    .groupBy(portfolios.developmentType)
+    .execute();
+
   return {
     totalProjects: stats.totalProjects,
     totalBudget: stats.totalBudget,
@@ -310,5 +321,51 @@ export const getPortfolioAnalytics = async ({
         count: Number(stat.count),
       })),
     },
+    developmentTypes: developmentTypeStats.map((stat) => ({
+      developmentType: stat.developmentType as string,
+      count: Number(stat.count),
+    })),
   };
+};
+
+// Получаем данные для графика
+export const getMonthlyDevelopmentStats = async ({
+  year,
+}: {
+  year: number;
+}) => {
+  const monthlyStats = await db
+    .select({
+      month: sql`EXTRACT(MONTH FROM ${portfolios.realizedAt})`,
+      developmentType: portfolios.developmentType,
+      count: sql<number>`COUNT(*)`,
+    })
+    .from(portfolios)
+    .where(eq(sql`EXTRACT(YEAR FROM ${portfolios.realizedAt})`, year))
+    .groupBy(
+      sql`EXTRACT(MONTH FROM ${portfolios.realizedAt})`,
+      portfolios.developmentType
+    )
+    .execute();
+
+  // Преобразуем данные для графика
+  const formattedData = Array.from({ length: 12 }, (_, i) => ({
+    name: new Date(2025, i, 1).toLocaleString('default', { month: 'short' }),
+    frontend: 0,
+    backend: 0,
+    fullstack: 0,
+  }));
+
+  monthlyStats.forEach((stat) => {
+    const monthIndex = (stat.month as number) - 1;
+    if (stat.developmentType === 'frontend') {
+      formattedData[monthIndex].frontend = stat.count;
+    } else if (stat.developmentType === 'backend') {
+      formattedData[monthIndex].backend = stat.count;
+    } else if (stat.developmentType === 'fullstack') {
+      formattedData[monthIndex].fullstack = stat.count;
+    }
+  });
+
+  return formattedData;
 };

@@ -16,10 +16,17 @@ import {
 } from 'lucide-react';
 
 import Link from 'next/link';
-import { ProjectStatsProps } from '@/utils/types';
+import { DevelopmentStats, ProjectStatsProps } from '@/utils/types';
 import DynamicTypesOfProjects from '@/components/admin/admin-home/projects/dynamic-types-of-projects';
+import DevelopmentTypeChartYear from './developmen-type-chart-year';
 
-export default function ProjectsStats({ stats }: { stats: ProjectStatsProps }) {
+export default function ProjectsStats({
+  stats,
+  data,
+}: {
+  stats: ProjectStatsProps;
+  data: DevelopmentStats[];
+}) {
   return (
     <>
       <div className="grid lg:grid-cols-4 gap-4">
@@ -100,6 +107,7 @@ export default function ProjectsStats({ stats }: { stats: ProjectStatsProps }) {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          <DevelopmentTypeChartYear data={data} />
           <DynamicTypesOfProjects stats={stats} />
         </CardContent>
       </Card>

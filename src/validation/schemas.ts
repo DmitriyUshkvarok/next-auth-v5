@@ -119,6 +119,7 @@ export const portfolioSchema = z
     isCommercial: z.boolean(),
     isPublic: z.boolean(),
     complexity: z.enum(['low', 'medium', 'high']),
+    developmentType: z.enum(['frontend', 'backend', 'fullstack']),
     realizedAt: z.date().refine((date) => date <= new Date(), {
       message: 'Release date cannot be in the future',
     }),

@@ -79,6 +79,9 @@ const UpdateProjectForm = ({
       isCommercial: project.isCommercial || false,
       isPublic: project.isPublic || false,
       complexity: (project.complexity as 'low' | 'medium' | 'high') || 'medium',
+      developmentType:
+        (project.developmentType as 'frontend' | 'backend' | 'fullstack') ||
+        'fullstack',
       budget:
         typeof project.budget === 'string'
           ? parseFloat(project.budget)
@@ -351,6 +354,36 @@ const UpdateProjectForm = ({
                             <SelectItem value="low">Low</SelectItem>
                             <SelectItem value="medium">Medium</SelectItem>
                             <SelectItem value="high">High</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="developmentType"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Development Type</FormLabel>
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Development Type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Development Type</SelectLabel>
+                            <SelectItem value="frontend">Front-End</SelectItem>
+                            <SelectItem value="backend">Back-End</SelectItem>
+                            <SelectItem value="fullstack">
+                              Full-Stack
+                            </SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
