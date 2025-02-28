@@ -334,6 +334,8 @@ export const getMonthlyDevelopmentStats = async ({
 }: {
   year: number;
 }) => {
+  await getAdminUser();
+
   const monthlyStats = await db
     .select({
       month: sql`EXTRACT(MONTH FROM ${portfolios.realizedAt})`,

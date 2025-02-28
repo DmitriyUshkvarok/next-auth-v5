@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/select';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
+import { YearAndMonthSelectProps } from '@/utils/types';
 
 // Массив с названиями месяцев
 const monthNames = [
@@ -32,15 +33,6 @@ const monthNames = [
   'November',
   'December',
 ];
-
-interface YearAndMonth {
-  year: number;
-  months: number[];
-}
-
-export interface YearAndMonthSelectProps {
-  yearsAndMonthsData: YearAndMonth[];
-}
 
 const YearAndMonthSelect = ({
   yearsAndMonthsData,

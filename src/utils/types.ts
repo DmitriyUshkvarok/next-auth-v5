@@ -66,3 +66,12 @@ export interface ProjectStatsProps {
     count: number;
   }[];
 }
+
+interface YearAndMonth {
+  year: number;
+  months: number[];
+}
+
+export interface YearAndMonthSelectProps {
+  yearsAndMonthsData: YearAndMonth[];
+}
