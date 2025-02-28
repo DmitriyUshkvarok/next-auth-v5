@@ -64,7 +64,11 @@ const UpdateUserForm = ({ name }: { name: string }) => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} type="text" />
+                    <Input
+                      className="text-[10px] sm:text-[14px]"
+                      {...field}
+                      type="text"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -76,6 +80,7 @@ const UpdateUserForm = ({ name }: { name: string }) => {
               </FormItem>
             )}
             <SubmitButton
+              className="py-[8px] px-[16px] w-full text-[10px] sm:text-[14px]"
               text="Update User Name"
               isLoading={form.formState.isSubmitting}
             />

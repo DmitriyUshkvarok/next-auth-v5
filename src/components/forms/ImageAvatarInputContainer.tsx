@@ -12,12 +12,23 @@ import { useRouter } from 'next/navigation';
 
 type ImageInputContainerProps = {
   image: string | null;
-  name: string | '';
+  name: string;
   text: string;
+  className?: string; // Для контейнера
+  imageClassName?: string; // Для изображения
+  buttonClassName?: string; // Для кнопки
+  formClassName?: string; // Для формы
   children?: React.ReactNode;
 };
-const ImageAvatarInputContainer = (props: ImageInputContainerProps) => {
-  const { image, name, text } = props;
+const ImageAvatarInputContainer = ({
+  image,
+  name,
+  text,
+  className = '',
+  imageClassName = '',
+  buttonClassName = '',
+  formClassName = '',
+}: ImageInputContainerProps) => {
   const [isUpdateFormVisible, setUpdateFormVisible] = useState(false);
   const [isPending, startTransition] = useTransition();
   const { data: session, update } = useSession();
@@ -51,13 +62,13 @@ const ImageAvatarInputContainer = (props: ImageInputContainerProps) => {
     });
   };
   return (
-    <div className="my-2 flex flex-wrap gap-2 items-center">
+    <div className={`my-2 flex flex-wrap gap-2 items-center ${className}`}>
       {image ? (
         <Image
           src={image}
           width={100}
           height={100}
-          className="rounded-full object-cover mb-4 w-24 h-24"
+          className={`rounded-full object-cover mb-4 w-24 h-24 ${imageClassName}`}
           alt={name}
         />
       ) : (
@@ -68,11 +79,13 @@ const ImageAvatarInputContainer = (props: ImageInputContainerProps) => {
         variant="outline"
         size="sm"
         onClick={() => setUpdateFormVisible((prev) => !prev)}
+        className={buttonClassName}
       >
         {text}
       </Button>
+
       {isUpdateFormVisible && (
-        <div className="max-w-lg mt-4">
+        <div className={`max-w-lg mt-4 ${formClassName}`}>
           <form
             className="flex flex-col"
             action={(formData: FormData) => void handleSubmit(formData)}

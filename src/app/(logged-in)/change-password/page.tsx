@@ -9,13 +9,15 @@ export default async function ChangePassword() {
     redirect('/my-account');
   }
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Change Password</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ChangePasswordForm />
-      </CardContent>
-    </Card>
+    <section className="flex justify-center items-center min-h-screen">
+      <Card className="w-full max-w-[450px]">
+        <CardHeader>
+          <CardTitle>Change Password</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ChangePasswordForm />
+        </CardContent>
+      </Card>
+    </section>
   );
 }

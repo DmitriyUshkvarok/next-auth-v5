@@ -81,7 +81,10 @@ export default function TwoFactorAuthForm({ twoFactorActivated }: Props) {
       {!isActivated && (
         <div className="w-full">
           {step === 1 && (
-            <Button onClick={handleEnableClick} className="w-full">
+            <Button
+              onClick={handleEnableClick}
+              className="w-full bg-green-500 hover:bg-green-700 text-white text-[10px] sm:text-[14px] whitespace-normal text-center"
+            >
               Enable Two-Factor Authentication
             </Button>
           )}
