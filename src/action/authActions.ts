@@ -48,6 +48,7 @@ export async function googleAuthenticate({ user, account }: OAuthSignInArgs) {
           provider: 'google',
           image: user.image,
           name: user.name,
+          device: userDevice,
         })
         .where(eq(users.id, existingUser.id))
         .execute();
@@ -150,6 +151,9 @@ export const loginWithCredentials = async (
   data: z.infer<typeof loginSchema>
 ) => {
   try {
+    const headersFromDevice = await headers();
+    const userDevice = headersFromDevice.get('user-agent');
+
     const loginValidation = validateWithZodSchema(loginSchema, data);
 
     const user = await db
@@ -171,6 +175,13 @@ export const loginWithCredentials = async (
     if (!isPasswordValid) {
       return { message: 'Incorrect email or password', success: false };
     }
+
+    //  Обновление поля device
+    await db
+      .update(users)
+      .set({ device: userDevice })
+      .where(eq(users.email, loginValidation.email))
+      .execute();
 
     await signIn('credentials', {
       email: loginValidation.email,

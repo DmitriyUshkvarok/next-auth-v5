@@ -3,6 +3,23 @@ export type actionFunction = (
   formData: FormData
 ) => Promise<{ message: string }>;
 
+export type UserForAccount = {
+  createdAt: Date | null;
+  twoFactorActivated: boolean | null;
+};
+
+export type SessionProfile = {
+  user: {
+    device?: string | null;
+    email?: string | null;
+    id?: string;
+    image?: string | null;
+    name?: string | null;
+    provider?: string;
+    role?: string;
+  };
+};
+
 export type PortfolioProject = {
   id: string;
   userId: string;
