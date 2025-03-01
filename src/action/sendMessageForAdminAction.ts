@@ -18,8 +18,8 @@ export const sendFormForAdmin = async (
     );
 
     const mailOptions = {
-      from: validatedMessage.email,
-      to: process.env.NEXT_PUBLIC_UKR_NET_EMAIL_USER, // Замените на реальный email администратора
+      from: process.env.NEXT_PUBLIC_UKR_NET_EMAIL_USER,
+      to: process.env.NEXT_PUBLIC_UKR_NET_EMAIL_USER,
       subject: 'Новое сообщение от пользователя',
       html: `
         <h2>Новое сообщение</h2>
