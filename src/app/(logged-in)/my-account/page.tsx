@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/resizable';
 import AccountSidebar from '@/components/account/AccountSidebar';
 import AccountSettingsPanel from '@/components/account/AccountSettingsPanel';
+import { AccountDrawer } from '@/components/account/AccountDrawer';
 
 export default async function MyAccount() {
   const session = await auth();
@@ -33,7 +34,7 @@ export default async function MyAccount() {
         direction="horizontal"
         className="w-full max-w-[95%] min-h-screen rounded-lg border mx-auto my-4"
       >
-        <ResizablePanel defaultSize={150} className="p-2">
+        <ResizablePanel defaultSize={200} className="p-2">
           <AccountSidebar session={session} user={user} provider={provider} />
         </ResizablePanel>
         <ResizableHandle />
@@ -43,8 +44,15 @@ export default async function MyAccount() {
               <AccountSettingsPanel role={role} />
             </ResizablePanel>
             <ResizableHandle />
-            <ResizablePanel defaultSize={75}>
-              <div className="flex h-full items-center justify-center p-6"></div>
+            <ResizablePanel defaultSize={75} className="p-2">
+              <div className="flex flex-col justify-center gap-4">
+                <AccountDrawer
+                  name={session?.user?.name ?? ''}
+                  email={session?.user?.email ?? ''}
+                  photo={session?.user?.image ?? ''}
+                  role={session?.user?.role ?? ''}
+                />
+              </div>
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>

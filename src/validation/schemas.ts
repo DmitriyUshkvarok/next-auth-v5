@@ -126,6 +126,20 @@ export const portfolioSchema = z
   })
   .merge(imageSchema());
 
+export const sendFormForAdminSchema = z.object({
+  name: z
+    .string()
+    .min(3, 'The name must contain a minimum of 3 characters')
+    .max(50, 'The name must contain a maximum of 50 characters'),
+  email: z.string().email('Incorrect email'),
+  role: z.string().min(1, 'The role is mandatory'),
+  message: z
+    .string()
+    .min(10, 'The message must contain a minimum of 10 characters')
+    .max(1000, 'The message must contain a maximum of 1000 characters'),
+  photo: z.string().url('Incorrect image URL').optional(),
+});
+
 export function validateWithZodSchema(schema: ZodSchema, data: unknown) {
   const result = schema.safeParse(data);
 

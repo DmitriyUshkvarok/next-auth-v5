@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
+
 import { Label } from '../ui/label';
 import UpdateUserForm from '../forms/updateUserForm';
 import TwoFactorAuthForm from '../forms/two-factor-auth-form';
@@ -16,6 +17,7 @@ import { auth } from '../../../auth';
 import Link from 'next/link';
 import LogoutButton from '../forms/logout-button';
 import { SessionProfile, UserForAccount } from '@/utils/types';
+import { Badge } from '@/components/ui/badge';
 
 const AccountSidebar = ({
   session,
@@ -75,7 +77,7 @@ const AccountSidebar = ({
             <div>
               <Label className="mr-2 text-[#E62667]">Role:</Label>
               <span className="text-muted-foreground capitalize text-[10px] sm:text-[16px]">
-                {session?.user?.role}
+                <Badge>{session?.user?.role}</Badge>
               </span>
             </div>
             <div>
