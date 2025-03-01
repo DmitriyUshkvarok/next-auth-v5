@@ -52,6 +52,7 @@ export function AccountDrawer({
             email={email}
             photo={photo}
             role={role}
+            setOpenDrawer={setOpenDrawer}
           />
           <DrawerFooter className="px-0">
             <DrawerClose asChild>

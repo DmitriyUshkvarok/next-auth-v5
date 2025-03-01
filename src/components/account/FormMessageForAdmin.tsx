@@ -22,11 +22,13 @@ const FormMessageForAdmin = ({
   email,
   photo,
   role,
+  setOpenDrawer,
 }: {
   name: string;
   email: string;
   photo: string;
   role: string;
+  setOpenDrawer: (open: boolean) => void;
 }) => {
   const { toast } = useToast();
 
@@ -48,6 +50,8 @@ const FormMessageForAdmin = ({
         title: 'The message has been sent',
         description: result.message,
       });
+      form.reset();
+      setOpenDrawer(false);
     } else {
       form.setError('root', {
         message: result.message,
@@ -73,7 +77,6 @@ const FormMessageForAdmin = ({
                     className="text-[10px] sm:text-[14px]"
                     {...field}
                     type="text"
-                    readOnly
                   />
                 </FormControl>
                 <FormMessage />
