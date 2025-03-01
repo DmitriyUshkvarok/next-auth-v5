@@ -80,7 +80,7 @@ const UpdateUserForm = ({ name }: { name: string }) => {
               </FormItem>
             )}
             <SubmitButton
-              className="py-[8px] px-[16px] w-full text-[10px] sm:text-[14px]"
+              className="py-[4px] px-[12px] h-[30px] sm:h-[44px] sm:py-[8px] sm:px-[16px] w-full text-[10px] sm:text-[14px]"
               text="Update User Name"
               isLoading={form.formState.isSubmitting}
             />

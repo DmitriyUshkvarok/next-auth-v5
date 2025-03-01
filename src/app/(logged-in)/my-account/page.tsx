@@ -7,9 +7,8 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
-import Link from 'next/link';
-import { Home, UserCog } from 'lucide-react';
 import AccountSidebar from '@/components/account/AccountSidebar';
+import AccountSettingsPanel from '@/components/account/AccountSettingsPanel';
 
 export default async function MyAccount() {
   const session = await auth();
@@ -27,7 +26,7 @@ export default async function MyAccount() {
   if (!session?.user?.id) {
     return <div>User Not Found</div>;
   }
-  console.log(session.user.device);
+
   return (
     <section>
       <ResizablePanelGroup
@@ -40,25 +39,8 @@ export default async function MyAccount() {
         <ResizableHandle />
         <ResizablePanel defaultSize={50}>
           <ResizablePanelGroup direction="vertical">
-            <ResizablePanel defaultSize={25}>
-              <div className="flex items-center justify-start p-2">
-                <nav className="flex items-center justify-between">
-                  <ul className="flex flex-col gap-4">
-                    <li>
-                      <Link href="/">
-                        <Home className="mx-auto" />
-                      </Link>
-                    </li>
-                    {role && (
-                      <li>
-                        <Link href="/admin">
-                          <UserCog />
-                        </Link>
-                      </li>
-                    )}
-                  </ul>
-                </nav>
-              </div>
+            <ResizablePanel defaultSize={15}>
+              <AccountSettingsPanel role={role} />
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={75}>

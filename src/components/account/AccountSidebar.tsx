@@ -27,7 +27,7 @@ const AccountSidebar = ({
   provider: boolean;
 }) => {
   return (
-    <Card className="min-h-full">
+    <Card className="min-h-screen flex flex-col">
       <CardHeader className="p-3">
         <CardTitle className="text-center">
           {session?.user.name
@@ -50,37 +50,37 @@ const AccountSidebar = ({
           <div className="mb-4">
             <div>
               <Label className="mr-2 text-[#E62667]">Email:</Label>
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground text-[10px] sm:text-[16px]">
                 {session?.user?.email}
               </span>
             </div>
             <div>
               <Label className="mr-2 text-[#E62667]">Name:</Label>
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground text-[10px] sm:text-[16px]">
                 {session?.user?.name}
               </span>
             </div>
             <div>
               <Label className="mr-2 text-[#E62667]">Provider:</Label>
-              <span className="text-muted-foreground capitalize">
+              <span className="text-muted-foreground capitalize text-[10px] sm:text-[16px]">
                 {session?.user?.provider}
               </span>
             </div>
             <div>
               <Label className="mr-2 text-[#E62667]">Device:</Label>
-              <span className="text-muted-foreground capitalize">
+              <span className="text-muted-foreground capitalize text-[10px] sm:text-[16px]">
                 {getUserDeviceInfo(`${session?.user?.device || ''}`)}
               </span>
             </div>
             <div>
               <Label className="mr-2 text-[#E62667]">Role:</Label>
-              <span className="text-muted-foreground capitalize">
+              <span className="text-muted-foreground capitalize text-[10px] sm:text-[16px]">
                 {session?.user?.role}
               </span>
             </div>
             <div>
               <Label className="mr-2 text-[#E62667]">Account created:</Label>
-              <span className="text-muted-foreground capitalize">
+              <span className="text-muted-foreground capitalize text-[10px] sm:text-[16px]">
                 {user?.createdAt
                   ? new Intl.DateTimeFormat('en-GB', {
                       year: 'numeric',
@@ -105,7 +105,7 @@ const AccountSidebar = ({
             </div>
           </Suspense>
         </CardContent>
-        <CardFooter className="p-0">
+        <CardFooter className="p-0 mt-auto">
           <div>
             <LogoutButton />
           </div>
