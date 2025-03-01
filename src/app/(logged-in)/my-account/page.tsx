@@ -27,14 +27,14 @@ export default async function MyAccount() {
   if (!session?.user?.id) {
     return <div>User Not Found</div>;
   }
-
+  console.log(session.user.device);
   return (
     <section>
       <ResizablePanelGroup
         direction="horizontal"
         className="w-full max-w-[95%] min-h-screen rounded-lg border mx-auto my-4"
       >
-        <ResizablePanel defaultSize={350} className="p-2">
+        <ResizablePanel defaultSize={150} className="p-2">
           <AccountSidebar session={session} user={user} provider={provider} />
         </ResizablePanel>
         <ResizableHandle />

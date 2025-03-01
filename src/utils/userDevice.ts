@@ -1,13 +1,13 @@
 export const getUserDeviceInfo = (userAgent: string) => {
   const ua = userAgent.toLowerCase();
 
-  // Определение ОС
+  // Определение ОС (iPhone/iPad должны идти раньше macOS!)
   let os = 'Unknown OS';
-  if (ua.includes('macintosh') || ua.includes('mac os x')) os = 'macOS';
+  if (ua.includes('iphone') || ua.includes('ipad')) os = 'iOS';
+  else if (ua.includes('macintosh') || ua.includes('mac os x')) os = 'macOS';
   else if (ua.includes('windows')) os = 'Windows';
   else if (ua.includes('android')) os = 'Android';
   else if (ua.includes('linux')) os = 'Linux';
-  else if (ua.includes('iphone') || ua.includes('ipad')) os = 'iOS';
 
   // Определение браузера
   let browser = 'Unknown Browser';
