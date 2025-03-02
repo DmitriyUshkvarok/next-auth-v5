@@ -10,7 +10,7 @@ import {
   Map,
   PieChart,
   Settings2,
-  SquareTerminal,
+  Home,
   LayoutDashboardIcon,
   HammerIcon,
 } from 'lucide-react';
@@ -66,22 +66,26 @@ const data = {
       ],
     },
     {
-      title: 'Playground',
+      title: 'Home Page',
       url: '#',
-      icon: SquareTerminal,
+      icon: Home,
       isActive: false,
       items: [
         {
-          title: 'History',
-          url: '#',
+          title: 'Navigation',
+          url: '/admin/home/navigation',
         },
         {
-          title: 'Starred',
-          url: '#',
+          title: 'Hero Section',
+          url: '/admin/home/hero',
         },
         {
-          title: 'Settings',
-          url: '#',
+          title: 'Social Links',
+          url: '/admin/home/social-links',
+        },
+        {
+          title: 'Statistics',
+          url: '/admin/home/statistics',
         },
       ],
     },

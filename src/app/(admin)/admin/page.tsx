@@ -23,9 +23,6 @@ const AdminPage = async ({
   });
   const availableYearsAndMonths = await getAvailableYearsAndMonths();
 
-  console.log(portfolioAnalytics);
-  console.log(monthlyDevelopmentStats);
-  console.log(availableYearsAndMonths);
   return (
     <>
       <Tabs defaultValue="projects" className="px-4">
