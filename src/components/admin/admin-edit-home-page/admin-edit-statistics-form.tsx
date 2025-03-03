@@ -32,33 +32,31 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { FolderPlus } from 'lucide-react';
-import { updateHomePageNavigationSchema } from '@/validation/schemasHomePage';
-import { updateHomePageNavigation } from '@/action/homePageActions';
+import { updateHomePageStatisticsSchema } from '@/validation/schemasHomePage';
+import { updateHomePageStatistics } from '@/action/homePageActions';
 
-interface AdminEditNavigationFormProps {
-  data: { name: string; url: string }[];
+interface AdminEditStatisticsFormProps {
+  data: { count: number; title: string }[];
 }
-
-const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
+const AdminEditStatisticsForm = ({ data }: AdminEditStatisticsFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
-
-  const form = useForm<z.infer<typeof updateHomePageNavigationSchema>>({
-    resolver: zodResolver(updateHomePageNavigationSchema),
+  const form = useForm<z.infer<typeof updateHomePageStatisticsSchema>>({
+    resolver: zodResolver(updateHomePageStatisticsSchema),
     defaultValues: {
-      navigations: data ?? [],
+      statistics: data ?? [],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: 'navigations',
+    name: 'statistics',
   });
 
   const handleSubmit = async (
-    data: z.infer<typeof updateHomePageNavigationSchema>
+    data: z.infer<typeof updateHomePageStatisticsSchema>
   ) => {
-    const response = await updateHomePageNavigation(data);
+    const response = await updateHomePageStatistics(data);
     if (response.success) {
       toast({
         description: `${response.message}`,
@@ -75,9 +73,9 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
       <CardHeader>
         <div className="flex justify-between">
           <div className="flex flex-col gap-2">
-            <CardTitle>Update Navigation Links</CardTitle>
+            <CardTitle>Update Statistics</CardTitle>
             <CardDescription className="capitalize">
-              updating the navigation links for the homepage.
+              updating the statistics for the homepage.
             </CardDescription>
           </div>
           <div>
@@ -96,12 +94,16 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
                 <div key={field.id} className="flex items-end gap-2">
                   <FormField
                     control={form.control}
-                    name={`navigations.${index}.name`}
+                    name={`statistics.${index}.count`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Title</FormLabel>
+                        <FormLabel>Count</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Enter a name" />
+                          <Input
+                            {...field}
+                            type="number"
+                            placeholder="Enter a Count"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -109,12 +111,12 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
                   />
                   <FormField
                     control={form.control}
-                    name={`navigations.${index}.url`}
+                    name={`statistics.${index}.title`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Links</FormLabel>
+                        <FormLabel>Title</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Enter a URL" />
+                          <Input {...field} placeholder="Enter a Title" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -127,12 +129,12 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
               ))}
               <Button
                 type="button"
-                onClick={() => append({ name: '', url: '' })}
+                onClick={() => append({ count: 0, title: '' })}
               >
-                ➕ Add Link
+                ➕ Add Title
               </Button>
               <SubmitButton
-                text="Update navigation"
+                text="Update Statistics"
                 isLoading={form.formState.isSubmitting}
               />
             </fieldset>
@@ -157,13 +159,13 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admin/home/statistics">
-                Edit Statistics
+              <BreadcrumbLink href="/admin/home/navigation">
+                Edit Navigations
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Update Navigation Links</BreadcrumbPage>
+              <BreadcrumbPage>Update Statistics</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -172,4 +174,4 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
   );
 };
 
-export default AdminEditNavigationForm;
+export default AdminEditStatisticsForm;

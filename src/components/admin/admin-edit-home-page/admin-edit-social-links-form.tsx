@@ -32,33 +32,31 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { FolderPlus } from 'lucide-react';
-import { updateHomePageNavigationSchema } from '@/validation/schemasHomePage';
-import { updateHomePageNavigation } from '@/action/homePageActions';
+import { updateHomePageSocialSchema } from '@/validation/schemasHomePage';
+import { updateHomePageSocialsLinks } from '@/action/homePageActions';
 
-interface AdminEditNavigationFormProps {
+interface AdminEditSocialLinksFormProps {
   data: { name: string; url: string }[];
 }
-
-const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
+const AdminEditSocialLinksForm = ({ data }: AdminEditSocialLinksFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
-
-  const form = useForm<z.infer<typeof updateHomePageNavigationSchema>>({
-    resolver: zodResolver(updateHomePageNavigationSchema),
+  const form = useForm<z.infer<typeof updateHomePageSocialSchema>>({
+    resolver: zodResolver(updateHomePageSocialSchema),
     defaultValues: {
-      navigations: data ?? [],
+      socials: data ?? [],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: 'navigations',
+    name: 'socials',
   });
 
   const handleSubmit = async (
-    data: z.infer<typeof updateHomePageNavigationSchema>
+    data: z.infer<typeof updateHomePageSocialSchema>
   ) => {
-    const response = await updateHomePageNavigation(data);
+    const response = await updateHomePageSocialsLinks(data);
     if (response.success) {
       toast({
         description: `${response.message}`,
@@ -75,9 +73,9 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
       <CardHeader>
         <div className="flex justify-between">
           <div className="flex flex-col gap-2">
-            <CardTitle>Update Navigation Links</CardTitle>
+            <CardTitle>Update Socials Links</CardTitle>
             <CardDescription className="capitalize">
-              updating the navigation links for the homepage.
+              updating the socials links for the homepage.
             </CardDescription>
           </div>
           <div>
@@ -96,7 +94,7 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
                 <div key={field.id} className="flex items-end gap-2">
                   <FormField
                     control={form.control}
-                    name={`navigations.${index}.name`}
+                    name={`socials.${index}.name`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Title</FormLabel>
@@ -109,7 +107,7 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
                   />
                   <FormField
                     control={form.control}
-                    name={`navigations.${index}.url`}
+                    name={`socials.${index}.url`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Links</FormLabel>
@@ -132,7 +130,7 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
                 ➕ Add Link
               </Button>
               <SubmitButton
-                text="Update navigation"
+                text="Update Socials Links"
                 isLoading={form.formState.isSubmitting}
               />
             </fieldset>
@@ -151,8 +149,8 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admin/home/social-links">
-                Edit Social Links
+              <BreadcrumbLink href="/admin/home/navigation">
+                Edit Navigations Links
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -163,7 +161,7 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Update Navigation Links</BreadcrumbPage>
+              <BreadcrumbPage>Update Socials Links</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -172,4 +170,4 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
   );
 };
 
-export default AdminEditNavigationForm;
+export default AdminEditSocialLinksForm;
