@@ -87,6 +87,10 @@ const data = {
           title: 'Statistics',
           url: '/admin/home/statistics',
         },
+        {
+          title: 'Resume',
+          url: '/admin/home/resume',
+        },
       ],
     },
     {

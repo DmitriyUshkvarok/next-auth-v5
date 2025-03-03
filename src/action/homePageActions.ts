@@ -17,6 +17,8 @@ import { eq } from 'drizzle-orm';
 import { homePageHeros } from '@/db/schema/homePageHeroSchema';
 import { homePageSocials } from '@/db/schema/homePageSocialsLinksSchema';
 import { homePageStatistics } from '@/db/schema/homePageStatisticsSchema';
+import { homePageResume } from '@/db/schema/homePageResumeSchema';
+import { uploadResumeToBlob } from '@/utils/uploadPdf';
 
 const fixedId = 'default';
 
@@ -300,4 +302,89 @@ export const getHomePageStatistics = async () => {
       data: [],
     };
   }
+};
+
+export const updateHomePageResume = async (formData: FormData) => {
+  try {
+    await getAdminUser();
+    const getUser = await getAuthUser();
+    const resume = formData.get('resume') as File | null;
+
+    if (!resume) {
+      return {
+        success: false,
+        message: 'The resume file has not been uploaded',
+      };
+    }
+
+    // Получаем текущие данные
+    const [existingResume] = await db
+      .select()
+      .from(homePageResume)
+      .where(eq(homePageResume.id, fixedId))
+      .limit(1)
+      .execute();
+
+    let newResumeUrl = existingResume?.resume || null;
+
+    if (resume) {
+      // Удаляем старое резюме перед загрузкой нового
+      if (
+        existingResume?.resume &&
+        existingResume.resume.includes('vercel-storage.com')
+      ) {
+        await del(existingResume.resume);
+      }
+      newResumeUrl = await uploadResumeToBlob(resume, `resumes/${getUser.id}`);
+    }
+
+    if (existingResume) {
+      // Обновляем запись
+      await db
+        .update(homePageResume)
+        .set({ resume: newResumeUrl })
+        .where(eq(homePageResume.id, fixedId))
+        .execute();
+    } else {
+      // Создаём новую запись
+      await db
+        .insert(homePageResume)
+        .values({
+          id: fixedId,
+          userId: getUser.id,
+          resume: newResumeUrl,
+        })
+        .execute();
+    }
+
+    return {
+      success: true,
+      message: 'Resume has been updated successfully',
+    };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const getHomePageResume = async () => {
+  const [existingResume] = await db
+    .select()
+    .from(homePageResume)
+    .where(eq(homePageResume.id, fixedId))
+    .limit(1)
+    .execute();
+
+  if (!existingResume || !existingResume.resume) {
+    return {
+      success: false,
+      message: 'Резюме не найдено',
+      resumeUrl: null,
+    };
+  }
+
+  return {
+    success: true,
+    message: 'Резюме получено успешно',
+    resumeUrl: existingResume.resume,
+  };
 };

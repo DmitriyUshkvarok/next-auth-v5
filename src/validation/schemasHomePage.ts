@@ -65,3 +65,15 @@ export const updateHomePageStatisticsSchema = z.object({
     })
   ),
 });
+
+export const pdfSchema = z.object({
+  resume: z
+    .instanceof(File, { message: 'The file must be a PDF' })
+    .optional()
+    .refine((file) => !file || file.size <= 1024 * 1024, {
+      message: 'The file size must be less than 1MB',
+    })
+    .refine((file) => !file || file.type === 'application/pdf', {
+      message: 'The file must be in PDF format',
+    }),
+});

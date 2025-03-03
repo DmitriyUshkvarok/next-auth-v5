@@ -163,6 +163,12 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
+              <BreadcrumbLink href="/admin/home/resume">
+                Edit Resume
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
               <BreadcrumbPage>Update Navigation Links</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>

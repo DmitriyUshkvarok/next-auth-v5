@@ -161,6 +161,12 @@ const AdminEditSocialLinksForm = ({ data }: AdminEditSocialLinksFormProps) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
+              <BreadcrumbLink href="/admin/home/resume">
+                Edit Resume
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
               <BreadcrumbPage>Update Socials Links</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>

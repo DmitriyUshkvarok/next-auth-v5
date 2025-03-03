@@ -165,6 +165,12 @@ const AdminEditStatisticsForm = ({ data }: AdminEditStatisticsFormProps) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
+              <BreadcrumbLink href="/admin/home/resume">
+                Edit Resume
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
               <BreadcrumbPage>Update Statistics</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>

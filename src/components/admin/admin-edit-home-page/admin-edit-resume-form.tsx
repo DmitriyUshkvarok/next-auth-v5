@@ -30,45 +30,36 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-
 import { FolderPlus } from 'lucide-react';
-import { updateHomePageHeroSchema } from '@/validation/schemasHomePage';
-import { updateHomePageHero } from '@/action/homePageActions';
-import Image from 'next/image';
-import { Textarea } from '@/components/ui/textarea';
+import { pdfSchema } from '@/validation/schemasHomePage';
+import { updateHomePageResume } from '@/action/homePageActions';
 
-interface HeroData {
-  position: string;
-  title: string;
-  developerName: string;
-  description: string;
-  image: string | null;
+interface AdminEditResumeFormProps {
+  data: string | null;
 }
 
-const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
+const AdminEditResumeForm = ({ data }: AdminEditResumeFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof updateHomePageHeroSchema>>({
-    resolver: zodResolver(updateHomePageHeroSchema),
+  const form = useForm<z.infer<typeof pdfSchema>>({
+    resolver: zodResolver(pdfSchema),
     defaultValues: {
-      position: data.position,
-      title: data.title,
-      developerName: data.developerName,
-      description: data.description,
-      image: undefined,
+      resume: undefined,
     },
   });
 
-  const handleSubmit = async (
-    data: z.infer<typeof updateHomePageHeroSchema>
-  ) => {
+  const handleSubmit = async (data: { resume?: File }) => {
     const formData = new FormData();
 
-    if (data.image) {
-      formData.append('image', data.image);
+    if (data.resume) {
+      formData.append('resume', data.resume);
+    } else {
+      toast({ description: 'Файл не выбран', variant: 'destructive' });
+      return;
     }
-    const result = await updateHomePageHero(data, formData);
+
+    const result = await updateHomePageResume(formData);
 
     if (result.success) {
       toast({
@@ -81,15 +72,14 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
       });
     }
   };
-
   return (
     <Card className="max-w-full mx-4 mb-4">
       <CardHeader>
         <div className="flex justify-between">
           <div className="flex flex-col gap-2">
-            <CardTitle>Update Hero</CardTitle>
+            <CardTitle>Update Resume</CardTitle>
             <CardDescription className="capitalize">
-              Updating the Hero for the homepage.
+              Updating the Resume for the homepage.
             </CardDescription>
           </div>
           <div>
@@ -106,83 +96,36 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
             >
               <Card>
                 <CardHeader>
-                  <CardTitle>Current Image</CardTitle>
+                  <CardTitle>Current Resume</CardTitle>
                 </CardHeader>
-                <CardContent className="relative h-[600px] p-4">
-                  <Image
-                    src={data.image ?? '/placeholder.png'}
-                    alt={data.title ?? 'project image'}
-                    className="object-cover"
-                    fill
-                  />
+                <CardContent>
+                  {' '}
+                  {data ? (
+                    <iframe
+                      src={data}
+                      width="100%"
+                      height="500px"
+                      className="rounded-lg border"
+                    />
+                  ) : (
+                    <p className="text-gray-500">No executive summary</p>
+                  )}
                 </CardContent>
               </Card>
 
               <FormField
                 control={form.control}
-                name="image"
+                name="resume"
                 render={({ field: { onChange, ref } }) => (
                   <FormItem>
-                    <FormLabel>Update Image</FormLabel>
+                    <FormLabel>Upload Resume (PDF)</FormLabel>
                     <FormControl>
                       <Input
                         type="file"
-                        accept="image/*"
+                        accept="application/pdf"
                         ref={ref}
                         onChange={(e) => onChange(e.target.files?.[0])}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="position"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Position</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="developerName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Developer Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -197,7 +140,7 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
                 </FormItem>
               )}
               <SubmitButton
-                text="Update Hero"
+                text="Update Resume"
                 isLoading={form.formState.isSubmitting}
               />
             </fieldset>
@@ -209,6 +152,10 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/admin/home/hero">Edit Hero</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -230,13 +177,7 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admin/home/resume">
-                Edit Resume
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Update Hero</BreadcrumbPage>
+              <BreadcrumbPage>Update Resume</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -245,4 +186,4 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
   );
 };
 
-export default AdminEditHeroForm;
+export default AdminEditResumeForm;
