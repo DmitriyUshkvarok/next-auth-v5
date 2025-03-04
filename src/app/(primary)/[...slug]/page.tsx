@@ -18,7 +18,11 @@ export async function generateStaticParams() {
   }));
 }
 
-const DynamicPage = async ({ params }: { params: { slug?: string[] } }) => {
+const DynamicPage = async ({
+  params,
+}: {
+  params: Promise<{ slug?: string[] }>;
+}) => {
   const { slug } = await params;
   const navSlug = slug?.join('/') || '';
 
