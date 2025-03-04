@@ -12,8 +12,10 @@ export default {
       fontFamily: {
         heading: 'var(--font-aboreto)',
         body: 'var(--font-poppins)',
+        logo: 'var(--font-montserrat)',
       },
       colors: {
+        primaryGreen: 'hsl(var(--primary-green))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

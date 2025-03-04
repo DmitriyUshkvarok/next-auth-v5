@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Aboreto, Poppins } from 'next/font/google';
+import { Aboreto, Poppins, Montserrat } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/providers/theme-provider';
 import NextAuthProvider from '@/providers/nextAuthProvider';
@@ -19,6 +19,13 @@ const aboreto = Aboreto({
   weight: ['400'],
 });
 
+const montserrat = Montserrat({
+  subsets: ['latin', 'cyrillic'],
+  display: 'swap',
+  variable: '--font-montserrat',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+});
+
 export const metadata: Metadata = {
   title: 'Next Auth v5',
   description: 'create-next-app with NextAuth v5',
@@ -31,7 +38,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`${poppins.variable} ${aboreto.variable}`}>
+      <body
+        className={`${poppins.variable} ${aboreto.variable} ${montserrat.variable}`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

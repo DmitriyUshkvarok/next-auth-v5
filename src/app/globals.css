@@ -41,6 +41,7 @@
 
 @layer base {
   :root {
+    --primary-green: 150, 100%, 40%;
     --background: 36 39% 88%;
     --foreground: 36 45% 15%;
     --primary: 36 45% 70%;

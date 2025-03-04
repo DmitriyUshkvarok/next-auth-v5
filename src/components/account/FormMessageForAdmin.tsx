@@ -24,10 +24,10 @@ const FormMessageForAdmin = ({
   role,
   setOpenDrawer,
 }: {
-  name: string;
-  email: string;
-  photo: string;
-  role: string;
+  name?: string;
+  email?: string;
+  photo?: string;
+  role?: string;
   setOpenDrawer: (open: boolean) => void;
 }) => {
   const { toast } = useToast();
@@ -35,11 +35,11 @@ const FormMessageForAdmin = ({
   const form = useForm<z.infer<typeof sendFormForAdminSchema>>({
     resolver: zodResolver(sendFormForAdminSchema),
     defaultValues: {
-      name: name,
-      email: email,
-      role: role,
+      name: name ?? '',
+      email: email ?? '',
+      role: role ?? '',
       message: '',
-      photo: photo,
+      photo: photo ?? '',
     },
   });
 
@@ -94,7 +94,7 @@ const FormMessageForAdmin = ({
                     className="text-[10px] sm:text-[14px]"
                     {...field}
                     type="email"
-                    readOnly
+                    readOnly={!!email}
                   />
                 </FormControl>
                 <FormMessage />
