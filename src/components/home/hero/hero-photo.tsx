@@ -13,7 +13,7 @@ const HeroPhoto = ({ photo }: { photo: string | null }) => {
         }}
       >
         <motion.div
-          className="absolute w-[260px] h-[260px] xl:w-[410px] xl:h-[410px] mix-blend-lighten"
+          className="absolute w-[260px] h-[260px] xl:w-[430px] xl:h-[430px] mix-blend-lighten"
           initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
@@ -30,7 +30,7 @@ const HeroPhoto = ({ photo }: { photo: string | null }) => {
           />
         </motion.div>
         <motion.svg
-          className="w-[300px] h-[300px] xl:w-[450px] xl:h-[450px]"
+          className="w-[300px] h-[300px] xl:w-[470px] xl:h-[470px]"
           fill="transparent"
           viewBox="0 0 506 506"
           xmlns="http://www.w3.org/2000/svg"
