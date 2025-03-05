@@ -18,7 +18,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
               <Link
                 href={path}
                 className={`relative font-body font-medium text-white text-lg transition-colors duration-300 capitalize 
-                hover:text-primaryGreen ${isActive ? 'text-primaryGreen' : ''}`}
+                hover:text-primaryGreen ${isActive ? 'text-[#00ff88]' : ''}`}
               >
                 {nav.name}
                 {isActive && (

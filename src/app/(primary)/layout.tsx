@@ -10,7 +10,7 @@ export default async function RootLayout({
   return (
     <>
       <Header navigations={pageRoutes.data ?? []} />
-      <main>{children}</main>
+      <main className="container mx-auto">{children}</main>
     </>
   );
 }
