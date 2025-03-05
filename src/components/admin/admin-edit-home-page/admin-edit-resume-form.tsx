@@ -99,7 +99,6 @@ const AdminEditResumeForm = ({ data }: AdminEditResumeFormProps) => {
                   <CardTitle>Current Resume</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {' '}
                   {data ? (
                     <iframe
                       src={data}

@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
-const HeroPhoto = () => {
+const HeroPhoto = ({ photo }: { photo: string | null }) => {
   return (
     <div className="w-full h-full relative">
       <motion.div
@@ -13,7 +13,7 @@ const HeroPhoto = () => {
         }}
       >
         <motion.div
-          className="absolute w-[298px] h-[298px] xl:w-[430px] xl:h-[430px] mix-blend-lighten"
+          className="absolute w-[260px] h-[260px] xl:w-[410px] xl:h-[410px] mix-blend-lighten"
           initial={{ opacity: 0 }}
           animate={{
             opacity: 1,
@@ -21,16 +21,16 @@ const HeroPhoto = () => {
           }}
         >
           <Image
-            src="/hero-photo_processed.png"
+            src={photo ?? '/placeholder.png'}
             alt="admin photo"
             priority
             quality={100}
             fill
-            className="object-contain"
+            className="object-contain ml-6 mt-4"
           />
         </motion.div>
         <motion.svg
-          className="w-[300px] xl:w-[506px] h-[300px] xl:h-[506px]"
+          className="w-[300px] h-[300px] xl:w-[450px] xl:h-[450px]"
           fill="transparent"
           viewBox="0 0 506 506"
           xmlns="http://www.w3.org/2000/svg"
