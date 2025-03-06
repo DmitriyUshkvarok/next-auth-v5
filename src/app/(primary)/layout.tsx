@@ -1,5 +1,7 @@
 import Header from '@/components/home/header/header';
 import { getHomePageNavigation } from '@/action/homePageActions';
+import PageTransition from '@/components/ui/PageTransition/PageTransition';
+import SrairEffect from '@/components/ui/PageTransition/SrairEffect';
 
 export default async function RootLayout({
   children,
@@ -10,7 +12,10 @@ export default async function RootLayout({
   return (
     <>
       <Header navigations={pageRoutes.data ?? []} />
-      <main className="container mx-auto">{children}</main>
+      <SrairEffect />
+      <PageTransition>
+        <main className="container mx-auto">{children}</main>
+      </PageTransition>
     </>
   );
 }

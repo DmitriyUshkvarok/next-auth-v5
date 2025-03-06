@@ -30,7 +30,7 @@ const HeroContainer = async () => {
           <HeroPhoto photo={heroPhoto} />
         </div>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 py-4">
         <HeroStatistic data={resultStatistics.data ?? []} />
       </div>
     </section>

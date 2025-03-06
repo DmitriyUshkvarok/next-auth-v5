@@ -17,6 +17,7 @@ import { usePathname } from 'next/navigation';
 // import DarkMode from '@/components/ui/dark-mode/dark-mode';
 import HireMe from './hire-me';
 import { useTheme } from 'next-themes';
+import Logo from './logo';
 
 const Burger = ({ navigations }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,13 +54,27 @@ const Burger = ({ navigations }: NavigationProps) => {
         </SheetClose>
 
         <SheetHeader>
-          <SheetTitle>Mobile Menu</SheetTitle>
+          <SheetTitle>
+            <Logo />
+          </SheetTitle>
           <SheetDescription>
             Use the menu below to navigate the site.
           </SheetDescription>
         </SheetHeader>
         <nav className="mt-10">
           <ul className="flex flex-col gap-6">
+            <li>
+              <Link
+                href="/"
+                className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
+                hover:text-primaryHome ${pathname === '/' ? 'text-primaryHome' : ''}`}
+              >
+                Home
+                {pathname === '/' && (
+                  <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
+                )}
+              </Link>
+            </li>
             {navigations.map((nav) => {
               const path = new URL(nav.url).pathname;
               const isActive = pathname === path;

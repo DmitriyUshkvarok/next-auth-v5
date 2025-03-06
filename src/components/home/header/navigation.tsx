@@ -20,7 +20,24 @@ const Navigation = ({ navigations }: NavigationProps) => {
 
   return (
     <nav>
-      <ul className="flex items-center gap-6">
+      <ul className="flex items-center gap-4">
+        <motion.li
+          variants={itemVariants}
+          initial="hidden"
+          animate="visible"
+          custom={0} // Первый элемент
+        >
+          <Link
+            href="/"
+            className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
+            hover:text-primaryHome ${pathname === '/' ? 'text-primaryHome' : ''}`}
+          >
+            Home
+            {pathname === '/' && (
+              <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
+            )}
+          </Link>
+        </motion.li>
         {navigations.map((nav, i) => {
           const path = new URL(nav.url).pathname;
           const isActive = pathname === path;
