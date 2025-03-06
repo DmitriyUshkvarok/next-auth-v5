@@ -16,6 +16,7 @@ export default {
       },
       colors: {
         primaryGreen: 'hsl(var(--primary-green))',
+        primaryGreenText: '#00ff88',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

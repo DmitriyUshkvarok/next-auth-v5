@@ -14,7 +14,7 @@ import {
 import Link from 'next/link';
 import { NavigationProps } from './header';
 import { usePathname } from 'next/navigation';
-import DarkMode from '@/components/ui/dark-mode/dark-mode';
+// import DarkMode from '@/components/ui/dark-mode/dark-mode';
 import HireMe from './hire-me';
 
 const Burger = ({ navigations }: NavigationProps) => {
@@ -33,7 +33,12 @@ const Burger = ({ navigations }: NavigationProps) => {
           onClick={() => setIsOpen(false)}
           className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none"
         >
-          <Hamburger color="#00ff88" toggled={isOpen} toggle={setIsOpen} size={20}/>
+          <Hamburger
+            color="#00ff88"
+            toggled={isOpen}
+            toggle={setIsOpen}
+            size={20}
+          />
         </SheetClose>
 
         <SheetHeader>
@@ -53,8 +58,8 @@ const Burger = ({ navigations }: NavigationProps) => {
                   <Link
                     href={path}
                     onClick={() => setIsOpen(false)}
-                    className={`relative font-body font-medium text-white text-2xl transition-colors duration-300 capitalize 
-                hover:text-primaryGreen ${isActive ? 'text-[#00ff88]' : ''}`}
+                    className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
+                hover:text-primaryGreen ${isActive ? 'text-primaryGreenText' : 'text-white'}`}
                   >
                     {nav.name}
                     {isActive && (
@@ -64,11 +69,23 @@ const Burger = ({ navigations }: NavigationProps) => {
                 </li>
               );
             })}
+            <li>
+              <Link
+                href="/my-account"
+                className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
+                            hover:text-primaryGreen ${pathname === '/my-account' ? 'text-primaryGreenText' : 'text-white'}`}
+              >
+                Account
+                {pathname === '/my-account' && (
+                  <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryGreen"></span>
+                )}
+              </Link>
+            </li>
           </ul>
         </nav>
         <SheetFooter className="flex-col gap-4 mt-auto">
           <div className="flex justify-center items-center">
-            <DarkMode />
+            {/* <DarkMode /> */}
           </div>
           <div className="flex justify-center items-center">
             <HireMe />

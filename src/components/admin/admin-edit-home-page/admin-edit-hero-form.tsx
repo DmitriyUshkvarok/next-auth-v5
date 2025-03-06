@@ -112,7 +112,7 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
                   <Image
                     src={data.image ?? '/placeholder.png'}
                     alt={data.title ?? 'project image'}
-                    className="object-cover"
+                    className="object-contain"
                     fill
                   />
                 </CardContent>
