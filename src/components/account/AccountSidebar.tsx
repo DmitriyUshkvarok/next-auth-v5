@@ -45,8 +45,8 @@ const AccountSidebar = ({
             name={session?.user.name ?? 'User Name'}
             text="Update Profile Image"
             className="flex flex-col items-center p-4 bg-background rounded-lg max-w-full" // Контейнер
-            imageClassName="border-4 border-green-500 shadow-md w-full max-w-[200px] h-full max-h-[200px]" // Изображение
-            buttonClassName="bg-green-500 text-white hover:bg-green-700 w-full max-w-[200px] text-[10px] sm:text-[14px]" // Кнопка
+            imageClassName="border-4 border-primaryHome  shadow-md w-full max-w-[200px] h-full max-h-[200px]" // Изображение
+            buttonClassName="bg-primaryHome w-full max-w-[200px] text-[10px] sm:text-[14px]" // Кнопка
             formClassName="bg-accent p-4 rounded-md shadow-lg" // Форма
           />
           <div className="mb-4">

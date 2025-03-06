@@ -60,7 +60,7 @@ const HeroAdminInfo = ({ result }: HeroInfoProps) => {
       </h1>
 
       {/* Имя разработчика с таким же эффектом волны */}
-      <div className="mb-6 text-center sm:text-left text-[48px] xl:text-[80px] leading-[1.1] font-semibold text-primaryGreen">
+      <div className="mb-6 text-center sm:text-left text-[48px] xl:text-[80px] leading-[1.1] font-semibold text-primaryHome">
         <AnimatedText text={result.developerName} />
       </div>
 

@@ -36,11 +36,11 @@ const Navigation = ({ navigations }: NavigationProps) => {
               <Link
                 href={path}
                 className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
-                hover:text-primaryGreen ${isActive ? 'text-primaryGreenText' : 'text-white '}`}
+                hover:text-primaryHome ${isActive ? 'text-primaryHome' : ''}`}
               >
                 {nav.name}
                 {isActive && (
-                  <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryGreenText"></span>
+                  <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
                 )}
               </Link>
             </motion.li>
@@ -54,12 +54,12 @@ const Navigation = ({ navigations }: NavigationProps) => {
         >
           <Link
             href="/my-account"
-            className={`relative font-body font-medium text-white text-lg transition-colors duration-300 capitalize 
-                hover:text-primaryGreen ${pathname === '/my-account' ? 'text-primaryGreenText' : ''}`}
+            className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
+                hover:text-primaryHome ${pathname === '/my-account' ? 'text-primaryHome' : ''}`}
           >
             Account
             {pathname === '/my-account' && (
-              <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryGreen"></span>
+              <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
             )}
           </Link>
         </motion.li>

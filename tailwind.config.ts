@@ -15,7 +15,7 @@ export default {
         logo: 'var(--font-montserrat)',
       },
       colors: {
-        primaryGreen: 'hsl(var(--primary-green))',
+        primaryHome: 'hsl(var(--primary-home))',
         primaryGreenText: '#00ff88',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

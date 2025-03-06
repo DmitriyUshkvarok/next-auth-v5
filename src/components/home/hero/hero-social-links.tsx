@@ -17,7 +17,7 @@ const HeroSocialLinks = async () => {
               asChild
               variant="outline"
               size="icon"
-              className="rounded-full text-primaryGreen border-primaryGreen"
+              className="rounded-full text-primaryHome border-primaryHome"
             >
               <a
                 href={link.url}

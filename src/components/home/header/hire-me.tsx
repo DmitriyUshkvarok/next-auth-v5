@@ -23,7 +23,7 @@ const HireMe = () => {
         autoFocus={openDrawer}
       >
         <DrawerTrigger asChild>
-          <Button className="font-body rounded-full text-gray-800 font-medium bg-primaryGreen hover:bg-[#3ef19d]">
+          <Button className="font-body rounded-full font-medium bg-primaryHome">
             Hire Me
           </Button>
         </DrawerTrigger>

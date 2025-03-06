@@ -33,7 +33,7 @@ export function AccountDrawer({
       autoFocus={openDrawer}
     >
       <DrawerTrigger asChild>
-        <Button variant="outline" className="w-[24px] h-[24px]">
+        <Button variant="outline" className="w-[24px] h-[24px] px-0">
           <MessageCircle />
         </Button>
       </DrawerTrigger>

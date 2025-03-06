@@ -17,7 +17,7 @@ const HeroResumeButton = ({ resume }: { resume: string | null }) => {
           <Button
             variant="outline"
             size="lg"
-            className="uppercase flex items-center gap-2 rounded-full text-primaryGreen border-primaryGreen"
+            className="uppercase flex items-center gap-2 rounded-full text-primaryHome border-primaryHome"
           >
             <span>Download CV</span>
             <Download />
