@@ -40,7 +40,9 @@ const Navigation = ({ navigations }: NavigationProps) => {
         </motion.li>
         {navigations.map((nav, i) => {
           const path = new URL(nav.url).pathname;
-          const isActive = pathname === path;
+          const isActive =
+            pathname === path || // Точное совпадение
+            (path === '/services' && /^\/service\/\d+$/.test(pathname));
 
           return (
             <motion.li

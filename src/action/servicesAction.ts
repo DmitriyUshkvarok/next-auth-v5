@@ -72,3 +72,24 @@ export const getServicesList = async () => {
     };
   }
 };
+
+export const getServiceByCount = async (count: string) => {
+  const result = await db
+    .select()
+    .from(services)
+    .where(eq(services.id, fixedId))
+    .execute();
+
+  if (result.length === 0) {
+    return {
+      success: false,
+      message: 'Services list is empty',
+      data: null,
+    };
+  }
+
+  const servicesList = result[0].services || [];
+  const service = servicesList.find((item) => item.count.toString() === count);
+
+  return service ? { data: service } : { data: null };
+};

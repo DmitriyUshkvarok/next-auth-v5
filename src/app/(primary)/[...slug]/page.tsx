@@ -34,7 +34,16 @@ const DynamicPage = async ({
     }) || [];
 
   const normalizedNavSlug = `/${navSlug}`; // Добавляем "/" для корректного сравнения
-  if (!routes.includes(normalizedNavSlug)) {
+
+  // Маршруты, которые могут иметь вложенные пути
+  const dynamicRoutes = ['/service', '/work'];
+
+  // Проверка на допустимые маршруты:
+  const isValidRoute =
+    routes.some((route) => normalizedNavSlug.startsWith(route)) ||
+    dynamicRoutes.some((route) => normalizedNavSlug.startsWith(route + '/')); // Разрешаем вложенные пути
+
+  if (!isValidRoute) {
     return notFound();
   }
 
