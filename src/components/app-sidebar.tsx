@@ -4,7 +4,6 @@ import * as React from 'react';
 import {
   AudioWaveform,
   BookOpen,
-  Bot,
   Command,
   GalleryVerticalEnd,
   Map,
@@ -13,6 +12,7 @@ import {
   Home,
   LayoutDashboardIcon,
   HammerIcon,
+  LaptopIcon,
 } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
@@ -94,21 +94,13 @@ const data = {
       ],
     },
     {
-      title: 'Models',
+      title: 'Services',
       url: '#',
-      icon: Bot,
+      icon: LaptopIcon,
       items: [
         {
-          title: 'Genesis',
-          url: '#',
-        },
-        {
-          title: 'Explorer',
-          url: '#',
-        },
-        {
-          title: 'Quantum',
-          url: '#',
+          title: 'Service Operation',
+          url: '/admin/services',
         },
       ],
     },

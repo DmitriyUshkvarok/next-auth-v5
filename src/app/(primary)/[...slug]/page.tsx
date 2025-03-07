@@ -38,12 +38,7 @@ const DynamicPage = async ({
     return notFound();
   }
 
-  return (
-    <div>
-      <h1>Страница: {navSlug}</h1>
-      <DynamicContentPageRender slug={navSlug} />
-    </div>
-  );
+  return <DynamicContentPageRender slug={navSlug} />;
 };
 
 export default DynamicPage;
