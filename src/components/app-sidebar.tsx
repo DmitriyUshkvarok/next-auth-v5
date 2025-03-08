@@ -13,6 +13,7 @@ import {
   LayoutDashboardIcon,
   HammerIcon,
   LaptopIcon,
+  Briefcase,
 } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
@@ -99,8 +100,23 @@ const data = {
       icon: LaptopIcon,
       items: [
         {
-          title: 'Service Operation',
+          title: 'Services Operation',
           url: '/admin/services',
+        },
+      ],
+    },
+    {
+      title: 'Resume',
+      url: '#',
+      icon: Briefcase,
+      items: [
+        {
+          title: 'Resume Sidebar Text',
+          url: '/admin/resume/text',
+        },
+        {
+          title: 'Resume Sidebar Navigation',
+          url: '/admin/resume/navigation',
         },
       ],
     },

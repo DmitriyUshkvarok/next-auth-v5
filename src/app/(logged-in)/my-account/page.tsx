@@ -34,7 +34,7 @@ export default async function MyAccount() {
         direction="horizontal"
         className="w-full max-w-[95%] min-h-screen rounded-lg border mx-auto my-4"
       >
-        <ResizablePanel defaultSize={200} className="p-2">
+        <ResizablePanel defaultSize={400} className="p-2">
           <AccountSidebar session={session} user={user} provider={provider} />
         </ResizablePanel>
         <ResizableHandle />

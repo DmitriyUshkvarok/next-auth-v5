@@ -29,7 +29,7 @@ const AccountSidebar = ({
   provider: boolean;
 }) => {
   return (
-    <Card className="min-h-screen flex flex-col">
+    <Card className="min-h-screen flex flex-col border-primaryHome">
       <CardHeader className="p-3">
         <CardTitle className="text-center">
           {session?.user.name
@@ -44,8 +44,8 @@ const AccountSidebar = ({
             image={session?.user.image ?? null}
             name={session?.user.name ?? 'User Name'}
             text="Update Profile Image"
-            className="flex flex-col items-center p-4 bg-background rounded-lg max-w-full" // Контейнер
-            imageClassName="border-4 border-primaryHome  shadow-md w-full max-w-[200px] h-full max-h-[200px]" // Изображение
+            className="flex flex-col items-center p-4 bg-background border-[1px] border-primaryHome rounded-lg max-w-full" // Контейнер
+            imageClassName="border-4 border-primaryHome shadow-md w-full max-w-[200px] h-full max-h-[200px]" // Изображение
             buttonClassName="bg-primaryHome w-full max-w-[200px] text-[10px] sm:text-[14px]" // Кнопка
             formClassName="bg-accent p-4 rounded-md shadow-lg" // Форма
           />

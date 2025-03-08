@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const updateServicesPageSchema = z.object({
   services: z.array(
@@ -18,8 +18,8 @@ export const updateServicesPageSchema = z.object({
         .string()
         .min(50, 'The description must contain a minimum of 50 characters')
         .max(
-          2000,
-          'The description name must contain a maximum of 2000 characters'
+          4000,
+          'The description name must contain a maximum of 4000 characters'
         ),
     })
   ),

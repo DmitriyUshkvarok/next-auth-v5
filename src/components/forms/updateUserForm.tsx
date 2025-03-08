@@ -65,7 +65,7 @@ const UpdateUserForm = ({ name }: { name: string }) => {
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
-                      className="text-[10px] sm:text-[14px]"
+                      className="text-[10px] sm:text-[14px] border-primaryHome"
                       {...field}
                       type="text"
                     />

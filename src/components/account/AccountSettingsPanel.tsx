@@ -1,27 +1,58 @@
 import Link from 'next/link';
 import DarkMode from '../ui/dark-mode/dark-mode';
 import { Home, UserCog } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const AccountSettingsPanel = ({ role }: { role: boolean }) => {
   return (
     <nav>
-      <ul className="flex flex-col justify-center gap-4 p-2">
-        <li>
-          <Link href="/">
-            <Home />
-          </Link>
-        </li>
-        {role && (
+      <TooltipProvider>
+        <ul className="flex flex-col justify-center gap-4 p-2">
           <li>
-            <Link href="/admin">
-              <UserCog />
-            </Link>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link href="/">
+                  <Home />
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Home Page</p>
+              </TooltipContent>
+            </Tooltip>
           </li>
-        )}
-        <li>
-          <DarkMode />
-        </li>
-      </ul>
+          {role && (
+            <li>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Link href="/admin">
+                    <UserCog />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Admin Panel</p>
+                </TooltipContent>
+              </Tooltip>
+            </li>
+          )}
+          <li>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <DarkMode />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Toggle Dark Mode</p>
+              </TooltipContent>
+            </Tooltip>
+          </li>
+        </ul>
+      </TooltipProvider>
     </nav>
   );
 };
