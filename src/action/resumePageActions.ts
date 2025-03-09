@@ -1,5 +1,8 @@
 'use server';
-import { updateResumeSidebarTextSchema } from '@/validation/schemaResumePage';
+import {
+  updateResumeSidebarTextSchema,
+  updateResumePageNavigationSchema,
+} from '@/validation/schemaResumePage';
 import { validateWithZodSchema } from '@/validation/schemas';
 import { z } from 'zod';
 import db from '@/db/drizzle';
@@ -7,6 +10,7 @@ import { getAuthUser, renderError } from '@/lib/authHelpers';
 import { getAdminUser } from '@/lib/authHelpers';
 import { eq } from 'drizzle-orm';
 import { resumePageSidebarTexts } from '@/db/schema/resumePageSidebarText';
+import { resumePageNavigations } from '@/db/schema/resumePageNavigatiionSchema';
 import { revalidatePath } from 'next/cache';
 
 const fixedId = 'default';
@@ -77,6 +81,75 @@ export const getResumePageSidebarText = async () => {
     };
   } else {
     return {
+      data: [],
+    };
+  }
+};
+
+export const updateResumePageNavigation = async (
+  data: z.infer<typeof updateResumePageNavigationSchema>
+) => {
+  try {
+    await getAdminUser();
+    const getUser = await getAuthUser();
+    const updateResumeNavigationValidate = validateWithZodSchema(
+      updateResumePageNavigationSchema,
+      data
+    );
+
+    const existingNav = await db
+      .select()
+      .from(resumePageNavigations)
+      .where(eq(resumePageNavigations.id, fixedId))
+      .execute();
+
+    if (existingNav.length > 0) {
+      // Если запись существует, обновляем её
+      await db
+        .update(resumePageNavigations)
+        .set({
+          navigations: updateResumeNavigationValidate.navigations,
+        })
+        .where(eq(resumePageNavigations.id, fixedId))
+        .execute();
+    } else {
+      // Если записи нет, создаём новую
+      await db
+        .insert(resumePageNavigations)
+        .values({
+          id: fixedId,
+          userId: getUser.id,
+          navigations: updateResumeNavigationValidate.navigations,
+        })
+        .execute();
+    }
+
+    revalidatePath('/');
+
+    return {
+      success: true,
+      message: 'Navigation has been updated successfully',
+    };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const getResumePageNavigation = async () => {
+  const result = await db
+    .select()
+    .from(resumePageNavigations)
+    .where(eq(resumePageNavigations.id, fixedId))
+    .execute();
+
+  if (result.length > 0) {
+    return {
+      success: true,
+      data: result[0].navigations,
+    };
+  } else {
+    return {
+      success: true,
       data: [],
     };
   }

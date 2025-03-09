@@ -21,13 +21,19 @@ export const DynamicContentPageRender = async ({ slug }: { slug: string }) => {
 
     return <ServicesDetalis serviceId={serviceId} />;
   }
-  
+
   const renderComponent = () => {
     switch (currentSlug) {
       case 'services':
         return <ServicesContainer data={result.data ?? []} />;
-      case 'resume':
-        return <div>resume</div>;
+      case 'resume/experience':
+        return <div>experience</div>;
+      case 'resume/education':
+        return <div>education</div>;
+      case 'resume/skills':
+        return <div>skills</div>;
+      case 'resume/about':
+        return <div>about</div>;
       case 'work':
         return <WorkContainer />;
       case 'contact':

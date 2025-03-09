@@ -13,3 +13,17 @@ export const updateResumeSidebarTextSchema = z.object({
       'The description name must contain a maximum of 1000 characters'
     ),
 });
+
+export const updateResumePageNavigationSchema = z.object({
+  navigations: z.array(
+    z.object({
+      name: z
+        .string()
+        .min(2, 'The name must contain a minimum of 2 characters'),
+      url: z
+        .string()
+        .url('Incorrect URL')
+        .max(50, 'The name must contain a maximum of 50 characters'),
+    })
+  ),
+});

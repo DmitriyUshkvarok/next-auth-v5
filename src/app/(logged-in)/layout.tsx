@@ -1,5 +1,7 @@
 import { auth } from '../../../auth';
 import { redirect } from 'next/navigation';
+import PageTransition from '@/components/ui/PageTransition/PageTransition';
+import SrairEffect from '@/components/ui/PageTransition/SrairEffect';
 
 export default async function LoggedInLayout({
   children,
@@ -12,5 +14,12 @@ export default async function LoggedInLayout({
     redirect('/login');
   }
 
-  return <main>{children}</main>;
+  return (
+    <>
+      <SrairEffect />
+      <PageTransition>
+        <main>{children}</main>
+      </PageTransition>
+    </>
+  );
 }
