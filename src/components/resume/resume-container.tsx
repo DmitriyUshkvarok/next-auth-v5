@@ -4,6 +4,7 @@ import {
 } from '@/action/resumePageActions';
 import ResumeNavigation from './resume-navigation';
 import ResumeNavigationTextInfo from './resume-navigation-text-info';
+import { Suspense } from 'react';
 
 const ResumeContainer = async () => {
   const result = await getResumePageNavigation();
@@ -17,7 +18,9 @@ const ResumeContainer = async () => {
       <div>
         <div className="flex flex-col gap-6">
           <ResumeNavigationTextInfo dataText={resultForProps} />
-          <ResumeNavigation data={result.data ?? []} />
+          <Suspense fallback={null}>
+            <ResumeNavigation data={result.data ?? []} />
+          </Suspense>
         </div>
       </div>
     </section>
