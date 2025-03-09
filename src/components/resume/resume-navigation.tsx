@@ -1,76 +1,46 @@
 'use client';
-import Link from 'next/link';
-import { usePathname, notFound } from 'next/navigation';
-import { Button } from '../ui/button';
-import ResumeNavigationTextInfo from './resume-navigation-text-info';
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface NavigationItem {
   name: string;
   url: string;
 }
 
-type SidebarTextDataProps = {
-  title: string;
-  description: string;
-};
+const ResumeNavigation = ({ data }: { data: NavigationItem[] }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get('tab') || data[0]?.name;
 
-const ResumeNavigation = ({
-  data,
-  dataText,
-}: {
-  data: NavigationItem[];
-  dataText: SidebarTextDataProps;
-}) => {
-  const pathname = usePathname();
-  const isResumePage = pathname ? /^\/resume(\/.*)?$/.test(pathname) : false;
+  const handleTabChange = (tabName: string) => {
+    router.push(`/resume?tab=${tabName}`);
+  };
 
-  if (!isResumePage) {
-    return null;
-  }
-
-  // Проверяем, существует ли текущий путь в массиве данных
-  const currentPath = pathname;
-
-  // Разрешаем корневой путь /resume
-  const isRootPath = currentPath === '/resume';
-
-  // Проверяем, существует ли маршрут в массиве данных
-  const routeExists =
-    isRootPath ||
-    data.some((item) => {
-      const itemPath = new URL(item.url).pathname;
-      return itemPath === currentPath;
-    });
-
-  // Если маршрут не существует, возвращаем "Not Found"
-  if (!routeExists) {
-    return notFound();
-  }
   return (
-    <div className="flex flex-col gap-6">
-      <ResumeNavigationTextInfo dataText={dataText} />
-      <nav>
-        <ul className="flex flex-col gap-4">
-          {data.map((item) => {
-            const path = new URL(item.url).pathname; // Получаем только относительный путь
-            const isActive = currentPath === path;
-            return (
-              <li key={path}>
-                <Button
-                  asChild
-                  variant="outline"
-                  className={`w-full max-w-[500px] h-[40px] rounded-sm ${
-                    isActive ? 'bg-primaryHome' : 'bg-transparent'
-                  }`}
-                >
-                  <Link href={path}>{item.name}</Link>
-                </Button>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-    </div>
+    <>
+      <Tabs
+        defaultValue={activeTab}
+        className="mt-4 flex justify-between w-full h-full"
+      >
+        <TabsList className="flex flex-col gap-2 justify-normal w-full max-w-[500px] h-full bg-transparent">
+          {data.map((item) => (
+            <TabsTrigger
+              key={item.name}
+              value={item.name}
+              onClick={() => handleTabChange(item.name)}
+              className="flex justify-center items-center w-full max-w-[500px] h-[40px] bg-card data-[state=active]:bg-primaryHome"
+            >
+              {item.name}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        <TabsContent value={data[0]?.name}>hi 1</TabsContent>
+        <TabsContent value={data[1]?.name}>hi 2</TabsContent>
+        <TabsContent value={data[2]?.name}>hi 3</TabsContent>
+        <TabsContent value={data[3]?.name}> hi 4</TabsContent>
+      </Tabs>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import ServicesContainer from './services/services-container';
 import ServicesDetalis from './services/services-detalis';
 import { getServicesList } from '@/action/servicesAction';
 import { notFound } from 'next/navigation';
+import ResumeContainer from './resume/resume-container';
 
 export const DynamicContentPageRender = async ({ slug }: { slug: string }) => {
   const currentSlug = slug.split('/').filter(Boolean).join('/');
@@ -28,8 +29,8 @@ export const DynamicContentPageRender = async ({ slug }: { slug: string }) => {
         return <ServicesContainer data={result.data ?? []} />;
       case 'resume/experience':
         return <div>experience</div>;
-      case 'resume/education':
-        return <div>education</div>;
+      case 'resume':
+        return <ResumeContainer />;
       case 'resume/skills':
         return <div>skills</div>;
       case 'resume/about':

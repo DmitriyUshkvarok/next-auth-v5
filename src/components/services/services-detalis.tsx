@@ -17,7 +17,7 @@ const ServicesDetails = async ({ serviceId }: { serviceId: string }) => {
       <Card className="border border-primaryHome p-4 rounded-lg shadow-md">
         <CardHeader className="p-2 border-b-[1px] border-b-gray-700">
           <div className="flex justify-between items-center">
-            <CardTitle className="text-3xl font-bold text-primaryHome mb-2 uppercase">
+            <CardTitle className="text-2xl font-bold text-primaryHome mb-2 uppercase">
               {data?.title}
             </CardTitle>
             <BackButton />

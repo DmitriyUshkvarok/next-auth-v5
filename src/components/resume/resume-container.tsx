@@ -3,8 +3,9 @@ import {
   getResumePageSidebarText,
 } from '@/action/resumePageActions';
 import ResumeNavigation from './resume-navigation';
+import ResumeNavigationTextInfo from './resume-navigation-text-info';
 
-const ResumeNavigationContainer = async () => {
+const ResumeContainer = async () => {
   const result = await getResumePageNavigation();
   const dataTextResult = await getResumePageSidebarText();
   const resultForProps = Array.isArray(dataTextResult.data)
@@ -12,10 +13,15 @@ const ResumeNavigationContainer = async () => {
     : dataTextResult.data;
 
   return (
-    <section className="py-14">
-      <ResumeNavigation data={result.data ?? []} dataText={resultForProps} />
+    <section className="px-2">
+      <div>
+        <div className="flex flex-col gap-6">
+          <ResumeNavigationTextInfo dataText={resultForProps} />
+          <ResumeNavigation data={result.data ?? []} />
+        </div>
+      </div>
     </section>
   );
 };
 
-export default ResumeNavigationContainer;
+export default ResumeContainer;
