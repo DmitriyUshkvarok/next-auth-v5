@@ -19,6 +19,7 @@ import { homePageSocials } from '@/db/schema/homePageSocialsLinksSchema';
 import { homePageStatistics } from '@/db/schema/homePageStatisticsSchema';
 import { homePageResume } from '@/db/schema/homePageResumeSchema';
 import { uploadResumeToBlob } from '@/utils/uploadPdf';
+import { revalidatePath } from 'next/cache';
 
 const fixedId = 'default';
 
@@ -59,6 +60,9 @@ export const updateHomePageNavigation = async (
         })
         .execute();
     }
+
+    revalidatePath('/');
+
     return {
       success: true,
       message: 'Navigation has been updated successfully',
@@ -146,7 +150,7 @@ export const updateHomePageHero = async (
         })
         .execute();
     }
-
+    revalidatePath('/');
     return {
       success: true,
       message: 'Hero section has been updated successfully',
@@ -211,6 +215,8 @@ export const updateHomePageSocialsLinks = async (
         })
         .execute();
     }
+
+    revalidatePath('/');
     return {
       success: true,
       message: 'Socials Links has been updated successfully',
@@ -277,6 +283,8 @@ export const updateHomePageStatistics = async (
         })
         .execute();
     }
+
+    revalidatePath('/');
     return {
       success: true,
       message: 'Socials Links has been updated successfully',
@@ -356,6 +364,7 @@ export const updateHomePageResume = async (formData: FormData) => {
         })
         .execute();
     }
+    revalidatePath('/');
 
     return {
       success: true,
