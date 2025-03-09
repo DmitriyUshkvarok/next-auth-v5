@@ -7,6 +7,7 @@ import db from '@/db/drizzle';
 import { getAuthUser, renderError } from '@/lib/authHelpers';
 import { getAdminUser } from '@/lib/authHelpers';
 import { eq } from 'drizzle-orm';
+import { revalidatePath } from 'next/cache';
 
 const fixedId = 'default';
 
@@ -46,6 +47,9 @@ export const updateServicesList = async (
         })
         .execute();
     }
+
+    revalidatePath('/');
+
     return {
       success: true,
       message: 'Services List has been updated successfully',

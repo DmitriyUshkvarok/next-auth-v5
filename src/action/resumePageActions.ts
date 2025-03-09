@@ -7,6 +7,7 @@ import { getAuthUser, renderError } from '@/lib/authHelpers';
 import { getAdminUser } from '@/lib/authHelpers';
 import { eq } from 'drizzle-orm';
 import { resumePageSidebarTexts } from '@/db/schema/resumePageSidebarText';
+import { revalidatePath } from 'next/cache';
 
 const fixedId = 'default';
 
@@ -51,6 +52,8 @@ export const updateResumePageSidebarText = async (
         })
         .execute();
     }
+
+    revalidatePath('/');
 
     return {
       success: true,
