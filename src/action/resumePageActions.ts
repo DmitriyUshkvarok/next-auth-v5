@@ -2,6 +2,7 @@
 import {
   updateResumeSidebarTextSchema,
   updateResumePageNavigationSchema,
+  resumeExperienceSchema,
 } from '@/validation/schemaResumePage';
 import { validateWithZodSchema } from '@/validation/schemas';
 import { z } from 'zod';
@@ -12,6 +13,7 @@ import { eq } from 'drizzle-orm';
 import { resumePageSidebarTexts } from '@/db/schema/resumePageSidebarText';
 import { resumePageNavigations } from '@/db/schema/resumePageNavigatiionSchema';
 import { revalidatePath } from 'next/cache';
+import { resumeExperiences } from '@/db/schema/resumePageExperience';
 
 const fixedId = 'default';
 
@@ -151,6 +153,78 @@ export const getResumePageNavigation = async () => {
     return {
       success: true,
       data: [],
+    };
+  }
+};
+
+export const updateResumeExperience = async (
+  data: z.infer<typeof resumeExperienceSchema>
+) => {
+  try {
+    await getAdminUser();
+    const getUser = await getAuthUser();
+    const updateResumeExperienceValidate = validateWithZodSchema(
+      resumeExperienceSchema,
+      data
+    );
+
+    const existingResumeExperince = await db
+      .select()
+      .from(resumeExperiences)
+      .where(eq(resumeExperiences.id, fixedId))
+      .execute();
+
+    if (existingResumeExperince.length > 0) {
+      // Если запись существует, обновляем её
+      await db
+        .update(resumeExperiences)
+        .set({
+          title: updateResumeExperienceValidate.title,
+          description: updateResumeExperienceValidate.description,
+          experiences: updateResumeExperienceValidate.experiences,
+        })
+        .where(eq(resumeExperiences.id, fixedId))
+        .execute();
+    } else {
+      // Если записи нет, создаём новую
+      await db
+        .insert(resumeExperiences)
+        .values({
+          id: fixedId,
+          userId: getUser.id,
+          title: updateResumeExperienceValidate.title,
+          description: updateResumeExperienceValidate.description,
+          experiences: updateResumeExperienceValidate.experiences,
+        })
+        .execute();
+    }
+
+    revalidatePath('/');
+    return {
+      success: true,
+      message: 'Experience has been updated successfully',
+    };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const getResumeExperience = async () => {
+  const result = await db
+    .select()
+    .from(resumeExperiences)
+    .where(eq(resumeExperiences.id, fixedId))
+    .execute();
+
+  if (result.length > 0) {
+    return {
+      success: true,
+      data: result[0],
+    };
+  } else {
+    return {
+      success: true,
+      data: null,
     };
   }
 };

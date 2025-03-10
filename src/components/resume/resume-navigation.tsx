@@ -2,13 +2,33 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useRouter, useSearchParams } from 'next/navigation';
+import ResumeExperience from './resume-experience';
 
 interface NavigationItem {
   name: string;
   url: string;
 }
 
-const ResumeNavigation = ({ data }: { data: NavigationItem[] }) => {
+export type ResumeExperienceProps = {
+  title: string;
+  description: string;
+  experiences:
+    | {
+        start: string;
+        end: string;
+        position: string;
+        company: string;
+      }[]
+    | null;
+} | null;
+
+const ResumeNavigation = ({
+  data,
+  experienceData,
+}: {
+  data: NavigationItem[];
+  experienceData: ResumeExperienceProps;
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const activeTab = searchParams.get('tab') || data[0]?.name;
@@ -23,7 +43,7 @@ const ResumeNavigation = ({ data }: { data: NavigationItem[] }) => {
         defaultValue={activeTab}
         className="mt-4 flex justify-between w-full h-full"
       >
-        <TabsList className="flex flex-col gap-2 justify-normal w-full max-w-[500px] h-full bg-transparent">
+        <TabsList className="flex flex-col gap-4 justify-normal w-full max-w-[500px] h-full bg-transparent">
           {data.map((item) => (
             <TabsTrigger
               key={item.name}
@@ -35,7 +55,9 @@ const ResumeNavigation = ({ data }: { data: NavigationItem[] }) => {
             </TabsTrigger>
           ))}
         </TabsList>
-        <TabsContent value={data[0]?.name}>hi 1</TabsContent>
+        <TabsContent value={data[0]?.name}>
+          <ResumeExperience experienceData={experienceData} />
+        </TabsContent>
         <TabsContent value={data[1]?.name}>hi 2</TabsContent>
         <TabsContent value={data[2]?.name}>hi 3</TabsContent>
         <TabsContent value={data[3]?.name}> hi 4</TabsContent>

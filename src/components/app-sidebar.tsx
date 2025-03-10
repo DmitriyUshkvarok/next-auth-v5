@@ -118,6 +118,10 @@ const data = {
           title: 'Resume Sidebar Navigation',
           url: '/admin/resume/navigation',
         },
+        {
+          title: 'Resume Experience',
+          url: '/admin/resume/experience',
+        },
       ],
     },
     {

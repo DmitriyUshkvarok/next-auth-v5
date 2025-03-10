@@ -1,4 +1,5 @@
 import {
+  getResumeExperience,
   getResumePageNavigation,
   getResumePageSidebarText,
 } from '@/action/resumePageActions';
@@ -12,6 +13,7 @@ const ResumeContainer = async () => {
   const resultForProps = Array.isArray(dataTextResult.data)
     ? dataTextResult.data[0]
     : dataTextResult.data;
+  const experienceData = await getResumeExperience();
 
   return (
     <section className="px-2">
@@ -19,7 +21,10 @@ const ResumeContainer = async () => {
         <div className="flex flex-col gap-6">
           <ResumeNavigationTextInfo dataText={resultForProps} />
           <Suspense fallback={null}>
-            <ResumeNavigation data={result.data ?? []} />
+            <ResumeNavigation
+              data={result.data ?? []}
+              experienceData={experienceData.data}
+            />
           </Suspense>
         </div>
       </div>

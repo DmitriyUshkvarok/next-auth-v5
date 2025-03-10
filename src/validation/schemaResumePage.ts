@@ -27,3 +27,36 @@ export const updateResumePageNavigationSchema = z.object({
     })
   ),
 });
+
+export const resumeExperienceSchema = z.object({
+  title: z
+    .string()
+    .min(2, 'Title must contain a minimum of 2 characters')
+    .max(200, 'Title must contain a maximum of 200 characters'),
+  description: z
+    .string()
+    .min(30, 'Description must contain a minimum of 30 characters')
+    .max(1000, 'Description must contain a maximum of 1000 characters'),
+  experiences: z
+    .array(
+      z.object({
+        start: z
+          .string()
+          .min(1, 'Start date is required')
+          .max(20, 'Start date must contain a maximum of 20 characters'),
+        end: z
+          .string()
+          .min(1, 'End date is required')
+          .max(20, 'End date must contain a maximum of 20 characters'),
+        position: z
+          .string()
+          .min(1, 'Position is required')
+          .max(100, 'Position must contain a maximum of 100 characters'),
+        company: z
+          .string()
+          .min(1, 'Company name is required')
+          .max(100, 'Company name must contain a maximum of 100 characters'),
+      })
+    )
+    .default([]),
+});
