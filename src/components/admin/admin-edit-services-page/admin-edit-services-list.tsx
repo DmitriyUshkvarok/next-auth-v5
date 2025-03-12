@@ -161,6 +161,13 @@ const AdminEditServicesList = ({ data }: AdminServicelListProps) => {
               >
                 ➕ Add Item
               </Button>
+              {!!form.formState.errors.root?.message && (
+                <FormItem>
+                  <FormMessage>
+                    {form.formState.errors.root.message}
+                  </FormMessage>
+                </FormItem>
+              )}
               <SubmitButton
                 text="Update Services List"
                 isLoading={form.formState.isSubmitting}

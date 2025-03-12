@@ -133,6 +133,13 @@ const AdminEditStatisticsForm = ({ data }: AdminEditStatisticsFormProps) => {
               >
                 ➕ Add Title
               </Button>
+              {!!form.formState.errors.root?.message && (
+                <FormItem>
+                  <FormMessage>
+                    {form.formState.errors.root.message}
+                  </FormMessage>
+                </FormItem>
+              )}
               <SubmitButton
                 text="Update Statistics"
                 isLoading={form.formState.isSubmitting}

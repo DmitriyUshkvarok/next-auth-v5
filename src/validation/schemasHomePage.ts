@@ -10,7 +10,7 @@ export const updateHomePageNavigationSchema = z.object({
       url: z
         .string()
         .url('Incorrect URL')
-        .max(12, 'The name must contain a maximum of 20 characters'),
+        .max(100, 'The name must contain a maximum of 100 characters'),
     })
   ),
 });

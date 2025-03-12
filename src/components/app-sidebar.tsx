@@ -122,6 +122,10 @@ const data = {
           title: 'Resume Experience',
           url: '/admin/resume/experience',
         },
+        {
+          title: 'Resume Education',
+          url: '/admin/resume/education',
+        },
       ],
     },
     {

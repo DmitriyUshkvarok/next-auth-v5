@@ -131,6 +131,13 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
               >
                 ➕ Add Link
               </Button>
+              {!!form.formState.errors.root?.message && (
+                <FormItem>
+                  <FormMessage>
+                    {form.formState.errors.root.message}
+                  </FormMessage>
+                </FormItem>
+              )}
               <SubmitButton
                 text="Update navigation"
                 isLoading={form.formState.isSubmitting}

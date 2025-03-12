@@ -33,41 +33,41 @@ import {
 } from '@/components/ui/breadcrumb';
 import { FolderPlus } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
-import { updateResumeExperience } from '@/action/resumePageActions';
-import { resumeExperienceSchema } from '@/validation/schemaResumePage';
+import { updateResumeEducation } from '@/action/resumePageActions';
+import { resumeEducationsSchema } from '@/validation/schemaResumePage';
 
-type AdminResumeExperienceProps = {
+type AdminResumeEducationProps = {
   data: {
     title: string;
     description: string;
-    experiences: Array<{
+    educations: Array<{
       start: string;
       end: string;
-      position: string;
-      company: string;
+      course: string;
+      typeCourse: string;
     }> | null;
   } | null;
 };
 
-const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
+const AdminEditResumeEducation = ({ data }: AdminResumeEducationProps) => {
   const { toast } = useToast();
   const router = useRouter();
-  const form = useForm<z.infer<typeof resumeExperienceSchema>>({
-    resolver: zodResolver(resumeExperienceSchema),
+  const form = useForm<z.infer<typeof resumeEducationsSchema>>({
+    resolver: zodResolver(resumeEducationsSchema),
     defaultValues: {
       title: data?.title ?? '',
       description: data?.description ?? '',
-      experiences: data?.experiences ?? [],
+      educations: data?.educations ?? [],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: 'experiences',
+    name: 'educations',
   });
 
-  const handleSubmit = async (data: z.infer<typeof resumeExperienceSchema>) => {
-    const response = await updateResumeExperience(data);
+  const handleSubmit = async (data: z.infer<typeof resumeEducationsSchema>) => {
+    const response = await updateResumeEducation(data);
     if (response.success) {
       toast({
         description: `${response.message}`,
@@ -85,9 +85,9 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
       <CardHeader>
         <div className="flex justify-between">
           <div className="flex flex-col gap-2">
-            <CardTitle>Update Experience</CardTitle>
+            <CardTitle>Update Education</CardTitle>
             <CardDescription className="capitalize">
-              Updating the experience for the resume page.
+              Updating the education for the resume page.
             </CardDescription>
           </div>
           <div>
@@ -136,14 +136,14 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
                 <div key={field.id} className="flex flex-col gap-2">
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.start`}
+                    name={`educations.${index}.start`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Start Experience</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
-                            placeholder="Enter a Start Experience"
+                            placeholder="Enter a Start Education"
                           />
                         </FormControl>
                         <FormMessage />
@@ -153,14 +153,14 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
 
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.end`}
+                    name={`educations.${index}.end`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>End Experience</FormLabel>
+                        <FormLabel>End Education</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
-                            placeholder="Enter an End Experience"
+                            placeholder="Enter an End Education"
                           />
                         </FormControl>
                         <FormMessage />
@@ -170,12 +170,12 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
 
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.position`}
+                    name={`educations.${index}.course`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Position</FormLabel>
+                        <FormLabel>Course</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Enter a Position" />
+                          <Input {...field} placeholder="Enter a Course" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -184,12 +184,12 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
 
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.company`}
+                    name={`educations.${index}.typeCourse`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Company</FormLabel>
+                        <FormLabel>Type Course</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Enter a Company" />
+                          <Input {...field} placeholder="Enter a Type Course" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -211,7 +211,7 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
               <Button
                 type="button"
                 onClick={() =>
-                  append({ start: '', end: '', position: '', company: '' })
+                  append({ start: '', end: '', course: '', typeCourse: '' })
                 }
               >
                 ➕ Add Item
@@ -224,7 +224,7 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
                 </FormItem>
               )}
               <SubmitButton
-                text="Update Experience"
+                text="Update Education"
                 isLoading={form.formState.isSubmitting}
               />
             </fieldset>
@@ -251,7 +251,7 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Update Experience</BreadcrumbPage>
+              <BreadcrumbPage>Update Education</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -260,4 +260,4 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
   );
 };
 
-export default AdminEditResumeExperience;
+export default AdminEditResumeEducation;

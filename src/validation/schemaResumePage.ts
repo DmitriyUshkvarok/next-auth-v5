@@ -23,7 +23,7 @@ export const updateResumePageNavigationSchema = z.object({
       url: z
         .string()
         .url('Incorrect URL')
-        .max(50, 'The name must contain a maximum of 50 characters'),
+        .max(100, 'The name must contain a maximum of 100 characters'),
     })
   ),
 });
@@ -56,6 +56,39 @@ export const resumeExperienceSchema = z.object({
           .string()
           .min(1, 'Company name is required')
           .max(100, 'Company name must contain a maximum of 100 characters'),
+      })
+    )
+    .default([]),
+});
+
+export const resumeEducationsSchema = z.object({
+  title: z
+    .string()
+    .min(2, 'Title must contain a minimum of 2 characters')
+    .max(200, 'Title must contain a maximum of 200 characters'),
+  description: z
+    .string()
+    .min(30, 'Description must contain a minimum of 30 characters')
+    .max(1000, 'Description must contain a maximum of 1000 characters'),
+  educations: z
+    .array(
+      z.object({
+        start: z
+          .string()
+          .min(1, 'Start date is required')
+          .max(20, 'Start date must contain a maximum of 20 characters'),
+        end: z
+          .string()
+          .min(1, 'End date is required')
+          .max(20, 'End date must contain a maximum of 20 characters'),
+        course: z
+          .string()
+          .min(1, 'Course is required')
+          .max(100, 'Course must contain a maximum of 100 characters'),
+        typeCourse: z
+          .string()
+          .min(1, 'Type Course name is required')
+          .max(100, 'Type Course must contain a maximum of 100 characters'),
       })
     )
     .default([]),

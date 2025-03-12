@@ -130,6 +130,13 @@ const AdminEditResumeNavigation = ({ data }: AdminEditNavigationFormProps) => {
               >
                 ➕ Add Link
               </Button>
+              {!!form.formState.errors.root?.message && (
+                <FormItem>
+                  <FormMessage>
+                    {form.formState.errors.root.message}
+                  </FormMessage>
+                </FormItem>
+              )}
               <SubmitButton
                 text="Update navigation"
                 isLoading={form.formState.isSubmitting}
@@ -145,30 +152,21 @@ const AdminEditResumeNavigation = ({ data }: AdminEditNavigationFormProps) => {
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/admin/home/hero">Edit Hero</BreadcrumbLink>
-            </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admin/home/social-links">
-                Edit Social Links
+              <BreadcrumbLink href="/admin/resume/experience">
+                Edit Resume Experince
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admin/home/statistics">
-                Edit Statistics
+              <BreadcrumbLink href="/admin/resume/text">
+                Edit Resume Text
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admin/home/resume">
-                Edit Resume
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Update Navigation Links</BreadcrumbPage>
+              <BreadcrumbPage>Update Resume Navigation Links</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

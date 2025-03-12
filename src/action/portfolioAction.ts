@@ -92,7 +92,7 @@ export const getFilteredPortfolioProjects = async ({
   currentPage = 1,
   pageSize = 6,
 }: PortfolioSearchParams) => {
-  await getAdminUser();
+  // await getAdminUser();
 
   const monthYearFilter =
     month && year
@@ -148,7 +148,7 @@ export const getFilteredPortfolioProjects = async ({
 };
 
 export const getPortfolioProjectById = async (id: string) => {
-  await getAdminUser();
+  // await getAdminUser();
 
   const [project] = await db
     .select()
@@ -188,7 +188,7 @@ export const deleteProject = async (id: string) => {
 export const getTechnologies = async (): Promise<
   { name: string; icon: string; count: number }[]
 > => {
-  await getAdminUser();
+  // await getAdminUser();
 
   const technologies = await db.execute(sql`
       SELECT jsonb_array_elements(${portfolios.technologies}::jsonb)->>'name' AS name,
@@ -209,7 +209,7 @@ export const getTechnologies = async (): Promise<
 export const getAvailableYearsAndMonths = async (): Promise<
   { year: number; months: number[] }[]
 > => {
-  await getAdminUser();
+  // await getAdminUser();
 
   const result = await db.execute(sql`
     SELECT DISTINCT EXTRACT(YEAR FROM realized_at) AS year,
@@ -232,7 +232,7 @@ export const getPortfolioAnalytics = async ({
   month?: number;
   year?: number;
 }) => {
-  await getAdminUser();
+  // await getAdminUser();
 
   const filters = [];
 
@@ -334,7 +334,7 @@ export const getMonthlyDevelopmentStats = async ({
 }: {
   year: number;
 }) => {
-  await getAdminUser();
+  // await getAdminUser();
 
   const monthlyStats = await db
     .select({

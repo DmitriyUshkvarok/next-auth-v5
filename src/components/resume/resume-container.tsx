@@ -1,4 +1,5 @@
 import {
+  getResumeEducation,
   getResumeExperience,
   getResumePageNavigation,
   getResumePageSidebarText,
@@ -14,6 +15,7 @@ const ResumeContainer = async () => {
     ? dataTextResult.data[0]
     : dataTextResult.data;
   const experienceData = await getResumeExperience();
+  const educationData = await getResumeEducation();
 
   return (
     <section className="px-2">
@@ -24,6 +26,7 @@ const ResumeContainer = async () => {
             <ResumeNavigation
               data={result.data ?? []}
               experienceData={experienceData.data}
+              educationData={educationData.data}
             />
           </Suspense>
         </div>

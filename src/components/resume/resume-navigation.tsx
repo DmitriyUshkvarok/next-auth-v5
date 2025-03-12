@@ -3,6 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ResumeExperience from './resume-experience';
+import ResumeEducation from './resume-education';
 
 interface NavigationItem {
   name: string;
@@ -22,12 +23,27 @@ export type ResumeExperienceProps = {
     | null;
 } | null;
 
+export type ResumeEducationProps = {
+  title: string;
+  description: string;
+  educations:
+    | {
+        start: string;
+        end: string;
+        course: string;
+        typeCourse: string;
+      }[]
+    | null;
+} | null;
+
 const ResumeNavigation = ({
   data,
   experienceData,
+  educationData,
 }: {
   data: NavigationItem[];
   experienceData: ResumeExperienceProps;
+  educationData: ResumeEducationProps;
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -58,7 +74,9 @@ const ResumeNavigation = ({
         <TabsContent value={data[0]?.name}>
           <ResumeExperience experienceData={experienceData} />
         </TabsContent>
-        <TabsContent value={data[1]?.name}>hi 2</TabsContent>
+        <TabsContent value={data[1]?.name}>
+          <ResumeEducation educationData={educationData} />
+        </TabsContent>
         <TabsContent value={data[2]?.name}>hi 3</TabsContent>
         <TabsContent value={data[3]?.name}> hi 4</TabsContent>
       </Tabs>
