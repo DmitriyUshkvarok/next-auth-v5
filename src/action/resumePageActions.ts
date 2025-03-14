@@ -4,6 +4,7 @@ import {
   updateResumePageNavigationSchema,
   resumeExperienceSchema,
   resumeEducationsSchema,
+  resumeSkillsSchema,
 } from '@/validation/schemaResumePage';
 import { validateWithZodSchema } from '@/validation/schemas';
 import { z } from 'zod';
@@ -16,6 +17,7 @@ import { resumePageNavigations } from '@/db/schema/resumePageNavigatiionSchema';
 import { revalidatePath } from 'next/cache';
 import { resumeExperiences } from '@/db/schema/resumePageExperience';
 import { resumeEducations } from '@/db/schema/resumePageEducation';
+import { resumeSkills } from '@/db/schema/resumePageSkills';
 
 const fixedId = 'default';
 
@@ -301,4 +303,68 @@ export const getResumeEducation = async () => {
       data: null,
     };
   }
+};
+
+export const updateResumeSkills = async (
+  data: z.infer<typeof resumeSkillsSchema>
+) => {
+  try {
+    await getAdminUser();
+    const getUser = await getAuthUser();
+    const validatedData = validateWithZodSchema(resumeSkillsSchema, data);
+
+    // Проверяем, существует ли запись у пользователя
+    const existingResumeSkills = await db
+      .select()
+      .from(resumeSkills)
+      .where(eq(resumeSkills.userId, getUser.id))
+      .execute();
+
+    if (existingResumeSkills.length > 0) {
+      // Если запись существует, обновляем её
+      await db
+        .update(resumeSkills)
+        .set({
+          title: validatedData.title,
+          description: validatedData.description,
+          skills: validatedData.skills,
+        })
+        .where(eq(resumeSkills.userId, getUser.id))
+        .execute();
+    } else {
+      // Если записи нет, создаем новую
+      await db
+        .insert(resumeSkills)
+        .values({
+          id: crypto.randomUUID(),
+          userId: getUser.id,
+          title: validatedData.title,
+          description: validatedData.description,
+          skills: validatedData.skills,
+        })
+        .execute();
+    }
+
+    return {
+      success: true,
+      message: 'Resume skills have been updated successfully',
+    };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const getResumeSkills = async () => {
+  const getUser = await getAuthUser();
+
+  const result = await db
+    .select()
+    .from(resumeSkills)
+    .where(eq(resumeSkills.userId, getUser.id))
+    .execute();
+
+  return {
+    success: true,
+    data: result.length > 0 ? result[0] : null,
+  };
 };

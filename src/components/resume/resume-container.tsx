@@ -3,6 +3,7 @@ import {
   getResumeExperience,
   getResumePageNavigation,
   getResumePageSidebarText,
+  getResumeSkills,
 } from '@/action/resumePageActions';
 import ResumeNavigation from './resume-navigation';
 import ResumeNavigationTextInfo from './resume-navigation-text-info';
@@ -16,6 +17,7 @@ const ResumeContainer = async () => {
     : dataTextResult.data;
   const experienceData = await getResumeExperience();
   const educationData = await getResumeEducation();
+  const skillsData = await getResumeSkills();
 
   return (
     <section className="px-2">
@@ -27,6 +29,7 @@ const ResumeContainer = async () => {
               data={result.data ?? []}
               experienceData={experienceData.data}
               educationData={educationData.data}
+              skillsData={skillsData.data}
             />
           </Suspense>
         </div>

@@ -126,6 +126,10 @@ const data = {
           title: 'Resume Education',
           url: '/admin/resume/education',
         },
+        {
+          title: 'Resume Skills',
+          url: '/admin/resume/skills',
+        },
       ],
     },
     {
