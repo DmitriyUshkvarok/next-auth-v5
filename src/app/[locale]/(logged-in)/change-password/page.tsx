@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import ChangePasswordForm from '@/components/forms/change-password-form';
-import { auth } from '../../../../auth';
+import { auth } from '../../../../../auth'; 
 import { redirect } from 'next/navigation';
 
 export default async function ChangePassword() {

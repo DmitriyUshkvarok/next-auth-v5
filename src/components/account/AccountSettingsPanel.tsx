@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import LocaleSwitcher from '../ui/LocaleSwitcher.tsx/LocaleSwitcher';
 
 const AccountSettingsPanel = ({ role }: { role: boolean }) => {
   return (
@@ -48,6 +49,18 @@ const AccountSettingsPanel = ({ role }: { role: boolean }) => {
               </TooltipTrigger>
               <TooltipContent>
                 <p>Toggle Dark Mode</p>
+              </TooltipContent>
+            </Tooltip>
+          </li>
+          <li>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div>
+                  <LocaleSwitcher />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Language Selection</p>
               </TooltipContent>
             </Tooltip>
           </li>

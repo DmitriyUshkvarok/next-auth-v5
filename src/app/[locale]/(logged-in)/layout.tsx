@@ -1,4 +1,4 @@
-import { auth } from '../../../auth';
+import { auth } from '../../../../auth';
 import { redirect } from 'next/navigation';
 import PageTransition from '@/components/ui/PageTransition/PageTransition';
 import SrairEffect from '@/components/ui/PageTransition/SrairEffect';

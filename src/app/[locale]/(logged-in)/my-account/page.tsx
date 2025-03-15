@@ -1,4 +1,4 @@
-import { auth } from '../../../../auth';
+import { auth } from '../../../../../auth';
 import db from '@/db/drizzle';
 import { users } from '@/db/schema/userSchema';
 import { eq } from 'drizzle-orm';
@@ -40,7 +40,7 @@ export default async function MyAccount() {
         <ResizableHandle />
         <ResizablePanel defaultSize={50}>
           <ResizablePanelGroup direction="vertical">
-            <ResizablePanel defaultSize={15}>
+            <ResizablePanel defaultSize={25}>
               <AccountSettingsPanel role={role} />
             </ResizablePanel>
             <ResizableHandle />

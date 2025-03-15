@@ -4,6 +4,11 @@ import { Aboreto, Poppins, Montserrat } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/providers/theme-provider';
 import NextAuthProvider from '@/providers/nextAuthProvider';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
+import { Locale } from '@/i18n/routing';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -33,24 +38,35 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+  if (!routing.locales.includes(locale as Locale)) {
+    notFound();
+  }
+
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang={locale || 'en'} suppressHydrationWarning={true}>
       <body
         className={`${poppins.variable} ${aboreto.variable} ${montserrat.variable}`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextAuthProvider>
-            <main>{children}</main>
-          </NextAuthProvider>
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NextAuthProvider>
+              <main>{children}</main>
+            </NextAuthProvider>
+          </ThemeProvider>
+        </NextIntlClientProvider>
         <Toaster />
       </body>
     </html>

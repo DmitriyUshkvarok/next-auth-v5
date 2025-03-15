@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://next-auth-v5-lyart.vercel.app/sitemap.xml

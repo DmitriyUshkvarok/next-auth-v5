@@ -1,14 +1,14 @@
 // export { auth as middleware } from '../auth';
-
-import { NextResponse } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  console.log(request);
-  // Ваша логика middleware
-  return NextResponse.next();
+export function middleware(req: NextRequest) {
+  const intlMiddleware = createMiddleware(routing);
+
+  return intlMiddleware(req);
 }
 
 export const config = {
-  matcher: '/api/:path*', // Укажите пути, которые должны обрабатываться middleware
+  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
 };

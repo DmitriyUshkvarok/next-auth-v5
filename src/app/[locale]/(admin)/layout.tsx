@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { auth } from '../../../auth';
+import { auth } from '../../../../auth';
 import { AppSidebar } from '@/components/app-sidebar';
 import {
   Breadcrumb,

@@ -3,7 +3,6 @@ import {
   ChevronRight,
   type LucideIcon,
   Palette,
-  Globe,
   Sun,
   Moon,
   Monitor,
@@ -33,6 +32,7 @@ import {
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
 import { useTheme } from 'next-themes';
+import LocaleSwitcher from './ui/LocaleSwitcher.tsx/LocaleSwitcher';
 
 export function NavMain({
   items,
@@ -124,9 +124,11 @@ export function NavMain({
                               </SidebarMenuSubItem>
                               <SidebarMenuSubItem>
                                 <SidebarMenuSubButton asChild>
-                                  <a href="#">
-                                    <Globe className="mr-2" /> Localization
-                                  </a>
+                                  <div className="flex items-center justify-start gap-4">
+                                    <LocaleSwitcher />
+
+                                    <div>Localization</div>
+                                  </div>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             </SidebarMenuSub>
