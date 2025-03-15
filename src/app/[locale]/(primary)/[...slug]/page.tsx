@@ -2,10 +2,6 @@ import { getHomePageNavigation } from '@/action/homePageActions';
 import { DynamicContentPageRender } from '@/components/DynamicContentPageRender';
 import { notFound } from 'next/navigation';
 
-// export const metadata = {
-//   dynamic: 'force-static', // 👈 Важно для SSR в dev-режиме
-// };
-
 export async function generateStaticParams() {
   const response = await getHomePageNavigation();
 
@@ -22,9 +18,6 @@ export async function generateStaticParams() {
       slug, // Прокидываем slug
     }));
   });
-  // return response.data.map((route) => ({
-  //   slug: new URL(route.url).pathname.split('/').filter(Boolean), // ✅ Универсальный парсинг URL
-  // }));
 }
 
 const DynamicPage = async ({
@@ -32,10 +25,8 @@ const DynamicPage = async ({
 }: {
   params: Promise<{ slug?: string[]; locale: string }>;
 }) => {
-  const { slug, locale } = await params;
+  const { slug } = await params;
   const navSlug = slug?.join('/') || '';
-  console.log('Locale:', locale);
-  console.log('Slug:', navSlug);
   const response = await getHomePageNavigation();
   const routes =
     response.data?.map((route) => {
