@@ -2,9 +2,9 @@ import { getHomePageNavigation } from '@/action/homePageActions';
 import { DynamicContentPageRender } from '@/components/DynamicContentPageRender';
 import { notFound } from 'next/navigation';
 
-export const metadata = {
-  dynamic: 'force-static', // 👈 Важно для SSR в dev-режиме
-};
+// export const metadata = {
+//   dynamic: 'force-static', // 👈 Важно для SSR в dev-режиме
+// };
 
 export async function generateStaticParams() {
   const response = await getHomePageNavigation();
@@ -21,11 +21,11 @@ export async function generateStaticParams() {
 const DynamicPage = async ({
   params,
 }: {
-  params: Promise<{ slug?: string[] }>;
+  params: Promise<{ slug?: string[]; locale: string }>;
 }) => {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const navSlug = slug?.join('/') || '';
-
+  console.log(locale);
   const response = await getHomePageNavigation();
   const routes =
     response.data?.map((route) => {
