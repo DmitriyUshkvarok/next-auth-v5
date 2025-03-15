@@ -12,10 +12,19 @@ export async function generateStaticParams() {
   if (!response.success || !response.data) {
     return [];
   }
+  const locales = ['en', 'uk', 'ru']; // Добавляем поддержку всех локалей
 
-  return response.data.map((route) => ({
-    slug: new URL(route.url).pathname.split('/').filter(Boolean), // ✅ Универсальный парсинг URL
-  }));
+  return response.data.flatMap((route) => {
+    const slug = new URL(route.url).pathname.split('/').filter(Boolean);
+
+    return locales.map((locale) => ({
+      locale,
+      slug, // Прокидываем slug
+    }));
+  });
+  // return response.data.map((route) => ({
+  //   slug: new URL(route.url).pathname.split('/').filter(Boolean), // ✅ Универсальный парсинг URL
+  // }));
 }
 
 const DynamicPage = async ({
@@ -25,7 +34,8 @@ const DynamicPage = async ({
 }) => {
   const { slug, locale } = await params;
   const navSlug = slug?.join('/') || '';
-  console.log(locale);
+  console.log('Locale:', locale);
+  console.log('Slug:', navSlug);
   const response = await getHomePageNavigation();
   const routes =
     response.data?.map((route) => {
