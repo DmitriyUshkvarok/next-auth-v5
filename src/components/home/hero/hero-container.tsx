@@ -14,7 +14,7 @@ const HeroContainer = async () => {
   const data = await getHomePageHero();
   const resultStatistics = await getHomePageStatistics();
   const result = Array.isArray(data.data) ? data.data[0] : data.data;
-  const heroPhoto = result.image;
+  const heroPhoto = result?.image;
 
   return (
     <section className="h-screen container mx-auto px-2 pt-4 pb-4">

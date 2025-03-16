@@ -1,12 +1,14 @@
 'use client';
 import { motion } from 'framer-motion';
+import { Locale } from '@/i18n/routing';
+import { useParams } from 'next/navigation';
 
 type HeroInfoProps = {
   result: {
-    position: string;
-    title: string;
-    developerName: string;
-    description: string;
+    position: { en: string; ru: string; uk: string } | null;
+    title: { en: string; ru: string; uk: string } | null;
+    developerName: { en: string; ru: string; uk: string } | null;
+    description: { en: string; ru: string; uk: string } | null;
   };
 };
 
@@ -42,6 +44,8 @@ const AnimatedText = ({ text }: { text: string }) => (
 );
 
 const HeroAdminInfo = ({ result }: HeroInfoProps) => {
+  const params = useParams();
+  const locale = params.locale as Locale;
   return (
     <>
       {/* Позиция */}
@@ -51,17 +55,17 @@ const HeroAdminInfo = ({ result }: HeroInfoProps) => {
         animate="visible"
         variants={textVariant}
       >
-        {result.position}
+        {result?.position?.[locale]}
       </motion.div>
 
       {/* Заголовок с эффектом волны */}
       <h1 className="text-center sm:text-left">
-        <AnimatedText text={result.title} />
+        <AnimatedText text={result?.title?.[locale] || ''} />
       </h1>
 
       {/* Имя разработчика с таким же эффектом волны */}
       <div className="mb-6 text-center sm:text-left text-[48px] xl:text-[80px] leading-[1.1] font-semibold text-primaryHome">
-        <AnimatedText text={result.developerName} />
+        <AnimatedText text={result?.developerName?.[locale] || ''} />
       </div>
 
       {/* Описание с плавным появлением */}
@@ -72,7 +76,7 @@ const HeroAdminInfo = ({ result }: HeroInfoProps) => {
         variants={textVariant}
         transition={{ delay: 0.3 }}
       >
-        {result.description}
+        {result?.description?.[locale]}
       </motion.p>
     </>
   );

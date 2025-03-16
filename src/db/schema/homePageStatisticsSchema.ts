@@ -7,6 +7,6 @@ export const homePageStatistics = pgTable('home_page_statistics', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   statistics: jsonb('statistics')
-    .$type<{ count: number; title: string }[]>()
+    .$type<{ count: number; title: { en: string; ru: string; uk: string } }[]>()
     .default([]),
 });

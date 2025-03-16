@@ -13,17 +13,21 @@ import {
 } from '@/components/ui/sheet';
 import Link from 'next/link';
 import { NavigationProps } from './header';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 // import DarkMode from '@/components/ui/dark-mode/dark-mode';
 import HireMe from './hire-me';
 import { useTheme } from 'next-themes';
 import Logo from './logo';
-
+import { Locale } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 const Burger = ({ navigations }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const params = useParams();
+  const locale = params.locale as Locale;
   const { theme } = useTheme();
   const [strokeColor, setStrokeColor] = useState('hsl(35, 90%, 55%)');
+  const t = useTranslations('Navigation');
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -36,7 +40,7 @@ const Burger = ({ navigations }: NavigationProps) => {
   return (
     <Sheet onOpenChange={setIsOpen} open={isOpen}>
       <SheetTrigger asChild>
-        <div className="block md:hidden">
+        <div className="block lg:hidden">
           <Hamburger color={strokeColor} toggled={isOpen} toggle={setIsOpen} />
         </div>
       </SheetTrigger>
@@ -69,7 +73,7 @@ const Burger = ({ navigations }: NavigationProps) => {
                 className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
                 hover:text-primaryHome ${pathname === '/' ? 'text-primaryHome' : ''}`}
               >
-                Home
+                {t('home')}
                 {pathname === '/' && (
                   <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
                 )}
@@ -80,14 +84,14 @@ const Burger = ({ navigations }: NavigationProps) => {
               const isActive = pathname === path;
 
               return (
-                <li key={nav.name}>
+                <li key={nav.name.en}>
                   <Link
                     href={path}
                     onClick={() => setIsOpen(false)}
                     className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
                 hover:text-primaryHome ${isActive ? 'text-primaryHome' : ''}`}
                   >
-                    {nav.name}
+                    {nav.name[locale]}
                     {isActive && (
                       <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
                     )}
@@ -101,7 +105,7 @@ const Burger = ({ navigations }: NavigationProps) => {
                 className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
                             hover:text-primaryHome ${pathname === '/my-account' ? 'text-primaryHome' : ''}`}
               >
-                Account
+                {t('account')}
                 {pathname === '/my-account' && (
                   <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
                 )}

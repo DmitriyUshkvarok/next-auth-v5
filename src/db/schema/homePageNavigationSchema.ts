@@ -7,6 +7,6 @@ export const homePageNavigations = pgTable('home_page_navigation', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   navigations: jsonb('navigations')
-    .$type<{ name: string; url: string }[]>()
+    .$type<{ name: { en: string; ru: string; uk: string }; url: string }[]>()
     .default([]),
 });

@@ -1,5 +1,13 @@
-{
-  "NavSearch": {
-    "placeholder": "Найти недвижимость..."
+  {
+    "Navigation": {
+      "home": "Главная",
+    "account": "Аккаунт"
+  },
+  "HireMe": {
+    "hireMe": "Нанять меня"
+  },
+  "Resume": {
+    "resume": "Скачать резюме"
   }
 }
+

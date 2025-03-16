@@ -1,5 +1,12 @@
 {
-  "NavSearch": {
-    "placeholder": "Find a property..."
+  "Navigation": {
+    "home": "Home",
+    "account": "Account"
+  },
+  "HireMe": {
+    "hireMe": "Hire Me"
+  },
+  "Resume": {
+    "resume": "Download CV"
   }
 }

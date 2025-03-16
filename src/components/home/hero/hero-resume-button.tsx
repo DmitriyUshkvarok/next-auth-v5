@@ -1,3 +1,5 @@
+'use client';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import {
@@ -10,6 +12,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 const HeroResumeButton = ({ resume }: { resume: string | null }) => {
+  const t = useTranslations('Resume');
   return (
     <div>
       <Dialog>
@@ -19,7 +22,7 @@ const HeroResumeButton = ({ resume }: { resume: string | null }) => {
             size="lg"
             className="uppercase flex items-center gap-2 rounded-full text-primaryHome border-primaryHome"
           >
-            <span>Download CV</span>
+            <span>{t('resume')}</span>
             <Download />
           </Button>
         </DialogTrigger>

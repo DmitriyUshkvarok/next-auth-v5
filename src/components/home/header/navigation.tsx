@@ -1,12 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { NavigationProps } from './header';
-
+import { Locale } from '@/i18n/routing';
+import { useTranslations } from 'next-intl';
 const Navigation = ({ navigations }: NavigationProps) => {
   const pathname = usePathname();
+  const params = useParams();
+  const locale = params.locale as Locale;
+  const t = useTranslations('Navigation');
 
   // Варианты анимации для каждого элемента
   const itemVariants = {
@@ -32,7 +36,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
             className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
             hover:text-primaryHome ${pathname === '/' ? 'text-primaryHome' : ''}`}
           >
-            Home
+            {t('home')}
             {pathname === '/' && (
               <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
             )}
@@ -46,7 +50,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
 
           return (
             <motion.li
-              key={nav.name}
+              key={nav.name.en}
               variants={itemVariants}
               initial="hidden"
               animate="visible"
@@ -57,7 +61,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
                 className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
                 hover:text-primaryHome ${isActive ? 'text-primaryHome' : ''}`}
               >
-                {nav.name}
+                {nav.name[locale]}
                 {isActive && (
                   <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
                 )}
@@ -76,7 +80,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
             className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
                 hover:text-primaryHome ${pathname === '/my-account' ? 'text-primaryHome' : ''}`}
           >
-            Account
+            {t('account')}
             {pathname === '/my-account' && (
               <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
             )}

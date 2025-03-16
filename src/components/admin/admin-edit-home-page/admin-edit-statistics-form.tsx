@@ -36,7 +36,7 @@ import { updateHomePageStatisticsSchema } from '@/validation/schemasHomePage';
 import { updateHomePageStatistics } from '@/action/homePageActions';
 
 interface AdminEditStatisticsFormProps {
-  data: { count: number; title: string }[];
+  data: { count: number; title: { en: string; ru: string; uk: string } }[];
 }
 const AdminEditStatisticsForm = ({ data }: AdminEditStatisticsFormProps) => {
   const { toast } = useToast();
@@ -111,7 +111,7 @@ const AdminEditStatisticsForm = ({ data }: AdminEditStatisticsFormProps) => {
                   />
                   <FormField
                     control={form.control}
-                    name={`statistics.${index}.title`}
+                    name={`statistics.${index}.title.en`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Title</FormLabel>
@@ -122,6 +122,33 @@ const AdminEditStatisticsForm = ({ data }: AdminEditStatisticsFormProps) => {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name={`statistics.${index}.title.ru`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Введите заголовок" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`statistics.${index}.title.uk`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Введіть заголовок" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
                   <Button type="button" onClick={() => remove(index)}>
                     ❌
                   </Button>
@@ -129,7 +156,9 @@ const AdminEditStatisticsForm = ({ data }: AdminEditStatisticsFormProps) => {
               ))}
               <Button
                 type="button"
-                onClick={() => append({ count: 0, title: '' })}
+                onClick={() =>
+                  append({ count: 0, title: { en: '', ru: '', uk: '' } })
+                }
               >
                 ➕ Add Title
               </Button>

@@ -36,7 +36,7 @@ import { updateHomePageNavigationSchema } from '@/validation/schemasHomePage';
 import { updateHomePageNavigation } from '@/action/homePageActions';
 
 interface AdminEditNavigationFormProps {
-  data: { name: string; url: string }[];
+  data: { name: { en: string; ru: string; uk: string }; url: string }[];
 }
 
 const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
@@ -96,12 +96,41 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
                 <div key={field.id} className="flex items-end gap-2">
                   <FormField
                     control={form.control}
-                    name={`navigations.${index}.name`}
+                    name={`navigations.${index}.name.en`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Title</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="Enter a name" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`navigations.${index}.name.ru`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Введите название(имя)"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`navigations.${index}.name.uk`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Введіть назву(ім'я)" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -127,7 +156,9 @@ const AdminEditNavigationForm = ({ data }: AdminEditNavigationFormProps) => {
               ))}
               <Button
                 type="button"
-                onClick={() => append({ name: '', url: '' })}
+                onClick={() =>
+                  append({ name: { en: '', ru: '', uk: '' }, url: '' })
+                }
               >
                 ➕ Add Link
               </Button>

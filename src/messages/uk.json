@@ -1,5 +1,12 @@
 {
-  "NavSearch": {
-    "placeholder": "Знайти нерухомість..."
+  "Navigation": {
+    "home": "Головна",
+    "account": "Акаунт"
+  },
+  "HireMe": {
+    "hireMe": "Найняти мене"
+  },
+  "Resume": {
+    "resume": "Скачати резюме"
   }
 }

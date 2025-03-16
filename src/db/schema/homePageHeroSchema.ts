@@ -1,4 +1,4 @@
-import { pgTable, text } from 'drizzle-orm/pg-core';
+import { jsonb, pgTable, text } from 'drizzle-orm/pg-core';
 import { users } from './userSchema';
 
 export const homePageHeros = pgTable('home_page_hero', {
@@ -6,9 +6,17 @@ export const homePageHeros = pgTable('home_page_hero', {
   userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  position: text('position').notNull(),
-  title: text('title').notNull(),
-  developerName: text('developer_name').notNull(),
-  description: text('description').notNull(),
+  position: jsonb('position').$type<{ en: string; ru: string; uk: string }>(),
+  title: jsonb('title').$type<{ en: string; ru: string; uk: string }>(),
+  developerName: jsonb('developer_name').$type<{
+    en: string;
+    ru: string;
+    uk: string;
+  }>(),
+  description: jsonb('description').$type<{
+    en: string;
+    ru: string;
+    uk: string;
+  }>(),
   image: text('image'),
 });

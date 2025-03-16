@@ -38,10 +38,10 @@ import Image from 'next/image';
 import { Textarea } from '@/components/ui/textarea';
 
 interface HeroData {
-  position: string;
-  title: string;
-  developerName: string;
-  description: string;
+  position: { en: string; ru: string; uk: string };
+  title: { en: string; ru: string; uk: string };
+  developerName: { en: string; ru: string; uk: string };
+  description: { en: string; ru: string; uk: string };
   image: string | null;
 }
 
@@ -52,10 +52,10 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
   const form = useForm<z.infer<typeof updateHomePageHeroSchema>>({
     resolver: zodResolver(updateHomePageHeroSchema),
     defaultValues: {
-      position: data?.position || '',
-      title: data?.title || '',
-      developerName: data?.developerName || '',
-      description: data?.description || '',
+      position: data?.position || { en: '', ru: '', uk: '' },
+      title: data?.title || { en: '', ru: '', uk: '' },
+      developerName: data?.developerName || { en: '', ru: '', uk: '' },
+      description: data?.description || { en: '', ru: '', uk: '' },
       image: undefined,
     },
   });
@@ -110,8 +110,8 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
                 </CardHeader>
                 <CardContent className="relative h-[600px] p-4">
                   <Image
-                    src={data.image ?? '/placeholder.png'}
-                    alt={data.title ?? 'project image'}
+                    src={data?.image ?? '/placeholder.png'}
+                    alt={data?.title.en ?? 'project image'}
                     className="object-contain"
                     fill
                   />
@@ -138,12 +138,12 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
               />
               <FormField
                 control={form.control}
-                name="position"
+                name="position.en"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Position</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} placeholder="Position" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -151,12 +151,38 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
               />
               <FormField
                 control={form.control}
-                name="title"
+                name="position.ru"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Position</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Позиция" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="position.uk"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Position</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Позиция" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="title.en"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} placeholder="Title" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -164,12 +190,38 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
               />
               <FormField
                 control={form.control}
-                name="developerName"
+                name="title.ru"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Заголовок" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="title.uk"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Заголовок" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="developerName.en"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Developer Name</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} placeholder="Developer Name" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -177,12 +229,64 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
               />
               <FormField
                 control={form.control}
-                name="description"
+                name="developerName.ru"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Developer Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Имя разработчика" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="developerName.uk"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Developer Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Ім'я розробника" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description.en"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
+                      <Textarea {...field} placeholder="Description" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description.ru"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Описание" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description.uk"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Опис" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

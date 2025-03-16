@@ -5,7 +5,7 @@ import Burger from './burger';
 import LocaleSwitcher from '@/components/ui/LocaleSwitcher.tsx/LocaleSwitcher';
 
 export interface NavigationProps {
-  navigations: { name: string; url: string }[];
+  navigations: { name: { en: string; ru: string; uk: string }; url: string }[];
 }
 const Header = ({ navigations }: NavigationProps) => {
   return (
@@ -17,7 +17,7 @@ const Header = ({ navigations }: NavigationProps) => {
       <div className="ml-auto">
         <Burger navigations={navigations} />
       </div>
-      <div className="hidden md:flex items-center ml-auto">
+      <div className="hidden lg:flex items-center ml-auto">
         <Navigation navigations={navigations} />
         <div className="ml-6">
           <HireMe />

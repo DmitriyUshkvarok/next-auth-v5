@@ -11,10 +11,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 const HireMe = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const t = useTranslations('HireMe');
   return (
     <div>
       <Drawer
@@ -24,7 +25,7 @@ const HireMe = () => {
       >
         <DrawerTrigger asChild>
           <Button className="font-body rounded-full font-medium bg-primaryHome">
-            Hire Me
+            {t('hireMe')}
           </Button>
         </DrawerTrigger>
         <DrawerContent>
