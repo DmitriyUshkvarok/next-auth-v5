@@ -344,7 +344,7 @@ export const updateResumeSkills = async (
         })
         .execute();
     }
-
+    revalidatePath('/');
     return {
       success: true,
       message: 'Resume skills have been updated successfully',
