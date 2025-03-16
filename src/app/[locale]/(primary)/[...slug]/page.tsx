@@ -9,6 +9,7 @@ export async function generateStaticParams() {
     return [];
   }
   const locales = ['en', 'uk', 'ru']; // Добавляем поддержку всех локалей
+  
 
   return response.data.flatMap((route) => {
     const slug = new URL(route.url).pathname.split('/').filter(Boolean);

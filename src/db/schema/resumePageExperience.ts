@@ -6,15 +6,27 @@ export const resumeExperiences = pgTable('resume_experience', {
   userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  title: text('title').notNull(),
-  description: text('description').notNull(),
+  title: jsonb('title')
+    .notNull()
+    .$type<{ en: string; ru: string; uk: string }>(),
+  description: jsonb('description')
+    .notNull()
+    .$type<{ en: string; ru: string; uk: string }>(),
   experiences: jsonb('experiences')
     .$type<
       {
         start: string;
         end: string;
-        position: string;
-        company: string;
+        position: {
+          en: string;
+          ru: string;
+          uk: string;
+        };
+        company: {
+          en: string;
+          ru: string;
+          uk: string;
+        };
       }[]
     >()
     .default([]),

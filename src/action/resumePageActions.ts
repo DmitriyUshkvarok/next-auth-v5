@@ -247,7 +247,7 @@ export const updateResumeEducation = async (
     const existingResumeEducation = await db
       .select()
       .from(resumeEducations)
-      .where(eq(resumeEducations.id, fixedId))
+      .where(eq(resumeEducations.userId, getUser.id))
       .execute();
 
     if (existingResumeEducation.length > 0) {
@@ -259,7 +259,7 @@ export const updateResumeEducation = async (
           description: updateResumeEducationValidate.description,
           educations: updateResumeEducationValidate.educations,
         })
-        .where(eq(resumeEducations.id, fixedId))
+        .where(eq(resumeEducations.userId, getUser.id))
         .execute();
     } else {
       // Если записи нет, создаём новую
@@ -286,10 +286,11 @@ export const updateResumeEducation = async (
 };
 
 export const getResumeEducation = async () => {
+  const getUser = await getAuthUser();
   const result = await db
     .select()
     .from(resumeEducations)
-    .where(eq(resumeEducations.id, fixedId))
+    .where(eq(resumeEducations.userId, getUser.id))
     .execute();
 
   if (result.length > 0) {

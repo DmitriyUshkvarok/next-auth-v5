@@ -38,13 +38,29 @@ import { resumeExperienceSchema } from '@/validation/schemaResumePage';
 
 type AdminResumeExperienceProps = {
   data: {
-    title: string;
-    description: string;
+    title: {
+      en: string;
+      ru: string;
+      uk: string;
+    };
+    description: {
+      en: string;
+      ru: string;
+      uk: string;
+    };
     experiences: Array<{
       start: string;
       end: string;
-      position: string;
-      company: string;
+      position: {
+        en: string;
+        ru: string;
+        uk: string;
+      };
+      company: {
+        en: string;
+        ru: string;
+        uk: string;
+      };
     }> | null;
   } | null;
 };
@@ -55,8 +71,8 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
   const form = useForm<z.infer<typeof resumeExperienceSchema>>({
     resolver: zodResolver(resumeExperienceSchema),
     defaultValues: {
-      title: data?.title ?? '',
-      description: data?.description ?? '',
+      title: data?.title ?? { en: '', ru: '', uk: '' },
+      description: data?.description ?? { en: '', ru: '', uk: '' },
       experiences: data?.experiences ?? [],
     },
   });
@@ -105,26 +121,91 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
               {/* Title and Description fields */}
               <FormField
                 control={form.control}
-                name="title"
+                name="title.en"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>Title (English)</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter Title" />
+                      <Textarea {...field} placeholder="Enter title (EN)" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="title.ru"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title (Russian)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Введите заголовок (RU)"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="title.uk"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title (Ukrainian)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Введіть заголовок (UK)"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Description Fields */}
               <FormField
                 control={form.control}
-                name="description"
+                name="description.en"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Description (EN)</FormLabel>
                     <FormControl>
-                      <Textarea {...field} placeholder="Enter Description" />
+                      <Textarea
+                        {...field}
+                        placeholder="Enter description (EN)"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description.ru"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description (RU)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Введите описание (RU)"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description.uk"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description (UK)</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Введіть опис (UK)" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -150,7 +231,6 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name={`experiences.${index}.end`}
@@ -167,13 +247,12 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.position`}
+                    name={`experiences.${index}.position.en`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Position</FormLabel>
+                        <FormLabel>Position (English)</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="Enter a Position" />
                         </FormControl>
@@ -181,21 +260,83 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
-                    name={`experiences.${index}.company`}
+                    name={`experiences.${index}.position.ru`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Company</FormLabel>
+                        <FormLabel>Position (Russian)</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Введите позицию (RU)"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`experiences.${index}.position.uk`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Position (Ukrainian)</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Введіть позицію (UK)"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`experiences.${index}.company.en`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company (English)</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="Enter a Company" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
+                  />{' '}
+                  <FormField
+                    control={form.control}
+                    name={`experiences.${index}.company.ru`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company (Russian)</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Введите компанию (RU)"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-
+                  <FormField
+                    control={form.control}
+                    name={`experiences.${index}.company.uk`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Company (Ukrainian)</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Введіть компанію (UK)"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   {/* Remove experience button */}
                   <Button
                     className="w-full max-w-[50px] ml-auto"
@@ -211,7 +352,12 @@ const AdminEditResumeExperience = ({ data }: AdminResumeExperienceProps) => {
               <Button
                 type="button"
                 onClick={() =>
-                  append({ start: '', end: '', position: '', company: '' })
+                  append({
+                    start: '',
+                    end: '',
+                    position: { en: '', ru: '', uk: '' },
+                    company: { en: '', ru: '', uk: '' },
+                  })
                 }
               >
                 ➕ Add Item

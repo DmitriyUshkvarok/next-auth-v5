@@ -6,15 +6,19 @@ export const resumeEducations = pgTable('resume_educations', {
   userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  title: text('title').notNull(),
-  description: text('description').notNull(),
+  title: jsonb('title')
+    .notNull()
+    .$type<{ en: string; ru: string; uk: string }>(),
+  description: jsonb('description')
+    .notNull()
+    .$type<{ en: string; ru: string; uk: string }>(),
   educations: jsonb('educations')
     .$type<
       {
         start: string;
         end: string;
-        course: string;
-        typeCourse: string;
+        course: { en: string; ru: string; uk: string };
+        typeCourse: { en: string; ru: string; uk: string };
       }[]
     >()
     .default([]),

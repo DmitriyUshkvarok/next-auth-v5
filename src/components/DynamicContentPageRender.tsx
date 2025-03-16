@@ -27,14 +27,8 @@ export const DynamicContentPageRender = async ({ slug }: { slug: string }) => {
     switch (currentSlug) {
       case 'services':
         return <ServicesContainer data={result.data ?? []} />;
-      case 'resume/experience':
-        return <div>experience</div>;
       case 'resume':
         return <ResumeContainer />;
-      case 'resume/skills':
-        return <div>skills</div>;
-      case 'resume/about':
-        return <div>about</div>;
       case 'work':
         return <WorkContainer />;
       case 'contact':

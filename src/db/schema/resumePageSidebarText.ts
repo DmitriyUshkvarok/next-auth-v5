@@ -1,4 +1,4 @@
-import { pgTable, text } from 'drizzle-orm/pg-core';
+import { pgTable, text, jsonb } from 'drizzle-orm/pg-core';
 import { users } from './userSchema';
 
 export const resumePageSidebarTexts = pgTable('resume_page_sidebar_text', {
@@ -6,6 +6,10 @@ export const resumePageSidebarTexts = pgTable('resume_page_sidebar_text', {
   userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  title: text('title').notNull(),
-  description: text('description').notNull(),
+  title: jsonb('title')
+    .notNull()
+    .$type<{ en: string; ru: string; uk: string }>(),
+  description: jsonb('description')
+    .notNull()
+    .$type<{ en: string; ru: string; uk: string }>(),
 });

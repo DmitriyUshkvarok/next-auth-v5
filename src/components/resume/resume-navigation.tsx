@@ -1,61 +1,17 @@
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import ResumeExperience from './resume-experience';
 import ResumeEducation from './resume-education';
 import ResumeSkills from './resumeSkills';
-
-interface NavigationItem {
-  name: string;
-  url: string;
-}
-
-export type ResumeExperienceProps = {
-  title: string;
-  description: string;
-  experiences:
-    | {
-        start: string;
-        end: string;
-        position: string;
-        company: string;
-      }[]
-    | null;
-} | null;
-
-export type ResumeEducationProps = {
-  title: string;
-  description: string;
-  educations:
-    | {
-        start: string;
-        end: string;
-        course: string;
-        typeCourse: string;
-      }[]
-    | null;
-} | null;
-
-type ResumeSkillsProps = {
-  title: {
-    en: string;
-    ru: string;
-    uk: string;
-  };
-  description: {
-    en: string;
-    ru: string;
-    uk: string;
-  };
-  skills: Array<{
-    skillName: {
-      en: string;
-      ru: string;
-      uk: string;
-    };
-  }> | null;
-} | null;
+import { Locale } from '@/i18n/routing';
+import {
+  NavigationItem,
+  ResumeEducationProps,
+  ResumeExperienceProps,
+  ResumeSkillsProps,
+} from './types/types';
 
 const ResumeNavigation = ({
   data,
@@ -70,7 +26,9 @@ const ResumeNavigation = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const activeTab = searchParams.get('tab') || data[0]?.name;
+  const params = useParams();
+  const locale = params.locale as Locale;
+  const activeTab = searchParams.get('tab') || data[0]?.name.en;
 
   const handleTabChange = (tabName: string) => {
     router.push(`/resume?tab=${tabName}`);
@@ -85,25 +43,25 @@ const ResumeNavigation = ({
         <TabsList className="flex flex-col gap-4 justify-normal w-full max-w-[500px] h-full bg-transparent">
           {data.map((item) => (
             <TabsTrigger
-              key={item.name}
-              value={item.name}
-              onClick={() => handleTabChange(item.name)}
+              key={item?.name.en}
+              value={item?.name.en}
+              onClick={() => handleTabChange(item.name.en)}
               className="flex justify-center items-center w-full max-w-[500px] h-[40px] bg-card data-[state=active]:bg-primaryHome"
             >
-              {item.name}
+              {item?.name[locale]}
             </TabsTrigger>
           ))}
         </TabsList>
-        <TabsContent value={data[0]?.name}>
+        <TabsContent value={data[0]?.name.en}>
           <ResumeExperience experienceData={experienceData} />
         </TabsContent>
-        <TabsContent value={data[1]?.name}>
+        <TabsContent value={data[1]?.name.en}>
           <ResumeEducation educationData={educationData} />
         </TabsContent>
-        <TabsContent value={data[2]?.name}>
+        <TabsContent value={data[2]?.name.en}>
           <ResumeSkills skillsData={skillsData} />
         </TabsContent>
-        <TabsContent value={data[3]?.name}> hi 4</TabsContent>
+        <TabsContent value={data[3]?.name.en}> hi 4</TabsContent>
       </Tabs>
     </>
   );

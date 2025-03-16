@@ -15,7 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -36,8 +35,16 @@ import { updateResumeSidebarTextSchema } from '@/validation/schemaResumePage';
 import { updateResumePageSidebarText } from '@/action/resumePageActions';
 type AdminSidebarTextDataProps = {
   data: {
-    title: string;
-    description: string;
+    title: {
+      en: string;
+      ru: string;
+      uk: string;
+    };
+    description: {
+      en: string;
+      ru: string;
+      uk: string;
+    };
   };
 };
 const AdminEditResumeSidebarTextForm = ({
@@ -49,8 +56,8 @@ const AdminEditResumeSidebarTextForm = ({
   const form = useForm<z.infer<typeof updateResumeSidebarTextSchema>>({
     resolver: zodResolver(updateResumeSidebarTextSchema),
     defaultValues: {
-      title: data?.title || '',
-      description: data?.description || '',
+      title: data?.title || { en: '', ru: '', uk: '' },
+      description: data?.description || { en: '', ru: '', uk: '' },
     },
   });
 
@@ -96,26 +103,91 @@ const AdminEditResumeSidebarTextForm = ({
             >
               <FormField
                 control={form.control}
-                name="title"
+                name="title.en"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
+                    <FormLabel>Title (English)</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Textarea {...field} placeholder="Enter title (EN)" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="title.ru"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title (Russian)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Введите заголовок (RU)"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="title.uk"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title (Ukrainian)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Введіть заголовок (UK)"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Description Fields */}
               <FormField
                 control={form.control}
-                name="description"
+                name="description.en"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Description (EN)</FormLabel>
                     <FormControl>
-                      <Textarea {...field} />
+                      <Textarea
+                        {...field}
+                        placeholder="Enter description (EN)"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description.ru"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description (RU)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Введите описание (RU)"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description.uk"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description (UK)</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Введіть опис (UK)" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
