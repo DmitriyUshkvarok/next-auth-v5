@@ -38,10 +38,10 @@ import Image from 'next/image';
 import { Textarea } from '@/components/ui/textarea';
 
 interface HeroData {
-  position: { en: string; ru: string; uk: string };
-  title: { en: string; ru: string; uk: string };
-  developerName: { en: string; ru: string; uk: string };
-  description: { en: string; ru: string; uk: string };
+  position: { en: string; ru: string; uk: string } | null;
+  title: { en: string; ru: string; uk: string } | null;
+  developerName: { en: string; ru: string; uk: string } | null;
+  description: { en: string; ru: string; uk: string } | null;
   image: string | null;
 }
 
@@ -111,7 +111,7 @@ const AdminEditHeroForm = ({ data }: { data: HeroData }) => {
                 <CardContent className="relative h-[600px] p-4">
                   <Image
                     src={data?.image ?? '/placeholder.png'}
-                    alt={data?.title.en ?? 'project image'}
+                    alt={data?.title?.en ?? 'project image'}
                     className="object-contain"
                     fill
                   />
