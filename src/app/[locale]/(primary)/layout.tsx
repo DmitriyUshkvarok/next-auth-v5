@@ -2,8 +2,7 @@ import Header from '@/components/home/header/header';
 import { getHomePageNavigation } from '@/action/homePageActions';
 import PageTransition from '@/components/ui/PageTransition/PageTransition';
 import SrairEffect from '@/components/ui/PageTransition/SrairEffect';
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'default-no-store';
+
 export default async function RootLayout({
   children,
 }: Readonly<{

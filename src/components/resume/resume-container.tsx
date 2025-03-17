@@ -8,7 +8,8 @@ import {
 import ResumeNavigation from './resume-navigation';
 import ResumeNavigationTextInfo from './resume-navigation-text-info';
 import { Suspense } from 'react';
-
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'default-no-store';
 const ResumeContainer = async () => {
   const result = await getResumePageNavigation();
   const dataTextResult = await getResumePageSidebarText();
