@@ -11,7 +11,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
   const params = useParams();
   const locale = params.locale as Locale;
   const t = useTranslations('Navigation');
-  const isHomeActive = pathname === `/${locale}` || pathname === '/';
+  const isHomeActive = pathname === `/${locale}` || pathname === `/${locale}/`;
 
   // Варианты анимации для каждого элемента
   const itemVariants = {
