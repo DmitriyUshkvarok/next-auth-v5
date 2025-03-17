@@ -35,9 +35,9 @@ const LocaleSwitcher = () => {
           variant="outline"
           size="icon"
           aria-label="swich button"
-          className="bg-transparent outline-none border-none hover:bg-transparent h-[1.2rem] w-[1.2rem]"
+          className="bg-transparent outline-none border-none hover:bg-transparent h-[1.5rem] w-[1.5rem]"
         >
-          <GrLanguage className="h-[1.2rem] w-[1.2rem]" />
+          <GrLanguage className="h-[1.5rem] w-[1.5rem]" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-12 w-20">

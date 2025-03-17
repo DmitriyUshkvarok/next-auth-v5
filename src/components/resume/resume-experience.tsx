@@ -74,7 +74,7 @@ const ResumeExperience = ({ experienceData }: ResumeExperiencePropsData) => {
             whileInView={{ opacity: 1, x: 0 }} // Позиция и прозрачность в конечном состоянии
             transition={{
               duration: 0.7, // Длительность анимации
-              delay: 1.5 + index * 0.2, // Задержка для каждого элемента
+              delay: 0.7 + index * 0.2, // Задержка для каждого элемента
             }}
             viewport={{ once: true, amount: 0.3 }} // Анимация запускается, когда элемент становится видимым на 30%
           >

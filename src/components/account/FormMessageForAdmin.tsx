@@ -74,7 +74,7 @@ const FormMessageForAdmin = ({
                 <FormLabel>{t('name')}</FormLabel>
                 <FormControl>
                   <Input
-                    className="text-[10px] sm:text-[14px]"
+                    className="text-[16px]"
                     {...field}
                     type="text"
                   />
@@ -91,7 +91,7 @@ const FormMessageForAdmin = ({
                 <FormLabel>{t('email')}</FormLabel>
                 <FormControl>
                   <Input
-                    className="text-[10px] sm:text-[14px]"
+                    className="text-[16px]"
                     {...field}
                     type="email"
                     readOnly={!!email}
@@ -143,7 +143,7 @@ const FormMessageForAdmin = ({
                   <Textarea
                     {...field}
                     placeholder={t('placeholder')}
-                    className="text-[10px] sm:text-[14px]"
+                    className="text-[16px]"
                   />
                 </FormControl>
                 <FormMessage />

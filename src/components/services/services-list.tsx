@@ -38,7 +38,7 @@ const ServicesList = ({ data }: ServiicesProps) => {
           whileInView={{ opacity: 1, x: 0 }} // Позиция и прозрачность в конечном состоянии
           transition={{
             duration: 0.7, // Длительность анимации
-            delay: 0.8 + index * 0.2, // Задержка для каждого элемента
+            delay: 0.6 + index * 0.2, // Задержка для каждого элемента
           }}
           viewport={{ once: true, amount: 0.3 }}
         >
