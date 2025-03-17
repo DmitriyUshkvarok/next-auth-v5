@@ -33,7 +33,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
           custom={0} // Первый элемент
         >
           <Link
-            href="/"
+            href={`/${locale}`}
             className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
       hover:text-primaryHome ${isHomeActive ? 'text-primaryHome' : ''}`}
           >
@@ -44,8 +44,6 @@ const Navigation = ({ navigations }: NavigationProps) => {
           </Link>
         </motion.li>
         {navigations.map((nav, i) => {
-          // const cleanPathname = pathname.replace(`/${locale}`, '') || '/';
-          // const path = new URL(nav.url).pathname.replace(`/${locale}`, '');
           const cleanPathname = pathname.startsWith(`/${locale}`)
             ? pathname
             : `/${locale}${pathname}`;
