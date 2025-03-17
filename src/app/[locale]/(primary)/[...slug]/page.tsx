@@ -1,6 +1,8 @@
 import { getHomePageNavigation } from '@/action/homePageActions';
 import { DynamicContentPageRender } from '@/components/DynamicContentPageRender';
 import { notFound } from 'next/navigation';
+export const dynamic = 'force-dynamic'; // Отключает полное кеширование
+export const fetchCache = 'default-no-store'; // Отключает кеширование данных
 
 export async function generateStaticParams() {
   const response = await getHomePageNavigation();
@@ -9,7 +11,6 @@ export async function generateStaticParams() {
     return [];
   }
   const locales = ['en', 'uk', 'ru']; // Добавляем поддержку всех локалей
-  
 
   return response.data.flatMap((route) => {
     const slug = new URL(route.url).pathname.split('/').filter(Boolean);

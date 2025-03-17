@@ -46,7 +46,6 @@ const Navigation = ({ navigations }: NavigationProps) => {
         {navigations.map((nav, i) => {
           const cleanPathname = pathname.replace(`/${locale}`, '') || '/';
           const path = new URL(nav.url).pathname.replace(`/${locale}`, '');
-
           const isActive =
             cleanPathname === path || // Точное совпадение
             (path === '/services' && /^\/service\/\d+$/.test(cleanPathname));
