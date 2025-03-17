@@ -109,7 +109,7 @@ const Burger = ({ navigations }: NavigationProps) => {
             })}
             <li>
               <Link
-                href="/my-account"
+                href={`/${locale}/my-account`}
                 className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
           hover:text-primaryHome ${pathname === `/${locale}/my-account` || pathname === '/my-account' ? 'text-primaryHome' : ''}`}
               >

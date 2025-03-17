@@ -82,7 +82,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
           custom={navigations.length} // Задержка для последнего элемента
         >
           <Link
-            href="/my-account"
+            href={`/${locale}/my-account`}
             className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
                 hover:text-primaryHome ${pathname === '/my-account' ? 'text-primaryHome' : ''}`}
           >
