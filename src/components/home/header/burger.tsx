@@ -29,7 +29,7 @@ const Burger = ({ navigations }: NavigationProps) => {
   const [strokeColor, setStrokeColor] = useState('hsl(35, 90%, 55%)');
   const t = useTranslations('Navigation');
   const tMenu = useTranslations('MobileMenu');
-  const isHomeActive = pathname === `/${locale}` || pathname === '/';
+  const isHomeActive = pathname === `/${locale}` || pathname === `/${locale}/`;
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -69,7 +69,7 @@ const Burger = ({ navigations }: NavigationProps) => {
           <ul className="flex flex-col gap-6">
             <li>
               <Link
-                href="/"
+                href={`/${locale}`}
                 className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
           hover:text-primaryHome ${isHomeActive ? 'text-primaryHome' : ''}`}
               >
@@ -80,9 +80,16 @@ const Burger = ({ navigations }: NavigationProps) => {
               </Link>
             </li>
             {navigations.map((nav) => {
-              const cleanPathname = pathname.replace(`/${locale}`, '') || '/';
-              const path = new URL(nav.url).pathname.replace(`/${locale}`, '');
-              const isActive = cleanPathname === path;
+              const cleanPathname = pathname.startsWith(`/${locale}`)
+                ? pathname
+                : `/${locale}${pathname}`;
+              const path = nav.url.startsWith(`/${locale}`)
+                ? new URL(nav.url).pathname
+                : `/${locale}${new URL(nav.url).pathname}`;
+              const isActive =
+                cleanPathname === path ||
+                (path === '/services' &&
+                  /^\/service\/\d+$/.test(cleanPathname));
 
               return (
                 <li key={nav.name.en}>
