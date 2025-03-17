@@ -44,8 +44,14 @@ const Navigation = ({ navigations }: NavigationProps) => {
           </Link>
         </motion.li>
         {navigations.map((nav, i) => {
-          const cleanPathname = pathname.replace(`/${locale}`, '') || '/';
-          const path = new URL(nav.url).pathname.replace(`/${locale}`, '');
+          // const cleanPathname = pathname.replace(`/${locale}`, '') || '/';
+          // const path = new URL(nav.url).pathname.replace(`/${locale}`, '');
+          const cleanPathname = pathname.startsWith(`/${locale}`)
+            ? pathname
+            : `/${locale}${pathname}`;
+          const path = nav.url.startsWith(`/${locale}`)
+            ? new URL(nav.url).pathname
+            : `/${locale}${new URL(nav.url).pathname}`;
           const isActive =
             cleanPathname === path || // Точное совпадение
             (path === '/services' && /^\/service\/\d+$/.test(cleanPathname));

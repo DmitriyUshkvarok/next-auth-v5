@@ -1,7 +1,5 @@
 import ServicesList from './services-list';
 import { getTranslations } from 'next-intl/server';
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'default-no-store';
 
 type ServiicesProps = {
   data: {
