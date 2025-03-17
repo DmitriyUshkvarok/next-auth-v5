@@ -16,7 +16,7 @@ import { SubmitButton } from '@/components/forms/buttons';
 import { useToast } from '@/hooks/use-toast';
 import { sendFormForAdminSchema } from '@/validation/schemas';
 import { sendFormForAdmin } from '@/action/sendMessageForAdminAction';
-
+import { useTranslations } from 'next-intl';
 const FormMessageForAdmin = ({
   name,
   email,
@@ -31,7 +31,7 @@ const FormMessageForAdmin = ({
   setOpenDrawer: (open: boolean) => void;
 }) => {
   const { toast } = useToast();
-
+  const t = useTranslations('FormMessageForAdmin');
   const form = useForm<z.infer<typeof sendFormForAdminSchema>>({
     resolver: zodResolver(sendFormForAdminSchema),
     defaultValues: {
@@ -47,7 +47,7 @@ const FormMessageForAdmin = ({
     const result = await sendFormForAdmin(data);
     if (result.success) {
       toast({
-        title: 'The message has been sent',
+        title: t('title'),
         description: result.message,
       });
       form.reset();
@@ -71,7 +71,7 @@ const FormMessageForAdmin = ({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t('name')}</FormLabel>
                 <FormControl>
                   <Input
                     className="text-[10px] sm:text-[14px]"
@@ -88,7 +88,7 @@ const FormMessageForAdmin = ({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('email')}</FormLabel>
                 <FormControl>
                   <Input
                     className="text-[10px] sm:text-[14px]"
@@ -138,9 +138,13 @@ const FormMessageForAdmin = ({
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Message</FormLabel>
+                <FormLabel>{t('message')}</FormLabel>
                 <FormControl>
-                  <Textarea {...field} placeholder="Type your message here." />
+                  <Textarea
+                    {...field}
+                    placeholder={t('placeholder')}
+                    className="text-[10px] sm:text-[14px]"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -153,7 +157,7 @@ const FormMessageForAdmin = ({
           )}
           <SubmitButton
             className="py-[4px] px-[12px] h-[30px] sm:h-[44px] sm:py-[8px] sm:px-[16px] w-full text-[10px] sm:text-[14px] mt-4"
-            text="Send a Message"
+            text={t('send')}
             isLoading={form.formState.isSubmitting}
           />
         </fieldset>

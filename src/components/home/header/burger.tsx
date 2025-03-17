@@ -28,6 +28,8 @@ const Burger = ({ navigations }: NavigationProps) => {
   const { theme } = useTheme();
   const [strokeColor, setStrokeColor] = useState('hsl(35, 90%, 55%)');
   const t = useTranslations('Navigation');
+  const tMenu = useTranslations('MobileMenu');
+  const isHomeActive = pathname === `/${locale}` || pathname === '/';
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -61,9 +63,7 @@ const Burger = ({ navigations }: NavigationProps) => {
           <SheetTitle>
             <Logo />
           </SheetTitle>
-          <SheetDescription>
-            Use the menu below to navigate the site.
-          </SheetDescription>
+          <SheetDescription>{tMenu('title')}</SheetDescription>
         </SheetHeader>
         <nav className="mt-10">
           <ul className="flex flex-col gap-6">
@@ -71,17 +71,18 @@ const Burger = ({ navigations }: NavigationProps) => {
               <Link
                 href="/"
                 className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
-                hover:text-primaryHome ${pathname === '/' ? 'text-primaryHome' : ''}`}
+          hover:text-primaryHome ${isHomeActive ? 'text-primaryHome' : ''}`}
               >
                 {t('home')}
-                {pathname === '/' && (
+                {isHomeActive && (
                   <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
                 )}
               </Link>
             </li>
             {navigations.map((nav) => {
-              const path = new URL(nav.url).pathname;
-              const isActive = pathname === path;
+              const cleanPathname = pathname.replace(`/${locale}`, '') || '/';
+              const path = new URL(nav.url).pathname.replace(`/${locale}`, '');
+              const isActive = cleanPathname === path;
 
               return (
                 <li key={nav.name.en}>
@@ -89,7 +90,7 @@ const Burger = ({ navigations }: NavigationProps) => {
                     href={path}
                     onClick={() => setIsOpen(false)}
                     className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
-                hover:text-primaryHome ${isActive ? 'text-primaryHome' : ''}`}
+              hover:text-primaryHome ${isActive ? 'text-primaryHome' : ''}`}
                   >
                     {nav.name[locale]}
                     {isActive && (
@@ -103,10 +104,11 @@ const Burger = ({ navigations }: NavigationProps) => {
               <Link
                 href="/my-account"
                 className={`relative font-body font-medium text-2xl transition-colors duration-300 capitalize 
-                            hover:text-primaryHome ${pathname === '/my-account' ? 'text-primaryHome' : ''}`}
+          hover:text-primaryHome ${pathname === `/${locale}/my-account` || pathname === '/my-account' ? 'text-primaryHome' : ''}`}
               >
                 {t('account')}
-                {pathname === '/my-account' && (
+                {(pathname === `/${locale}/my-account` ||
+                  pathname === '/my-account') && (
                   <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
                 )}
               </Link>

@@ -38,15 +38,15 @@ const ResumeNavigation = ({
     <>
       <Tabs
         defaultValue={activeTab}
-        className="mt-4 flex justify-between w-full h-full"
+        className="mt-4 flex flex-col w-full h-full"
       >
-        <TabsList className="flex flex-col gap-4 justify-normal w-full max-w-[500px] h-full bg-transparent">
+        <TabsList className="flex justify-between gap-4 bg-transparent mb-4">
           {data.map((item) => (
             <TabsTrigger
               key={item?.name.en}
               value={item?.name.en}
               onClick={() => handleTabChange(item.name.en)}
-              className="flex justify-center items-center w-full max-w-[500px] h-[40px] bg-card data-[state=active]:bg-primaryHome"
+              className="flex justify-center items-center w-full max-w-[450px] h-[40px] bg-card data-[state=active]:bg-primaryHome"
             >
               {item?.name[locale]}
             </TabsTrigger>

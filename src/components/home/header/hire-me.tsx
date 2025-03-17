@@ -30,13 +30,11 @@ const HireMe = () => {
         </DrawerTrigger>
         <DrawerContent>
           <div className="mx-auto w-full max-w-[600px] px-4">
-            <DrawerHeader>
+            <DrawerHeader className="px-0">
               <DrawerTitle className="capitalize">
-                Communication with the administrator
+                {t('hearMeTitle')}
               </DrawerTitle>
-              <DrawerDescription>
-                Fill out the form and send a message.
-              </DrawerDescription>
+              <DrawerDescription>{t('hearMeDescription')}</DrawerDescription>
             </DrawerHeader>
             <FormMessageForAdmin setOpenDrawer={setOpenDrawer} />
             <DrawerFooter className="px-0">
@@ -45,7 +43,7 @@ const HireMe = () => {
                   className="py-[4px] px-[12px] h-[30px] sm:h-[44px] w-full text-[10px] sm:text-[14px]"
                   variant="outline"
                 >
-                  Cancel
+                  {t('cancel')}
                 </Button>
               </DrawerClose>
             </DrawerFooter>

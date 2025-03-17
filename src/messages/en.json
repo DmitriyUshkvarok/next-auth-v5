@@ -4,9 +4,38 @@
     "account": "Account"
   },
   "HireMe": {
-    "hireMe": "Hire Me"
+    "hireMe": "Hire Me",
+    "hearMeTitle": "Communication with the administrator",
+    "hearMeDescription": "Fill out the form and send a message.",
+    "cancel": "Cancel"
   },
   "Resume": {
-    "resume": "Download CV"
+    "resume": "Download CV",
+    "downloadDescription": "Click the download button to save the resume to your device."
+  },
+  "FormMessageForAdmin": {
+    "title": "The message has been sent",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "placeholder": "Type your message here.",
+    "send": "Send a Message"
+  },
+  "MobileMenu": {
+    "title": "Use the menu below to navigate the site."
+  },
+  "Services": {
+    "title": "Web Development Services",
+    "description": "I create modern, fast, and user-friendly web solutions for any need. From landing pages to complex web applications — your project is in good hands."
+  },
+  "ServicesList": {
+    "learnMore": "Learn More",
+    "lastUpdated": "Last Updated: {date}"
+  },
+  "ServicesDetails": {
+    "title": "Additional Information"
+  },
+  "ButtonBack": {
+    "title": "Back"
   }
 }

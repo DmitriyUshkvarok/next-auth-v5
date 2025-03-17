@@ -38,8 +38,8 @@ import { updateServicesList } from '@/action/servicesAction';
 type AdminServicelListProps = {
   data: {
     count: number;
-    title: string;
-    description: string;
+    title: { en: string; ru: string; uk: string };
+    description: { en: string; ru: string; uk: string };
   }[];
 };
 const AdminEditServicesList = ({ data }: AdminServicelListProps) => {
@@ -118,7 +118,7 @@ const AdminEditServicesList = ({ data }: AdminServicelListProps) => {
                   <div>
                     <FormField
                       control={form.control}
-                      name={`services.${index}.title`}
+                      name={`services.${index}.title.en`}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Title</FormLabel>
@@ -131,7 +131,36 @@ const AdminEditServicesList = ({ data }: AdminServicelListProps) => {
                     />
                     <FormField
                       control={form.control}
-                      name={`services.${index}.description`}
+                      name={`services.${index}.title.ru`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Введите название"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`services.${index}.title.uk`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} placeholder="Введіть назву" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`services.${index}.description.en`}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Description</FormLabel>
@@ -139,6 +168,38 @@ const AdminEditServicesList = ({ data }: AdminServicelListProps) => {
                             <Textarea
                               {...field}
                               placeholder="Enter a Description"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`services.${index}.description.ru`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Введите описание"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`services.${index}.description.uk`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Введіть опис"
                             />
                           </FormControl>
                           <FormMessage />
@@ -157,7 +218,13 @@ const AdminEditServicesList = ({ data }: AdminServicelListProps) => {
               ))}
               <Button
                 type="button"
-                onClick={() => append({ count: 0, title: '', description: '' })}
+                onClick={() =>
+                  append({
+                    count: 0,
+                    title: { en: '', ru: '', uk: '' },
+                    description: { en: '', ru: '', uk: '' },
+                  })
+                }
               >
                 ➕ Add Item
               </Button>

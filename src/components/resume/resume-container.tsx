@@ -20,7 +20,7 @@ const ResumeContainer = async () => {
   const skillsData = await getResumeSkills();
 
   return (
-    <section className="px-2">
+    <section className="px-2 py-10">
       <div>
         <div className="flex flex-col gap-6">
           <ResumeNavigationTextInfo dataText={resultForProps} />

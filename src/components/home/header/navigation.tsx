@@ -11,6 +11,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
   const params = useParams();
   const locale = params.locale as Locale;
   const t = useTranslations('Navigation');
+  const isHomeActive = pathname === `/${locale}` || pathname === '/';
 
   // Варианты анимации для каждого элемента
   const itemVariants = {
@@ -34,19 +35,21 @@ const Navigation = ({ navigations }: NavigationProps) => {
           <Link
             href="/"
             className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
-            hover:text-primaryHome ${pathname === '/' ? 'text-primaryHome' : ''}`}
+      hover:text-primaryHome ${isHomeActive ? 'text-primaryHome' : ''}`}
           >
             {t('home')}
-            {pathname === '/' && (
+            {isHomeActive && (
               <span className="absolute left-0 bottom-[-5px] w-full h-[3px] rounded-sm bg-primaryHome"></span>
             )}
           </Link>
         </motion.li>
         {navigations.map((nav, i) => {
-          const path = new URL(nav.url).pathname;
+          const cleanPathname = pathname.replace(`/${locale}`, '') || '/';
+          const path = new URL(nav.url).pathname.replace(`/${locale}`, '');
+
           const isActive =
-            pathname === path || // Точное совпадение
-            (path === '/services' && /^\/service\/\d+$/.test(pathname));
+            cleanPathname === path || // Точное совпадение
+            (path === '/services' && /^\/service\/\d+$/.test(cleanPathname));
 
           return (
             <motion.li
@@ -59,7 +62,7 @@ const Navigation = ({ navigations }: NavigationProps) => {
               <Link
                 href={path}
                 className={`relative font-body font-medium text-lg transition-colors duration-300 capitalize 
-                hover:text-primaryHome ${isActive ? 'text-primaryHome' : ''}`}
+        hover:text-primaryHome ${isActive ? 'text-primaryHome' : ''}`}
               >
                 {nav.name[locale]}
                 {isActive && (

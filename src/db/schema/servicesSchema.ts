@@ -7,6 +7,12 @@ export const services = pgTable('services', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   services: jsonb('services')
-    .$type<{ count: number; title: string; description: string }[]>()
+    .$type<
+      {
+        count: number;
+        title: { en: string; ru: string; uk: string };
+        description: { en: string; ru: string; uk: string };
+      }[]
+    >()
     .default([]),
 });

@@ -10,17 +10,43 @@ export const updateServicesPageSchema = z.object({
         .int('The count must be an integer')
         .positive('The count must be a positive number'),
 
-      title: z
-        .string()
-        .min(2, 'Title must contain a minimum of 2 characters')
-        .max(200, 'Title name must contain a maximum of 200 characters'),
-      description: z
-        .string()
-        .min(50, 'The description must contain a minimum of 50 characters')
-        .max(
-          4000,
-          'The description name must contain a maximum of 4000 characters'
-        ),
+      title: z.object({
+        en: z
+          .string()
+          .min(2, 'Title must contain a minimum of 2 characters')
+          .max(200, 'Title name must contain a maximum of 200 characters'),
+        ru: z
+          .string()
+          .min(2, 'Title must contain a minimum of 2 characters')
+          .max(200, 'Title name must contain a maximum of 200 characters'),
+        uk: z
+          .string()
+          .min(2, 'Title must contain a minimum of 2 characters')
+          .max(200, 'Title name must contain a maximum of 200 characters'),
+      }),
+      description: z.object({
+        en: z
+          .string()
+          .min(50, 'The description must contain a minimum of 50 characters')
+          .max(
+            4000,
+            'The description name must contain a maximum of 4000 characters'
+          ),
+        ru: z
+          .string()
+          .min(50, 'The description must contain a minimum of 50 characters')
+          .max(
+            4000,
+            'The description name must contain a maximum of 4000 characters'
+          ),
+        uk: z
+          .string()
+          .min(50, 'The description must contain a minimum of 50 characters')
+          .max(
+            4000,
+            'The description name must contain a maximum of 4000 characters'
+          ),
+      }),
     })
   ),
 });

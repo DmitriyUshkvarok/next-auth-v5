@@ -1,7 +1,7 @@
 import WorkContainer from './work/work-container';
 import ServicesContainer from './services/services-container';
 import ServicesDetalis from './services/services-detalis';
-import { getServicesList } from '@/action/servicesAction';
+import { getServiceByCount, getServicesList } from '@/action/servicesAction';
 import { notFound } from 'next/navigation';
 import ResumeContainer from './resume/resume-container';
 
@@ -19,8 +19,9 @@ export const DynamicContentPageRender = async ({ slug }: { slug: string }) => {
     if (!exists) {
       return notFound();
     }
-
-    return <ServicesDetalis serviceId={serviceId} />;
+    const resultDetailList = await getServiceByCount(serviceId);
+    const data = resultDetailList.data;
+    return <ServicesDetalis data={data} />;
   }
 
   const renderComponent = () => {

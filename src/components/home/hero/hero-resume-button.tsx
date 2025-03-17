@@ -1,5 +1,4 @@
 'use client';
-import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import {
@@ -11,6 +10,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useTranslations } from 'next-intl';
+
 const HeroResumeButton = ({ resume }: { resume: string | null }) => {
   const t = useTranslations('Resume');
   return (
@@ -26,7 +27,7 @@ const HeroResumeButton = ({ resume }: { resume: string | null }) => {
             <Download />
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px]">
+        <DialogContent className="p-8 max-w-[800px]">
           <DialogHeader>
             <DialogTitle>
               {resume ? (
@@ -40,9 +41,7 @@ const HeroResumeButton = ({ resume }: { resume: string | null }) => {
                 <p className="text-gray-500">No executive summary</p>
               )}
             </DialogTitle>
-            <DialogDescription>
-              Click the download button to save the resume to your device.
-            </DialogDescription>
+            <DialogDescription>{t('downloadDescription')}</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4"></div>
           <DialogFooter>
@@ -52,7 +51,7 @@ const HeroResumeButton = ({ resume }: { resume: string | null }) => {
                 download="resume.pdf" // Имя файла при скачивании
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4"
               >
-                Download
+                {t('resume')}
               </a>
             )}
           </DialogFooter>
