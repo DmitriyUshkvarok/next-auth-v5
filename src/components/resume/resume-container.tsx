@@ -4,6 +4,7 @@ import {
   getResumePageNavigation,
   getResumePageSidebarText,
   getResumeSkills,
+  getResumeAbout,
 } from '@/action/resumePageActions';
 import ResumeNavigation from './resume-navigation';
 import ResumeNavigationTextInfo from './resume-navigation-text-info';
@@ -17,9 +18,10 @@ const ResumeContainer = async () => {
   const experienceData = await getResumeExperience();
   const educationData = await getResumeEducation();
   const skillsData = await getResumeSkills();
+  const aboutData = await getResumeAbout();
 
   return (
-    <section className="px-2 py-10">
+    <section className="px-4 py-10">
       <div>
         <div className="flex flex-col gap-6">
           <ResumeNavigationTextInfo dataText={resultForProps} />
@@ -29,6 +31,7 @@ const ResumeContainer = async () => {
               experienceData={experienceData.data}
               educationData={educationData.data}
               skillsData={skillsData.data}
+              aboutData={aboutData.data}
             />
           </Suspense>
         </div>

@@ -252,3 +252,109 @@ export const resumeSkillsSchema = z.object({
     )
     .default([]),
 });
+
+export const resumeAboutSchema = z.object({
+  title: z.object({
+    en: z
+      .string()
+      .min(2, 'Title must contain a minimum of 2 characters')
+      .max(200, 'Title must contain a maximum of 200 characters'),
+    ru: z
+      .string()
+      .min(2, 'Title must contain a minimum of 2 characters')
+      .max(200, 'Title must contain a maximum of 200 characters'),
+    uk: z
+      .string()
+      .min(2, 'Title must contain a minimum of 2 characters')
+      .max(200, 'Title must contain a maximum of 200 characters'),
+  }),
+  description: z.object({
+    en: z
+      .string()
+      .min(30, 'Description must contain a minimum of 30 characters')
+      .max(1000, 'Description must contain a maximum of 1000 characters'),
+    ru: z
+      .string()
+      .min(30, 'Description must contain a minimum of 30 characters')
+      .max(1000, 'Description must contain a maximum of 1000 characters'),
+    uk: z
+      .string()
+      .min(30, 'Description must contain a minimum of 30 characters')
+      .max(1000, 'Description must contain a maximum of 1000 characters'),
+  }),
+  subDescription: z.object({
+    en: z
+      .string()
+      .min(30, 'SubDescription must contain a minimum of 30 characters')
+      .max(1000, 'SubDescription must contain a maximum of 1000 characters'),
+    ru: z
+      .string()
+      .min(30, 'SubDescription must contain a minimum of 30 characters')
+      .max(1000, 'SubDescription must contain a maximum of 1000 characters'),
+    uk: z
+      .string()
+      .min(30, 'SubDescription must contain a minimum of 30 characters')
+      .max(1000, 'SubDescription must contain a maximum of 1000 characters'),
+  }),
+  name: z.object({
+    en: z
+      .string()
+      .min(2, 'Name must contain a minimum of 2 characters')
+      .max(100, 'Name must contain a maximum of 100 characters'),
+    ru: z
+      .string()
+      .min(2, 'Name must contain a minimum of 2 characters')
+      .max(100, 'Name must contain a maximum of 100 characters'),
+    uk: z
+      .string()
+      .min(2, 'Name must contain a minimum of 2 characters')
+      .max(100, 'Name must contain a maximum of 100 characters'),
+  }),
+  email: z.string().email('Invalid email address'),
+  experience: z.object({
+    en: z
+      .string()
+      .min(2, 'Experience must contain a minimum of 2 characters')
+      .max(100, 'Experience must contain a maximum of 100 characters'),
+    ru: z
+      .string()
+      .min(2, 'Experience must contain a minimum of 2 characters')
+      .max(100, 'Experience must contain a maximum of 100 characters'),
+    uk: z
+      .string()
+      .min(2, 'Experience must contain a minimum of 2 characters')
+      .max(100, 'Experience must contain a maximum of 100 characters'),
+  }),
+  nationality: z.object({
+    en: z
+      .string()
+      .min(2, 'Nationality must contain a minimum of 2 characters')
+      .max(100, 'Nationality must contain a maximum of 100 characters'),
+    ru: z
+      .string()
+      .min(2, 'Nationality must contain a minimum of 2 characters')
+      .max(100, 'Nationality must contain a maximum of 100 characters'),
+    uk: z
+      .string()
+      .min(2, 'Nationality must contain a minimum of 2 characters')
+      .max(100, 'Nationality must contain a maximum of 100 characters'),
+  }),
+  dateOfBirth: z
+    .string()
+    .min(2, 'Date of birth must contain a minimum of 2 characters')
+    .max(100, 'Date of birth must contain a maximum of 100 characters'),
+  location: z.object({
+    en: z
+      .string()
+      .min(2, 'Location must contain a minimum of 2 characters')
+      .max(100, 'Location must contain a maximum of 100 characters'),
+    ru: z
+      .string()
+      .min(2, 'Location must contain a minimum of 2 characters')
+      .max(100, 'Location must contain a maximum of 100 characters'),
+    uk: z
+      .string()
+      .min(2, 'Location must contain a minimum of 2 characters')
+      .max(100, 'Location must contain a maximum of 100 characters'),
+  }),
+});

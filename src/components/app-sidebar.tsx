@@ -130,6 +130,10 @@ const data = {
           title: 'Resume Skills',
           url: '/admin/resume/skills',
         },
+        {
+          title: 'Resume About',
+          url: '/admin/resume/about',
+        },
       ],
     },
     {

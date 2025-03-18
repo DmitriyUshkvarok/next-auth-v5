@@ -38,6 +38,38 @@
   /* Для Chrome, Safari, Edge */
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  /* Толщина скроллбара */
+}
+
+/* Ползунок */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(35, 90%, 55%);
+  /* Цвет ползунка */
+  border-radius: 10px;
+  /* Закругление */
+  border: 2px solid transparent;
+  /* Пространство вокруг */
+  background-clip: padding-box;
+  /* Оставляет прозрачную границу */
+}
+
+/* Фон скроллбара */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: hsl(0, 0%, 20%);
+  /* Цвет фона */
+  border-radius: 10px;
+}
+
+/* Стиль для Firefox */
+.custom-scrollbar {
+  scrollbar-color: hsl(35, 90%, 55%) hsl(0, 0%, 20%);
+  /* Ползунок и фон */
+  scrollbar-width: thin;
+  /* Уменьшаем толщину */
+}
+
 
 @layer base {
   :root {
@@ -112,6 +144,11 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
 }
 
 body {

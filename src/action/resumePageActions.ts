@@ -5,6 +5,7 @@ import {
   resumeExperienceSchema,
   resumeEducationsSchema,
   resumeSkillsSchema,
+  resumeAboutSchema,
 } from '@/validation/schemaResumePage';
 import { validateWithZodSchema } from '@/validation/schemas';
 import { z } from 'zod';
@@ -18,6 +19,7 @@ import { revalidatePath } from 'next/cache';
 import { resumeExperiences } from '@/db/schema/resumePageExperience';
 import { resumeEducations } from '@/db/schema/resumePageEducation';
 import { resumeSkills } from '@/db/schema/resumePageSkills';
+import { resumeAbouts } from '@/db/schema/resumeAboutSchema';
 
 const fixedId = 'default';
 
@@ -359,6 +361,83 @@ export const getResumeSkills = async () => {
     .select()
     .from(resumeSkills)
     .where(eq(resumeSkills.id, fixedId))
+    .execute();
+
+  return {
+    success: true,
+    data: result.length > 0 ? result[0] : null,
+  };
+};
+
+export const updateResumeAbout = async (
+  data: z.infer<typeof resumeAboutSchema>
+) => {
+  try {
+    await getAdminUser();
+    const getUser = await getAuthUser();
+    const updateResumeAboutValidate = validateWithZodSchema(
+      resumeAboutSchema,
+      data
+    );
+
+    const existingResumeAbout = await db
+      .select()
+      .from(resumeAbouts)
+      .where(eq(resumeAbouts.id, fixedId))
+      .execute();
+
+    if (existingResumeAbout.length > 0) {
+      // Если запись существует, обновляем её
+      await db
+        .update(resumeAbouts)
+        .set({
+          title: updateResumeAboutValidate.title,
+          description: updateResumeAboutValidate.description,
+          subDescription: updateResumeAboutValidate.subDescription,
+          name: updateResumeAboutValidate.name,
+          email: updateResumeAboutValidate.email,
+          experience: updateResumeAboutValidate.experience,
+          nationality: updateResumeAboutValidate.nationality,
+          dateOfBirth: updateResumeAboutValidate.dateOfBirth,
+          location: updateResumeAboutValidate.location,
+        })
+        .where(eq(resumeAbouts.id, fixedId))
+        .execute();
+    } else {
+      // Если записи нет, создаём новую
+      await db
+        .insert(resumeAbouts)
+        .values({
+          id: fixedId,
+          userId: getUser.id,
+          title: updateResumeAboutValidate.title,
+          description: updateResumeAboutValidate.description,
+          subDescription: updateResumeAboutValidate.subDescription,
+          name: updateResumeAboutValidate.name,
+          email: updateResumeAboutValidate.email,
+          experience: updateResumeAboutValidate.experience,
+          nationality: updateResumeAboutValidate.nationality,
+          dateOfBirth: updateResumeAboutValidate.dateOfBirth,
+          location: updateResumeAboutValidate.location,
+        })
+        .execute();
+    }
+
+    revalidatePath('/');
+    return {
+      success: true,
+      message: 'About has been updated successfully',
+    };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+
+export const getResumeAbout = async () => {
+  const result = await db
+    .select()
+    .from(resumeAbouts)
+    .where(eq(resumeAbouts.id, fixedId))
     .execute();
 
   return {

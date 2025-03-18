@@ -11,18 +11,22 @@ import {
   ResumeEducationProps,
   ResumeExperienceProps,
   ResumeSkillsProps,
+  ResumeAboutProps,
 } from './types/types';
+import ResumeAbout from './resume-about';
 
 const ResumeNavigation = ({
   data,
   experienceData,
   educationData,
   skillsData,
+  aboutData,
 }: {
   data: NavigationItem[];
   experienceData: ResumeExperienceProps;
   educationData: ResumeEducationProps;
   skillsData: ResumeSkillsProps;
+  aboutData: ResumeAboutProps;
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -61,7 +65,9 @@ const ResumeNavigation = ({
         <TabsContent value={data[2]?.name.en}>
           <ResumeSkills skillsData={skillsData} />
         </TabsContent>
-        <TabsContent value={data[3]?.name.en}> hi 4</TabsContent>
+        <TabsContent value={data[3]?.name.en}>
+          <ResumeAbout aboutData={aboutData} />
+        </TabsContent>
       </Tabs>
     </>
   );

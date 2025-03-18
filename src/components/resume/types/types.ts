@@ -84,3 +84,43 @@ export type ResumeSkillsProps = {
     };
   }> | null;
 } | null;
+
+export type ResumeAboutProps = {
+  title: {
+    en: string;
+    ru: string;
+    uk: string;
+  };
+  description: {
+    en: string;
+    ru: string;
+    uk: string;
+  };
+  subDescription: {
+    en: string;
+    ru: string;
+    uk: string;
+  };
+  name: {
+    en: string;
+    ru: string;
+    uk: string;
+  };
+  email: string;
+  experience: {
+    en: string;
+    ru: string;
+    uk: string;
+  };
+  nationality: {
+    en: string;
+    ru: string;
+    uk: string;
+  };
+  dateOfBirth: string;
+  location: {
+    en: string;
+    ru: string;
+    uk: string;
+  };
+} | null;
