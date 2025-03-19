@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
-// import { motion } from 'framer-motion';
 
 export type ResumeAboutPropsData = {
   aboutData: ResumeAboutProps | null;
